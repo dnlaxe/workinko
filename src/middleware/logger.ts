@@ -20,6 +20,17 @@ export const logger = pinoHttp({
   },
   transport:
     process.env.NODE_ENV !== "production"
-      ? { target: "pino-pretty" }
+      ? {
+          target: "pino-pretty",
+          options: {
+            ignore:
+              "pid,hostname,req.headers,res.headers,req.remoteAddress,req.remotePort",
+          },
+        }
       : undefined,
+
+  serializers: {
+    req: (req: Request) => ({ id: req.id, method: req.method, url: req.url }),
+    res: (res: Response) => ({ statusCode: res.statusCode }),
+  },
 });
