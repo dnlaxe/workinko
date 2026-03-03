@@ -18,3 +18,11 @@
 - Trust proxy enabled in production.
 - Extended Express `Request` type to include `id` (string | number) and `log` (Pino logger).
 - Root route rendering `pages/board` view.
+- Postgres database
+
+## [Setup] - 2026-03-03
+
+### Added
+
+- Database schema
+- Drizzle config

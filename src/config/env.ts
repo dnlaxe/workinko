@@ -10,7 +10,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"], {
     error: "Invalid environment",
   }),
-  //   DATABASE_URL: z.string().min(1, { error: "DATABASE_URL is required!" }),
+  DATABASE_URL: z.string().min(1, { error: "DATABASE_URL is required!" }),
 });
 
 const parsed = envSchema.safeParse(process.env);

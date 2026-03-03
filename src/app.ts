@@ -41,6 +41,14 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "../views"));
 
+import { sql } from "drizzle-orm";
+import { db } from "./db/db.js";
+
+app.get("/db-check", async (_req, res) => {
+  const result = await db.execute(sql`select now() as now`);
+  res.json(result.rows);
+});
+
 app.get("/", (req: Request, res: Response) => {
   res.render("pages/board");
 });
