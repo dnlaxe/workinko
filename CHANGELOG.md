@@ -26,3 +26,4 @@
 
 - Database schema
 - Drizzle config
+- Basic job form with zod validation

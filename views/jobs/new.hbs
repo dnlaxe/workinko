@@ -1,0 +1,223 @@
+{{! views/jobs/new.hbs }}
+<form action="#" method="post">
+  <fieldset>
+    <legend>How do you want to be contacted?</legend>
+
+    {{#each jobFormOptions.contactMethod}}
+      <label>
+        <input
+          type="radio"
+          name="contactMethod"
+          value="{{this}}"
+          required
+          {{#if (eq ../values.contactMethod this)}}checked{{/if}}
+        />
+        {{this}}
+      </label>
+    {{/each}}
+
+    {{#if fieldErrors.contactMethod}}
+      <div>{{fieldErrors.contactMethod.[0]}}</div>
+    {{/if}}
+
+    <div>
+      <label for="contactUrl">URL</label>
+      <input
+        id="contactUrl"
+        name="contactUrl"
+        type="url"
+        value="{{values.contactUrl}}"
+      />
+      {{#if fieldErrors.contactUrl}}
+        <div>{{fieldErrors.contactUrl.[0]}}</div>
+      {{/if}}
+    </div>
+
+    <div>
+      <label for="contactEmail">Email</label>
+      <input
+        id="contactEmail"
+        name="contactEmail"
+        type="email"
+        value="{{values.contactEmail}}"
+      />
+      {{#if fieldErrors.contactEmail}}
+        <div>{{fieldErrors.contactEmail.[0]}}</div>
+      {{/if}}
+    </div>
+  </fieldset>
+
+  <div>
+    <label for="heading">Heading</label>
+    <input
+      id="heading"
+      name="heading"
+      type="text"
+      required
+      value="{{values.heading}}"
+    />
+    {{#if fieldErrors.heading}}
+      <div>{{fieldErrors.heading.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="subheading">Subheading</label>
+    <input
+      id="subheading"
+      name="subheading"
+      type="text"
+      required
+      value="{{values.subheading}}"
+    />
+    {{#if fieldErrors.subheading}}
+      <div>{{fieldErrors.subheading.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="specialization">Specialization</label>
+    <select id="specialization" name="specialization" required>
+      {{#each jobFormOptions.specialization}}
+        <option
+          value="{{this}}"
+          {{#if (eq ../values.specialization this)}}selected{{/if}}
+        >
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.specialization}}
+      <div>{{fieldErrors.specialization.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="contractType">Contract type</label>
+    <select id="contractType" name="contractType" required>
+      {{#each jobFormOptions.contractType}}
+        <option
+          value="{{this}}"
+          {{#if (eq ../values.contractType this)}}selected{{/if}}
+        >
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.contractType}}
+      <div>{{fieldErrors.contractType.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="location">Location</label>
+    <select id="location" name="location" required>
+      {{#each jobFormOptions.location}}
+        <option
+          value="{{this}}"
+          {{#if (eq ../values.location this)}}selected{{/if}}
+        >
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.location}}
+      <div>{{fieldErrors.location.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="koreanProficiency">Korean proficiency</label>
+    <select id="koreanProficiency" name="koreanProficiency" required>
+      {{#each jobFormOptions.koreanProficiency}}
+        <option
+          value="{{value}}"
+          {{#if (eq (toString ../values.koreanProficiency) (toString value))}}selected{{/if}}
+        >
+          {{label}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.koreanProficiency}}
+      <div>{{fieldErrors.koreanProficiency.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="englishProficiency">English proficiency</label>
+    <select id="englishProficiency" name="englishProficiency" required>
+      {{#each jobFormOptions.englishProficiency}}
+        <option
+          value="{{value}}"
+          {{#if (eq (toString ../values.englishProficiency) (toString value))}}selected{{/if}}
+        >
+          {{label}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.englishProficiency}}
+      <div>{{fieldErrors.englishProficiency.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="otherLanguages">Other languages</label>
+    <input
+      id="otherLanguages"
+      name="otherLanguages"
+      type="text"
+      value="{{values.otherLanguages}}"
+    />
+    {{#if fieldErrors.otherLanguages}}
+      <div>{{fieldErrors.otherLanguages.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="visaSponsorship">Visa sponsorship</label>
+    <select id="visaSponsorship" name="visaSponsorship" required>
+      {{#each jobFormOptions.visaSponsorship}}
+        <option
+          value="{{this}}"
+          {{#if (eq ../values.visaSponsorship this)}}selected{{/if}}
+        >
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.visaSponsorship}}
+      <div>{{fieldErrors.visaSponsorship.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="startDate">Start date</label>
+    <select id="startDate" name="startDate" required>
+      {{#each jobFormOptions.startDate}}
+        <option
+          value="{{this}}"
+          {{#if (eq ../values.startDate this)}}selected{{/if}}
+        >
+          {{this}}
+        </option>
+      {{/each}}
+    </select>
+    {{#if fieldErrors.startDate}}
+      <div>{{fieldErrors.startDate.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <div>
+    <label for="fullDescription">Full description</label>
+    <textarea
+      id="fullDescription"
+      name="fullDescription"
+      required
+    >{{values.fullDescription}}</textarea>
+    {{#if fieldErrors.fullDescription}}
+      <div>{{fieldErrors.fullDescription.[0]}}</div>
+    {{/if}}
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

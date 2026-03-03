@@ -7,6 +7,7 @@ import { engine } from "express-handlebars";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Request, Response } from "express";
+import jobsRouter from "./features/jobs/jobs.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use(jobsRouter);
+
 app.engine(
   "hbs",
   engine({
@@ -34,6 +37,7 @@ app.engine(
     partialsDir: path.join(__dirname, "../views/partials"),
     helpers: {
       eq: (a: unknown, b: unknown) => a === b,
+      toString: (x: number) => String(x),
     },
   }),
 );

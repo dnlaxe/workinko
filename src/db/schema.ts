@@ -37,15 +37,18 @@ export const relayMessageStatus = pgEnum("relay_message_status", [
   "rejected",
 ]);
 
+export const contactMethod = pgEnum("contact_method", ["link", "relay"]);
+
 const jobMetadata = {
+  contactMethod: contactMethod("contact_method").notNull(),
   heading: text("title").notNull(),
   subheading: text("description").notNull(),
   specialization: text("specialization").notNull(),
   contractType: text("contract_type").notNull(),
   location: integer("location").notNull(),
   koreanProficiency: integer("korean_proficiency").notNull(),
-  otherLanguages: text("other_languages"),
   englishProficiency: text("english_proficiency").notNull(),
+  otherLanguages: text("other_languages"),
   visaSponsorship: text("visa_sponsorship").notNull(),
   startDate: text("start_date").notNull(),
   fullDescription: text("full_description").notNull(),
@@ -54,7 +57,7 @@ const jobMetadata = {
 export const baskets = pgTable("baskets", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   tokenHash: text("token_hash").notNull().unique(),
-
+  email: text("email"),
   state: basketState("state").notNull().default("open"),
 
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
