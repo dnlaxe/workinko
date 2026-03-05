@@ -1,0 +1,19 @@
+<h1 class="p-2">Pending Queue</h1>
+
+{{#if serverError}}
+  <p class="p-2">Errors are happening</p>
+{{else}}
+  {{#each sessions}}
+    <div class="p-2 border-b">
+      <span>{{this.id}}</span>
+      <span>{{this.email}}</span>
+      <span>{{this.status}}</span>
+      <span>{{this.createdAt}}</span>
+      <span>{{this.expiresAt}}</span>
+      <a href="/admin/queue/{{this.id}}">See posts</a>
+    </div>
+
+  {{else}}
+    <p class="p-2">No sessions pending review.</p>
+  {{/each}}
+{{/if}}

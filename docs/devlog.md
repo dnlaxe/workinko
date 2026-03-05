@@ -48,3 +48,7 @@
   - repo → only db queries
 
 - Error handling: Services catch DB throws and return `{ success: false, error: { reason: "..." } }` instead of re-throwing. Controllers consume the result and switch on the reason (`if` if there's only one error to check), with a never exhaustive check to catch unhandled cases at compile time.
+
+## 2026-03-04
+
+- I had intended to build magic links today, but creating the admin section seems more useful as magic links relies on admin approval.

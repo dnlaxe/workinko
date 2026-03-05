@@ -33,10 +33,11 @@
 ### Changed
 
 - Added session and draft tables to database schema
-- Tightened form validation with Zod schema
+- Extended DB schema and generated migrations
 
 ### Added
 
 - Multi-step form with step navigation
-- Drafts section on /jobs/new showing session drafts
-- Drafts page at /jobs/drafts
+- Drafts section on /jobs/new showing session drafts and drafts page at /jobs/drafts
+- Admin moderation flow
+- Improved job form validation + UX

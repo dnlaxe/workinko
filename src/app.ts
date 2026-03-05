@@ -8,6 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { Request, Response } from "express";
 import jobsRouter from "./features/jobs/jobs.routes.js";
+import adminRouter from "./features/admin/admin.routes.js";
 import { sql } from "drizzle-orm";
 import { db } from "./db/db.js";
 import cookieParser from "cookie-parser";
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use(jobsRouter);
+app.use(adminRouter);
 
 app.engine(
   "hbs",

@@ -1,5 +1,11 @@
 import { pgTable, text, integer, timestamp, pgEnum } from "drizzle-orm/pg-core";
 
+export const pendingSessionStatus = pgEnum("pending_session_status", [
+  "pending_review",
+  "approved",
+  "rejected",
+]);
+
 export const livePostStatus = pgEnum("live_post_status", [
   "active",
   "expired",
@@ -29,8 +35,8 @@ export const contactMethod = pgEnum("contact_method", ["link", "relay"]);
 
 const jobMetadata = {
   contactMethod: contactMethod("contact_method").notNull(),
-  contactUrl: text("contact_url").notNull(),
-  contactEmail: text("contact_email").notNull(),
+  contactUrl: text("contact_url"),
+  contactEmail: text("contact_email"),
   heading: text("title").notNull(),
   subheading: text("subheading").notNull(),
   category: text("category").notNull(),
@@ -50,6 +56,10 @@ export const pendingSession = pgTable("pending_session", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   token: text("token").notNull().unique(),
   email: text("email"),
+  status: pendingSessionStatus("status").notNull().default("pending_review"),
+
+  approvedAt: timestamp("approved_at", { withTimezone: true, mode: "date" }),
+  rejectedAt: timestamp("rejected_at", { withTimezone: true, mode: "date" }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
     .notNull()
     .defaultNow(),
@@ -57,7 +67,6 @@ export const pendingSession = pgTable("pending_session", {
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
-
   expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
 });
 
@@ -85,6 +94,10 @@ export const pendingJobs = pgTable("pending_jobs", {
 
 export const livePosts = pgTable("live_posts", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  sessionId: integer("session_id").references(() => pendingSession.id),
+  sourcePendingJobId: integer("source_pending_job_id").references(
+    () => pendingJobs.id,
+  ),
   email: text("email").notNull(),
   status: livePostStatus("status").notNull().default("active"),
 
@@ -92,9 +105,9 @@ export const livePosts = pgTable("live_posts", {
 
   tier: tierOptions("tier").notNull().default("standard"),
 
-  slug: text("slug").notNull().unique(),
+  slug: text("slug").notNull(),
 
-  paymentId: text("stripe_payment_id").references(() => payments.paymentId),
+  paymentId: text("payment_id").references(() => payments.paymentId),
 
   publishedAt: timestamp("published_at", { withTimezone: true, mode: "date" })
     .notNull()
@@ -140,15 +153,18 @@ export const relayMessages = pgTable("relay_messages", {
 
 export const magicTokens = pgTable("magic_tokens", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  email: text("email").notNull().unique(),
+  email: text("email").notNull(),
   token: text("token").notNull().unique(),
-
-  paymentId: text("payment_id").references(() => payments.paymentId), // ← add this
+  sessionId: integer("session_id")
+    .notNull()
+    .references(() => pendingSession.id),
+  paymentId: text("payment_id").references(() => payments.paymentId),
 
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true, mode: "date" }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
     .notNull()
     .defaultNow(),

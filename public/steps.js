@@ -5,6 +5,12 @@ const lastBtnNext = document.querySelector(".btn-last-next");
 const btnBackToReview = document.querySelector(".btn-back-to-review");
 const review = document.querySelector(".review");
 const nav = document.querySelector(".step__nav");
+const contactMethodInputs = Array.from(
+  document.querySelectorAll('input[name="contactMethod"]'),
+);
+const contactFields = Array.from(
+  document.querySelectorAll("[data-contact-field]"),
+);
 let current = 0;
 let editingFromReview = false;
 
@@ -16,10 +22,46 @@ steps.forEach((step, i) => {
 });
 
 function validate(step) {
+  if (step.querySelector('input[name="contactMethod"]')) {
+    const methodPicked = step.querySelector(
+      'input[name="contactMethod"]:checked',
+    );
+    const requiredFields = step.querySelectorAll(
+      'input[required]:not([type="radio"])',
+    );
+    const fieldsValid = Array.from(requiredFields).every(
+      (f) => f.value.trim() !== "",
+    );
+    return Boolean(methodPicked) && fieldsValid;
+  }
+
   const radios = step.querySelectorAll('input[type="radio"][required]');
   if (radios.length) return Array.from(radios).some((r) => r.checked);
   const fields = step.querySelectorAll("input[required], textarea[required]");
   return Array.from(fields).every((f) => f.value.trim() !== "");
+}
+
+function syncContactFields() {
+  const selected = document.querySelector(
+    'input[name="contactMethod"]:checked',
+  )?.value;
+
+  contactFields.forEach((field) => {
+    const method = field.dataset.contactField;
+    const isActive = method === selected;
+
+    field.hidden = !isActive;
+
+    field.querySelectorAll("input, textarea, select").forEach((input) => {
+      if (isActive) {
+        input.disabled = false;
+        input.required = true;
+      } else {
+        input.required = false;
+        input.disabled = true;
+      }
+    });
+  });
 }
 
 function updateNav() {
@@ -100,10 +142,31 @@ function showReview() {
 lastBtnNext.addEventListener("click", showReview);
 btnBackToReview.addEventListener("click", showReview);
 
-document.querySelector("form").addEventListener("input", updateNav);
+contactMethodInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    syncContactFields();
+    updateNav();
+  });
+});
 
+document.querySelector("form").addEventListener("input", () => {
+  syncContactFields();
+  updateNav();
+});
+
+syncContactFields();
 show(0);
 
 if (document.querySelector("form").dataset.hasErrors !== undefined) {
   showReview();
 }
+
+const posterEmailInput = document.querySelector("#email");
+const contactEmailInput = document.querySelector("#contactEmail");
+
+function seedContactEmailFromPosterEmail() {
+  if (!posterEmailInput || !contactEmailInput) return;
+  contactEmailInput.value = posterEmailInput.value.trim();
+}
+
+posterEmailInput?.addEventListener("input", seedContactEmailFromPosterEmail);

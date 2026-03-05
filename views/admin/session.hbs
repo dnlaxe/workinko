@@ -1,0 +1,55 @@
+<a href="/admin/queue">← Back to queue</a>
+<h1>Session {{session.id}} — {{session.email}}</h1>
+
+<div class="p-2 border-b">
+  <h2><strong>Session details</strong></h2>
+  <p><strong>ID</strong> {{session.id}}</p>
+  <p><strong>Email</strong> {{session.email}}</p>
+  <p><strong>Status</strong> {{session.status}}</p>
+  <p><strong>Created at</strong> {{session.createdAt}}</p>
+  <p><strong>Updated at</strong> {{session.updatedAt}}</p>
+  <p><strong>Expires at</strong> {{session.expiresAt}}</p>
+</div>
+
+{{#each jobs}}
+  <div class="p-2 border-b">
+    <p><strong>Job ID</strong> {{this.id}}</p>
+    <p><strong>Session ID</strong> {{this.sessionId}}</p>
+    <p><strong>Tier</strong> {{this.tier}}</p>
+    <p><strong>Heading</strong> {{this.heading}}</p>
+    <p><strong>Subheading</strong> {{this.subheading}}</p>
+    <p><strong>Category</strong> {{this.category}}</p>
+    <p><strong>Specialization</strong> {{this.specialization}}</p>
+    <p><strong>Contract type</strong> {{this.contractType}}</p>
+    <p><strong>Province</strong> {{this.province}}</p>
+    <p><strong>City</strong> {{this.city}}</p>
+    <p><strong>Korean proficiency</strong> {{this.koreanProficiency}}</p>
+    <p><strong>English proficiency</strong> {{this.englishProficiency}}</p>
+    <p><strong>Other languages</strong> {{this.otherLanguages}}</p>
+    <p><strong>Visa sponsorship</strong> {{this.visaSponsorship}}</p>
+    <p><strong>Start date</strong> {{this.startDate}}</p>
+    <p><strong>Contact method</strong> {{this.contactMethod}}</p>
+    <p><strong>Contact URL</strong> {{this.contactUrl}}</p>
+    <p><strong>Contact email</strong> {{this.contactEmail}}</p>
+    <p><strong>Description</strong> {{this.fullDescription}}</p>
+    <p><strong>Created at</strong> {{this.createdAt}}</p>
+    <p><strong>Updated at</strong> {{this.updatedAt}}</p>
+  </div>
+{{else}}
+  <p>No jobs in this session.</p>
+{{/each}}
+
+<form
+  method="POST"
+  action="/admin/queue/{{session.id}}/approve"
+  style="display:inline"
+>
+  <button type="submit">Approve</button>
+</form>
+<form
+  method="POST"
+  action="/admin/queue/{{session.id}}/reject"
+  style="display:inline"
+>
+  <button type="submit">Reject</button>
+</form>

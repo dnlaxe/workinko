@@ -1,0 +1,18 @@
+import { Router } from "express";
+import {
+  approveSession,
+  showPendingPosts,
+  showSessionPosts,
+} from "./admin.controller.js";
+
+const router = Router();
+
+router.get("/admin/queue", showPendingPosts);
+
+router.get("/admin/queue/:id", showSessionPosts);
+
+router.post("/admin/queue/:id/approve", approveSession);
+
+// router.post("/admin/queue/:id/reject", rejectSession);
+
+export default router;

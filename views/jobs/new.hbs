@@ -48,7 +48,10 @@
           <div data-error="contactMethod">{{fieldErrors.contactMethod.[0]}}</div>
         {{/if}}
 
-        <div>
+        <div
+          data-contact-field="link"
+          {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
+        >
           <label for="contactUrl">URL</label>
           <input
             id="contactUrl"
@@ -62,7 +65,10 @@
           {{/if}}
         </div>
 
-        <div>
+        <div
+          data-contact-field="relay"
+          {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
+        >
           <label for="contactEmail">Email</label>
           <input
             id="contactEmail"
