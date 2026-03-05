@@ -8,6 +8,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { Request, Response } from "express";
 import jobsRouter from "./features/jobs/jobs.routes.js";
+import { sql } from "drizzle-orm";
+import { db } from "./db/db.js";
+import cookieParser from "cookie-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +22,7 @@ if (isProduction) {
 }
 
 app.use(helmet());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(logger);
 app.use(compression());
 app.disable("x-powered-by");
@@ -44,9 +48,6 @@ app.engine(
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "../views"));
-
-import { sql } from "drizzle-orm";
-import { db } from "./db/db.js";
 
 app.get("/db-check", async (_req, res) => {
   const result = await db.execute(sql`select now() as now`);

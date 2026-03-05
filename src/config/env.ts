@@ -11,6 +11,9 @@ const envSchema = z.object({
     error: "Invalid environment",
   }),
   DATABASE_URL: z.string().min(1, { error: "DATABASE_URL is required!" }),
+  COOKIE_SECRET: z
+    .string()
+    .min(32, { error: "COOKIE_SECRET must be at least 32 characters" }),
 });
 
 const parsed = envSchema.safeParse(process.env);

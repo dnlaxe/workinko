@@ -34,3 +34,5 @@ export const logger = pinoHttp({
     res: (res: Response) => ({ statusCode: res.statusCode }),
   },
 });
+
+export const appLogger = logger.logger;

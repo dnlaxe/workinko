@@ -1,223 +1,385 @@
 {{! views/jobs/new.hbs }}
-<form action="#" method="post">
-  <fieldset>
-    <legend>How do you want to be contacted?</legend>
+<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}}>
 
-    {{#each jobFormOptions.contactMethod}}
-      <label>
+{{#if serverError}}
+  <p>{{serverError}}</p>
+{{/if}}
+
+  <div class="step p-2">
+    <div class="step__content">
+      <div class="flex flex-col gap-2">
+        <label for="email">Email</label>
+        <legend>We’ll only use this to send you a receipt</legend>
         <input
-          type="radio"
-          name="contactMethod"
-          value="{{this}}"
+          id="email"
+          name="email"
+          type="email"
+          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
           required
-          {{#if (eq ../values.contactMethod this)}}checked{{/if}}
+          value="{{values.email}}"
         />
-        {{this}}
-      </label>
-    {{/each}}
-
-    {{#if fieldErrors.contactMethod}}
-      <div>{{fieldErrors.contactMethod.[0]}}</div>
-    {{/if}}
-
-    <div>
-      <label for="contactUrl">URL</label>
-      <input
-        id="contactUrl"
-        name="contactUrl"
-        type="url"
-        value="{{values.contactUrl}}"
-      />
-      {{#if fieldErrors.contactUrl}}
-        <div>{{fieldErrors.contactUrl.[0]}}</div>
-      {{/if}}
+        {{#if fieldErrors.email}}
+          <div data-error="email">{{fieldErrors.email.[0]}}</div>
+        {{/if}}
+      </div>
     </div>
+  </div>
 
-    <div>
-      <label for="contactEmail">Email</label>
-      <input
-        id="contactEmail"
-        name="contactEmail"
-        type="email"
-        value="{{values.contactEmail}}"
-      />
-      {{#if fieldErrors.contactEmail}}
-        <div>{{fieldErrors.contactEmail.[0]}}</div>
-      {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>How do you want to be contacted?</legend>
+
+        {{#each jobFormOptions.contactMethod}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="contactMethod"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.contactMethod this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+
+        {{#if fieldErrors.contactMethod}}
+          <div data-error="contactMethod">{{fieldErrors.contactMethod.[0]}}</div>
+        {{/if}}
+
+        <div>
+          <label for="contactUrl">URL</label>
+          <input
+            id="contactUrl"
+            name="contactUrl"
+            type="url"
+            class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+            value="{{values.contactUrl}}"
+          />
+          {{#if fieldErrors.contactUrl}}
+            <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
+          {{/if}}
+        </div>
+
+        <div>
+          <label for="contactEmail">Email</label>
+          <input
+            id="contactEmail"
+            name="contactEmail"
+            type="email"
+            class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+            value="{{values.contactEmail}}"
+          />
+          {{#if fieldErrors.contactEmail}}
+            <div data-error="contactEmail">{{fieldErrors.contactEmail.[0]}}</div>
+          {{/if}}
+        </div>
+      </fieldset>
     </div>
-  </fieldset>
-
-  <div>
-    <label for="heading">Heading</label>
-    <input
-      id="heading"
-      name="heading"
-      type="text"
-      required
-      value="{{values.heading}}"
-    />
-    {{#if fieldErrors.heading}}
-      <div>{{fieldErrors.heading.[0]}}</div>
-    {{/if}}
   </div>
 
-  <div>
-    <label for="subheading">Subheading</label>
-    <input
-      id="subheading"
-      name="subheading"
-      type="text"
-      required
-      value="{{values.subheading}}"
-    />
-    {{#if fieldErrors.subheading}}
-      <div>{{fieldErrors.subheading.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <div>
+        <label for="heading">Heading</label>
+        <input
+          id="heading"
+          name="heading"
+          type="text"
+          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          required
+          value="{{values.heading}}"
+        />
+        {{#if fieldErrors.heading}}
+          <div data-error="heading">{{fieldErrors.heading.[0]}}</div>
+        {{/if}}
+      </div>
+    </div>
   </div>
 
-  <div>
-    <label for="specialization">Specialization</label>
-    <select id="specialization" name="specialization" required>
-      {{#each jobFormOptions.specialization}}
-        <option
-          value="{{this}}"
-          {{#if (eq ../values.specialization this)}}selected{{/if}}
-        >
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.specialization}}
-      <div>{{fieldErrors.specialization.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <div>
+        <label for="subheading">Subheading</label>
+        <input
+          id="subheading"
+          name="subheading"
+          type="text"
+          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          required
+          value="{{values.subheading}}"
+        />
+        {{#if fieldErrors.subheading}}
+          <div data-error="subheading">{{fieldErrors.subheading.[0]}}</div>
+        {{/if}}
+      </div>
+    </div>
   </div>
 
-  <div>
-    <label for="contractType">Contract type</label>
-    <select id="contractType" name="contractType" required>
-      {{#each jobFormOptions.contractType}}
-        <option
-          value="{{this}}"
-          {{#if (eq ../values.contractType this)}}selected{{/if}}
-        >
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.contractType}}
-      <div>{{fieldErrors.contractType.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Category</legend>
+
+        {{#each jobFormOptions.category}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="category"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.category this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="location">Location</label>
-    <select id="location" name="location" required>
-      {{#each jobFormOptions.location}}
-        <option
-          value="{{this}}"
-          {{#if (eq ../values.location this)}}selected{{/if}}
-        >
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.location}}
-      <div>{{fieldErrors.location.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Specialization</legend>
+
+        {{#each jobFormOptions.specialization}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="specialization"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.specialization this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="koreanProficiency">Korean proficiency</label>
-    <select id="koreanProficiency" name="koreanProficiency" required>
-      {{#each jobFormOptions.koreanProficiency}}
-        <option
-          value="{{value}}"
-          {{#if (eq (toString ../values.koreanProficiency) (toString value))}}selected{{/if}}
-        >
-          {{label}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.koreanProficiency}}
-      <div>{{fieldErrors.koreanProficiency.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Contract type</legend>
+
+        {{#each jobFormOptions.contractType}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="contractType"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.contractType this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="englishProficiency">English proficiency</label>
-    <select id="englishProficiency" name="englishProficiency" required>
-      {{#each jobFormOptions.englishProficiency}}
-        <option
-          value="{{value}}"
-          {{#if (eq (toString ../values.englishProficiency) (toString value))}}selected{{/if}}
-        >
-          {{label}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.englishProficiency}}
-      <div>{{fieldErrors.englishProficiency.[0]}}</div>
-    {{/if}}
+  {{!-- Location split into Province then City (both radio groups) --}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Province</legend>
+
+        {{#each jobFormOptions.province}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="province"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.province this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="otherLanguages">Other languages</label>
-    <input
-      id="otherLanguages"
-      name="otherLanguages"
-      type="text"
-      value="{{values.otherLanguages}}"
-    />
-    {{#if fieldErrors.otherLanguages}}
-      <div>{{fieldErrors.otherLanguages.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>City</legend>
+
+        {{#each jobFormOptions.city}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="city"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.city this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="visaSponsorship">Visa sponsorship</label>
-    <select id="visaSponsorship" name="visaSponsorship" required>
-      {{#each jobFormOptions.visaSponsorship}}
-        <option
-          value="{{this}}"
-          {{#if (eq ../values.visaSponsorship this)}}selected{{/if}}
-        >
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.visaSponsorship}}
-      <div>{{fieldErrors.visaSponsorship.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Korean proficiency</legend>
+
+        {{#each jobFormOptions.koreanProficiency}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="koreanProficiency"
+              value="{{value}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
+            />
+            {{label}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="startDate">Start date</label>
-    <select id="startDate" name="startDate" required>
-      {{#each jobFormOptions.startDate}}
-        <option
-          value="{{this}}"
-          {{#if (eq ../values.startDate this)}}selected{{/if}}
-        >
-          {{this}}
-        </option>
-      {{/each}}
-    </select>
-    {{#if fieldErrors.startDate}}
-      <div>{{fieldErrors.startDate.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>English proficiency</legend>
+
+        {{#each jobFormOptions.englishProficiency}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="englishProficiency"
+              value="{{value}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
+            />
+            {{label}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
   </div>
 
-  <div>
-    <label for="fullDescription">Full description</label>
-    <textarea
-      id="fullDescription"
-      name="fullDescription"
-      required
-    >{{values.fullDescription}}</textarea>
-    {{#if fieldErrors.fullDescription}}
-      <div>{{fieldErrors.fullDescription.[0]}}</div>
-    {{/if}}
+  <div class="step">
+    <div class="step__content">
+      <div>
+        <label for="otherLanguages">Other languages</label>
+        <input
+          id="otherLanguages"
+          name="otherLanguages"
+          type="text"
+          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          value="{{values.otherLanguages}}"
+        />
+        {{#if fieldErrors.otherLanguages}}
+          <div data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
+        {{/if}}
+      </div>
+    </div>
   </div>
 
-  <button type="submit">Submit</button>
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Visa sponsorship</legend>
+
+        {{#each jobFormOptions.visaSponsorship}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="visaSponsorship"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step__content">
+      <fieldset>
+        <legend>Start date</legend>
+
+        {{#each jobFormOptions.startDate}}
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+            <input
+              type="radio"
+              name="startDate"
+              value="{{this}}"
+              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
+              required
+              {{#if (eq ../values.startDate this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step__content">
+      <div>
+        <label for="fullDescription">Full description</label>
+        <textarea
+          id="fullDescription"
+          name="fullDescription"
+          required
+        >{{values.fullDescription}}</textarea>
+        {{#if fieldErrors.fullDescription}}
+          <div data-error="fullDescription">{{fieldErrors.fullDescription.[0]}}</div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <nav class="step__nav p-2">
+    <button type="button" class="btn-back justify-between px-5 py-3 bg-transparent text-[#0a0a0a] font-semibold text-base tracking-wide border-2 border-[#e0e0e0] hover:border-[#0a0a0a] transition-all duration-75 hover:cursor-pointer">Back</button>
+    <button type="button" class="btn-next px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
+    <button type="button" class="btn-last-next px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
+    <button type="button" class="btn-back-to-review px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer" hidden>Back to review</button>
+  </nav>
+
+
+  <div class="review" hidden>
+    <button type="button" class="btn-add-another px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Add another job</button>
+    <button type="submit" class="btn-confirm px-5 py-3 bg-[#00703c] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#005a30] hover:bg-[#005a30] hover:shadow-[inset_0_-3px_0_#003d20] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Confirm</button>
+  </div>
+
 </form>
+
+{{#if drafts}}
+<div class="bg-gray-100 p-2">
+  <h2>Drafts</h2>
+  {{#each drafts}}
+    <div class="p-2">
+      <span>{{this.id}}</span>
+      <span>{{this.heading}}</span>
+    </div>
+  {{/each}}
+  <a href="/jobs/drafts" class="px-5 py-3 bg-transparent text-[#0f62fe] font-semibold text-base tracking-wide border-2 border-[#0f62fe] hover:bg-[#0f62fe] hover:text-white transition-all duration-75 hover:cursor-pointer">Your Drafts</a>
+</div>
+{{else if draftsError}}
+<div>
+  <p>Could not load drafts.</p>
+</div>
+{{/if}}
+
+<script src="/steps.js" defer></script>

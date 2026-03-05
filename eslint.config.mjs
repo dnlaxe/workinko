@@ -16,10 +16,11 @@ export default defineConfig(
   tseslint.configs.stylistic,
 
   {
-    files: ["**/*.{ts,js}"],
+    files: ["**/*.{ts,js}", "public/**/*.js"],
     languageOptions: {
       globals: {
         ...globals.node,
+        ...globals.browser,
       },
     },
   },

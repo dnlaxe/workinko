@@ -1,6 +1,6 @@
 {
-  "id": "eea0e998-049d-4a9b-b22d-147b015bbe18",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "9ccd5a37-13cb-4e05-8fc5-846294a6bea9",
+  "prevId": "eea0e998-049d-4a9b-b22d-147b015bbe18",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -639,13 +639,6 @@
           "nullsNotDistinct": false,
           "columns": [
             "token"
-          ]
-        },
-        "pending_session_email_unique": {
-          "name": "pending_session_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
           ]
         }
       },

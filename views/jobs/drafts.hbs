@@ -1,0 +1,23 @@
+<h1 class="p-2">DRAFTS</h1>
+{{#if draftsError}}
+  <p>Could not load drafts.</p>
+{{else}}
+  {{#each drafts}}
+    <div class="p-2">
+      <span>{{this.id}}</span>
+      <span>{{this.heading}}</span>
+      <form method="POST" action="/jobs/drafts/{{this.id}}/delete">
+        <button
+          type="submit"
+          class="border-2 border-red-500 p-2 hover:cursor-pointer"
+        >Delete</button>
+        <a
+          href="/jobs/new"
+          class="border-2 border-gray-500 p-2 hover:cursor-pointer"
+        >Add another job</a>
+      </form>
+    </div>
+  {{else}}
+    <p class="p-2">No drafts yet.</p>
+  {{/each}}
+{{/if}}
