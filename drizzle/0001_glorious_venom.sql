@@ -1,1 +1,0 @@
-ALTER TABLE "pending_session" DROP CONSTRAINT "pending_session_email_unique";

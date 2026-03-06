@@ -1,9 +1,9 @@
+import { setSessionEmail } from "../../repo/session.repo.js";
 import {
-  createDraftWithData,
-  deleteDraftById,
-  getDraftsBySessionId,
-  setSessionEmail,
-} from "../../repo/jobs.repo.js";
+  insertPendingPost,
+  deletePendingPostBySessionId,
+  getPendingPostsBySessionId,
+} from "../../repo/pending-post.repo.js";
 import { JobFormInput } from "./jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
 import { Result } from "../../shared/error.js";
@@ -29,7 +29,7 @@ export async function storeDraftPost(
 
   let draft;
   try {
-    [draft] = await createDraftWithData(data);
+    [draft] = await insertPendingPost(data);
   } catch (err) {
     appLogger.error(
       { err, sessionId: data.sessionId },
@@ -49,7 +49,7 @@ export async function getSessionDrafts(
   sessionId: number,
 ): Promise<Result<JobRow[]>> {
   try {
-    const drafts = await getDraftsBySessionId(sessionId);
+    const drafts = await getPendingPostsBySessionId(sessionId);
     return { success: true, data: drafts };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
@@ -61,7 +61,7 @@ export async function removeDraft(
   sessionId: number,
 ): Promise<Result<void>> {
   try {
-    await deleteDraftById(id, sessionId);
+    await deletePendingPostBySessionId(id, sessionId);
     return { success: true, data: undefined };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };

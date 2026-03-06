@@ -1,9 +1,99 @@
 {
-  "id": "eea0e998-049d-4a9b-b22d-147b015bbe18",
+  "id": "f8449dd5-6df9-454b-b7cf-0fd1ff0124c0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.pending_session": {
+      "name": "pending_session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "pending_session_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "pending_session_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending_review'"
+        },
+        "approved_at": {
+          "name": "approved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rejected_at": {
+          "name": "rejected_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "pending_session_token_unique": {
+          "name": "pending_session_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.live_posts": {
       "name": "live_posts",
       "schema": "",
@@ -24,6 +114,18 @@
             "cache": "1",
             "cycle": false
           }
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source_pending_job_id": {
+          "name": "source_pending_job_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "email": {
           "name": "email",
@@ -50,13 +152,13 @@
           "name": "contact_url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "contact_email": {
           "name": "contact_email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "title": {
           "name": "title",
@@ -150,8 +252,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "stripe_payment_id": {
-          "name": "stripe_payment_id",
+        "payment_id": {
+          "name": "payment_id",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -185,12 +287,38 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "live_posts_stripe_payment_id_payments_payment_id_fk": {
-          "name": "live_posts_stripe_payment_id_payments_payment_id_fk",
+        "live_posts_session_id_pending_session_id_fk": {
+          "name": "live_posts_session_id_pending_session_id_fk",
+          "tableFrom": "live_posts",
+          "tableTo": "pending_session",
+          "columnsFrom": [
+            "session_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "live_posts_source_pending_job_id_pending_post_id_fk": {
+          "name": "live_posts_source_pending_job_id_pending_post_id_fk",
+          "tableFrom": "live_posts",
+          "tableTo": "pending_post",
+          "columnsFrom": [
+            "source_pending_job_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "live_posts_payment_id_payments_payment_id_fk": {
+          "name": "live_posts_payment_id_payments_payment_id_fk",
           "tableFrom": "live_posts",
           "tableTo": "payments",
           "columnsFrom": [
-            "stripe_payment_id"
+            "payment_id"
           ],
           "columnsTo": [
             "payment_id"
@@ -200,15 +328,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "live_posts_slug_unique": {
-          "name": "live_posts_slug_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -246,6 +366,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "session_id": {
+          "name": "session_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
         "payment_id": {
           "name": "payment_id",
           "type": "text",
@@ -258,6 +384,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "used_at": {
+          "name": "used_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -268,6 +400,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "magic_tokens_session_id_pending_session_id_fk": {
+          "name": "magic_tokens_session_id_pending_session_id_fk",
+          "tableFrom": "magic_tokens",
+          "tableTo": "pending_session",
+          "columnsFrom": [
+            "session_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "magic_tokens_payment_id_payments_payment_id_fk": {
           "name": "magic_tokens_payment_id_payments_payment_id_fk",
           "tableFrom": "magic_tokens",
@@ -284,13 +429,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "magic_tokens_email_unique": {
-          "name": "magic_tokens_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        },
         "magic_tokens_token_unique": {
           "name": "magic_tokens_token_unique",
           "nullsNotDistinct": false,
@@ -407,8 +545,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.pending_jobs": {
-      "name": "pending_jobs",
+    "public.pending_post": {
+      "name": "pending_post",
       "schema": "",
       "columns": {
         "id": {
@@ -418,7 +556,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "pending_jobs_id_seq",
+            "name": "pending_post_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -445,13 +583,13 @@
           "name": "contact_url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "contact_email": {
           "name": "contact_email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "title": {
           "name": "title",
@@ -556,9 +694,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "pending_jobs_session_id_pending_session_id_fk": {
-          "name": "pending_jobs_session_id_pending_session_id_fk",
-          "tableFrom": "pending_jobs",
+        "pending_post_session_id_pending_session_id_fk": {
+          "name": "pending_post_session_id_pending_session_id_fk",
+          "tableFrom": "pending_post",
           "tableTo": "pending_session",
           "columnsFrom": [
             "session_id"
@@ -572,83 +710,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.pending_session": {
-      "name": "pending_session",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "pending_session_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "token": {
-          "name": "token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "pending_session_token_unique": {
-          "name": "pending_session_token_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
-        },
-        "pending_session_email_unique": {
-          "name": "pending_session_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -751,6 +812,15 @@
       "values": [
         "link",
         "relay"
+      ]
+    },
+    "public.pending_session_status": {
+      "name": "pending_session_status",
+      "schema": "public",
+      "values": [
+        "pending_review",
+        "approved",
+        "rejected"
       ]
     },
     "public.live_post_status": {

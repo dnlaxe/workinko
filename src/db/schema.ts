@@ -158,7 +158,7 @@ export const magicToken = pgTable("magic_tokens", {
   sessionId: integer("session_id")
     .notNull()
     .references(() => currentSession.id),
-  paymentId: text("payment_id").references(() => payment.id),
+  paymentId: text("payment_id").references(() => payment.paymentId),
 
   expiresAt: timestamp("expires_at", {
     withTimezone: true,

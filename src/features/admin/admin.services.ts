@@ -1,10 +1,10 @@
 import {
-  getJobsBySessionId,
-  getPendingSessionById,
   getPendingSessions,
-  approvePendingSession,
-  insertLivePost,
-} from "../../repo/admin.repo.js";
+  getSessionBySessionId,
+  approveSession,
+} from "../../repo/session.repo.js";
+import { getPendingPostsBySessionId } from "../../repo/pending-post.repo.js";
+import { insertLivePost } from "../../repo/live-post.repo.js";
 import { Result } from "../../shared/error.js";
 import { JobRow, SessionRow } from "../../types/types.js";
 
@@ -23,12 +23,12 @@ export async function fetchSessionPosts(
   sessionId: number,
 ): Promise<Result<{ session: SessionRow; jobs: JobRow[] }>> {
   try {
-    const session = await getPendingSessionById(sessionId);
+    const session = await getSessionBySessionId(sessionId);
     if (!session) {
       return { success: false, error: { reason: "SESSION_NOT_FOUND" } };
     }
 
-    const jobs = await getJobsBySessionId(sessionId);
+    const jobs = await getPendingPostsBySessionId(sessionId);
     return { success: true, data: { session, jobs } };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
@@ -42,7 +42,7 @@ export async function approveSessionByAdmin(
 
   let email;
   try {
-    const session = await getPendingSessionById(sessionId);
+    const session = await getSessionBySessionId(sessionId);
     if (!session) {
       return { success: false, error: { reason: "SESSION_NOT_FOUND" } };
     }
@@ -53,7 +53,7 @@ export async function approveSessionByAdmin(
 
     email = session.email;
 
-    await approvePendingSession(sessionId);
+    await approveSession(sessionId);
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }
@@ -62,7 +62,7 @@ export async function approveSessionByAdmin(
   const tier = "standard";
 
   try {
-    const jobs = await getJobsBySessionId(sessionId);
+    const jobs = await getPendingPostsBySessionId(sessionId);
 
     if (jobs.length === 0) {
       return { success: false, error: { reason: "JOBS_NOT_FOUND" } };

@@ -1,12 +1,6 @@
 import { and, eq, gt } from "drizzle-orm";
 import { db } from "../db/db.js";
-import { currentSession, pendingPost } from "../db/schema.js";
-
-export async function createDraftWithData(
-  data: typeof pendingPost.$inferInsert,
-) {
-  return db.insert(pendingPost).values(data).returning();
-}
+import { currentSession } from "../db/schema.js";
 
 export async function createSession(expiresAt: Date) {
   const [session] = await db
@@ -38,22 +32,36 @@ export async function refreshSession(id: number, expiresAt: Date) {
 }
 
 export async function setSessionEmail(id: number, email: string) {
-  const session = await db
+  return db
     .update(currentSession)
     .set({ email })
     .where(eq(currentSession.id, id));
-  return session;
 }
 
-export async function getDraftsBySessionId(sessionId: number) {
+export async function getSessionBySessionId(id: number) {
+  const [session] = await db
+    .select()
+    .from(currentSession)
+    .where(eq(currentSession.id, id));
+  return session ?? null;
+}
+
+export async function getPendingSessions() {
   return db
     .select()
-    .from(pendingPost)
-    .where(eq(pendingPost.sessionId, sessionId));
+    .from(currentSession)
+    .where(eq(currentSession.status, "pending_review"));
 }
 
-export async function deleteDraftById(id: number, sessionId: number) {
+export async function approveSession(sessionId: number) {
+  const now = new Date();
   return db
-    .delete(pendingPost)
-    .where(and(eq(pendingPost.id, id), eq(pendingPost.sessionId, sessionId)));
+    .update(currentSession)
+    .set({
+      status: "approved",
+      approvedAt: now,
+      rejectedAt: null,
+      expiresAt: now,
+    })
+    .where(eq(currentSession.id, sessionId));
 }
