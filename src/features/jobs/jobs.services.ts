@@ -3,18 +3,15 @@ import {
   deleteDraftById,
   getDraftsBySessionId,
   setSessionEmail,
-} from "./jobs.repo.js";
+} from "../../repo/jobs.repo.js";
 import { JobFormInput } from "./jobs.schema.js";
-import {
-  GetDraftsResult,
-  RemoveDraftResult,
-  StoreDraftResult,
-} from "./jobs.types.js";
 import { appLogger } from "../../middleware/logger.js";
+import { Result } from "../../shared/error.js";
+import { JobRow } from "../../types/types.js";
 
 export async function storeDraftPost(
   data: JobFormInput & { sessionId: number },
-): Promise<StoreDraftResult> {
+): Promise<Result<JobRow>> {
   let session;
   try {
     session = await setSessionEmail(data.sessionId, data.email);
@@ -45,15 +42,15 @@ export async function storeDraftPost(
     { draftId: draft.id, sessionId: data.sessionId },
     "Draft stored",
   );
-  return { success: true, draft };
+  return { success: true, data: draft };
 }
 
 export async function getSessionDrafts(
   sessionId: number,
-): Promise<GetDraftsResult> {
+): Promise<Result<JobRow[]>> {
   try {
     const drafts = await getDraftsBySessionId(sessionId);
-    return { success: true, drafts };
+    return { success: true, data: drafts };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }
@@ -62,10 +59,10 @@ export async function getSessionDrafts(
 export async function removeDraft(
   id: number,
   sessionId: number,
-): Promise<RemoveDraftResult> {
+): Promise<Result<void>> {
   try {
     await deleteDraftById(id, sessionId);
-    return { success: true };
+    return { success: true, data: undefined };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }

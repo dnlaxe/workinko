@@ -14,7 +14,7 @@ const router = Router();
 
 router.get("/jobs/new", resolveSession, async (req: Request, res: Response) => {
   const result = await getSessionDrafts(req.sessionId);
-  const drafts = result.success && result.drafts.length ? result.drafts : null;
+  const drafts = result.success && result.data.length ? result.data : null;
   const draftsError = !result.success;
   res.render("jobs/new", { jobFormOptions, drafts, draftsError });
 });

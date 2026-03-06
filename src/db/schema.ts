@@ -1,6 +1,6 @@
 import { pgTable, text, integer, timestamp, pgEnum } from "drizzle-orm/pg-core";
 
-export const pendingSessionStatus = pgEnum("pending_session_status", [
+export const currentSessionStatus = pgEnum("pending_session_status", [
   "pending_review",
   "approved",
   "rejected",
@@ -52,11 +52,11 @@ const jobMetadata = {
   fullDescription: text("full_description").notNull(),
 };
 
-export const pendingSession = pgTable("pending_session", {
+export const currentSession = pgTable("pending_session", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   token: text("token").notNull().unique(),
   email: text("email"),
-  status: pendingSessionStatus("status").notNull().default("pending_review"),
+  status: currentSessionStatus("status").notNull().default("pending_review"),
 
   approvedAt: timestamp("approved_at", { withTimezone: true, mode: "date" }),
   rejectedAt: timestamp("rejected_at", { withTimezone: true, mode: "date" }),
@@ -70,11 +70,11 @@ export const pendingSession = pgTable("pending_session", {
   expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }),
 });
 
-export const pendingJobs = pgTable("pending_jobs", {
+export const pendingPost = pgTable("pending_post", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   sessionId: integer("session_id")
     .notNull()
-    .references(() => pendingSession.id, { onDelete: "cascade" }),
+    .references(() => currentSession.id, { onDelete: "cascade" }),
 
   ...jobMetadata,
 
@@ -92,11 +92,11 @@ export const pendingJobs = pgTable("pending_jobs", {
   // updates only through drizzle commands (add triggers later?)
 });
 
-export const livePosts = pgTable("live_posts", {
+export const livePost = pgTable("live_posts", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  sessionId: integer("session_id").references(() => pendingSession.id),
+  sessionId: integer("session_id").references(() => currentSession.id),
   sourcePendingJobId: integer("source_pending_job_id").references(
-    () => pendingJobs.id,
+    () => pendingPost.id,
   ),
   email: text("email").notNull(),
   status: livePostStatus("status").notNull().default("active"),
@@ -107,7 +107,7 @@ export const livePosts = pgTable("live_posts", {
 
   slug: text("slug").notNull(),
 
-  paymentId: text("payment_id").references(() => payments.paymentId),
+  paymentId: text("payment_id").references(() => payment.paymentId),
 
   publishedAt: timestamp("published_at", { withTimezone: true, mode: "date" })
     .notNull()
@@ -128,12 +128,12 @@ export const livePosts = pgTable("live_posts", {
   }),
 });
 
-export const relayMessages = pgTable("relay_messages", {
+export const relayMessage = pgTable("relay_messages", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
 
   jobId: integer("job_id")
     .notNull()
-    .references(() => livePosts.id),
+    .references(() => livePost.id),
 
   fromEmail: text("from_email"),
   toEmail: text("to_email"),
@@ -151,14 +151,14 @@ export const relayMessages = pgTable("relay_messages", {
     .$onUpdate(() => new Date()),
 });
 
-export const magicTokens = pgTable("magic_tokens", {
+export const magicToken = pgTable("magic_tokens", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   email: text("email").notNull(),
   token: text("token").notNull().unique(),
   sessionId: integer("session_id")
     .notNull()
-    .references(() => pendingSession.id),
-  paymentId: text("payment_id").references(() => payments.paymentId),
+    .references(() => currentSession.id),
+  paymentId: text("payment_id").references(() => payment.id),
 
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
@@ -170,9 +170,9 @@ export const magicTokens = pgTable("magic_tokens", {
     .defaultNow(),
 });
 
-export const payments = pgTable("payments", {
+export const payment = pgTable("payments", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  sessionId: integer("session_id").references(() => pendingSession.id),
+  sessionId: integer("session_id").references(() => currentSession.id),
   email: text("email").notNull(),
   status: paymentStatus("status").notNull().default("holding"),
   paymentId: text("payment_id").notNull().unique(),

@@ -49,6 +49,19 @@
 
 - Error handling: Services catch DB throws and return `{ success: false, error: { reason: "..." } }` instead of re-throwing. Controllers consume the result and switch on the reason (`if` if there's only one error to check), with a never exhaustive check to catch unhandled cases at compile time.
 
-## 2026-03-04
+## 2026-03-05
 
 - I had intended to build magic links today, but creating the admin section seems more useful as magic links relies on admin approval.
+
+- Admin: approval, session approved and jobs added to live posts
+
+## 2026-03-06
+
+- Error handling in services was way too verbose and fragmented. So I simplified it. Used a reusable union: `export type Result<T> =
+| { success: true; data: T }
+| { success: false; error: appError };`
+  On error, error is logged and user is shown generic Server Error.
+
+Rule for logging:
+Has req? → req.log
+No req? → appLogger

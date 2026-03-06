@@ -48,36 +48,19 @@ export async function storePendingJob(req: Request, res: Response) {
     fullDescription,
   });
 
-  if (result.success) return res.redirect("/jobs/drafts");
-
-  switch (result.error.reason) {
-    case "NO_SESSION":
-      req.log.error(
-        { sessionId: req.sessionId },
-        "Session not found during draft creation",
-      );
-      return res.status(500).render("jobs/new", {
-        jobFormOptions,
-        values: req.body,
-        serverError: "Something went wrong. Please try again.",
-      });
-
-    case "DB_ERROR":
-      req.log.error(
-        { sessionId: req.sessionId },
-        "DB error during draft creation",
-      );
-      return res.status(500).render("jobs/new", {
-        jobFormOptions,
-        values: req.body,
-        serverError: "Something went wrong. Please try again.",
-      });
-
-    default: {
-      const _exhaustive: never = result.error;
-      return _exhaustive;
-    }
+  if (!result.success) {
+    req.log.error(
+      { sessionId: req.sessionId, reason: result.error.reason },
+      "Failed to store draft",
+    );
+    return res.status(500).render("jobs/new", {
+      jobFormOptions,
+      values: req.body,
+      serverError: "Something went wrong. Please try again.",
+    });
   }
+
+  return res.redirect("/jobs/drafts");
 }
 
 export async function showSessionDrafts(req: Request, res: Response) {
@@ -89,7 +72,7 @@ export async function showSessionDrafts(req: Request, res: Response) {
     return;
   }
 
-  const drafts = result.drafts.length ? result.drafts : null;
+  const drafts = result.data.length ? result.data : null;
   res.render("jobs/drafts", { drafts });
 }
 

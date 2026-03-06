@@ -4,7 +4,7 @@ import {
   createSession,
   findSessionByToken,
   refreshSession,
-} from "../features/jobs/jobs.repo.js";
+} from "../repo/jobs.repo.js";
 
 export async function resolveSession(
   req: Request,

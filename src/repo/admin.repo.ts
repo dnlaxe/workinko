@@ -1,27 +1,27 @@
 import { eq } from "drizzle-orm";
-import { db } from "../../db/db.js";
-import { livePosts, pendingJobs, pendingSession } from "../../db/schema.js";
-import { PendingJobRow } from "./admin.types.js";
+import { db } from "../db/db.js";
+import { currentSession, livePost, pendingPost } from "../db/schema.js";
+import { JobRow } from "../types/types.js";
 
 export async function getPendingSessions() {
   return db
     .select()
-    .from(pendingSession)
-    .where(eq(pendingSession.status, "pending_review"));
+    .from(currentSession)
+    .where(eq(currentSession.status, "pending_review"));
 }
 
 export async function getJobsBySessionId(sessionId: number) {
   return db
     .select()
-    .from(pendingJobs)
-    .where(eq(pendingJobs.sessionId, sessionId));
+    .from(pendingPost)
+    .where(eq(pendingPost.sessionId, sessionId));
 }
 
 export async function getPendingSessionById(id: number) {
   const [session] = await db
     .select()
-    .from(pendingSession)
-    .where(eq(pendingSession.id, id));
+    .from(currentSession)
+    .where(eq(currentSession.id, id));
   return session ?? null;
 }
 
@@ -29,19 +29,20 @@ export async function approvePendingSession(sessionId: number) {
   const now = new Date();
 
   const updated = await db
-    .update(pendingSession)
+    .update(currentSession)
     .set({
       status: "approved",
       approvedAt: now,
       rejectedAt: null,
+      expiresAt: now,
     })
-    .where(eq(pendingSession.id, sessionId));
+    .where(eq(currentSession.id, sessionId));
 
   return updated;
 }
 
 export async function insertLivePost(
-  job: PendingJobRow,
+  job: JobRow,
   sessionId: number,
   email: string,
   livePostExpiresAt: Date,
@@ -49,7 +50,7 @@ export async function insertLivePost(
   tier: "standard" | "pinned" | "featured",
 ) {
   const now = new Date();
-  const livePost = await db.insert(livePosts).values({
+  const createdLivePost = await db.insert(livePost).values({
     sessionId,
     sourcePendingJobId: job.id,
     email,
@@ -75,5 +76,5 @@ export async function insertLivePost(
     expiresAt: livePostExpiresAt,
   });
 
-  return livePost;
+  return createdLivePost;
 }

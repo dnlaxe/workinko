@@ -1,16 +1,16 @@
 import { and, eq, gt } from "drizzle-orm";
-import { db } from "../../db/db.js";
-import { pendingJobs, pendingSession } from "../../db/schema.js";
+import { db } from "../db/db.js";
+import { currentSession, pendingPost } from "../db/schema.js";
 
 export async function createDraftWithData(
-  data: typeof pendingJobs.$inferInsert,
+  data: typeof pendingPost.$inferInsert,
 ) {
-  return db.insert(pendingJobs).values(data).returning();
+  return db.insert(pendingPost).values(data).returning();
 }
 
 export async function createSession(expiresAt: Date) {
   const [session] = await db
-    .insert(pendingSession)
+    .insert(currentSession)
     .values({ token: crypto.randomUUID(), expiresAt })
     .returning();
   return session;
@@ -19,35 +19,41 @@ export async function createSession(expiresAt: Date) {
 export async function findSessionByToken(token: string) {
   const [session] = await db
     .select()
-    .from(pendingSession)
-    .where(and(eq(pendingSession.token, token), gt(pendingSession.expiresAt, new Date())));
+    .from(currentSession)
+    .where(
+      and(
+        eq(currentSession.token, token),
+        eq(currentSession.status, "pending_review"),
+        gt(currentSession.expiresAt, new Date()),
+      ),
+    );
   return session;
 }
 
 export async function refreshSession(id: number, expiresAt: Date) {
   await db
-    .update(pendingSession)
+    .update(currentSession)
     .set({ expiresAt })
-    .where(eq(pendingSession.id, id));
+    .where(eq(currentSession.id, id));
 }
 
 export async function setSessionEmail(id: number, email: string) {
   const session = await db
-    .update(pendingSession)
+    .update(currentSession)
     .set({ email })
-    .where(eq(pendingSession.id, id));
+    .where(eq(currentSession.id, id));
   return session;
 }
 
 export async function getDraftsBySessionId(sessionId: number) {
   return db
-    .select({ id: pendingJobs.id, heading: pendingJobs.heading })
-    .from(pendingJobs)
-    .where(eq(pendingJobs.sessionId, sessionId));
+    .select()
+    .from(pendingPost)
+    .where(eq(pendingPost.sessionId, sessionId));
 }
 
 export async function deleteDraftById(id: number, sessionId: number) {
   return db
-    .delete(pendingJobs)
-    .where(and(eq(pendingJobs.id, id), eq(pendingJobs.sessionId, sessionId)));
+    .delete(pendingPost)
+    .where(and(eq(pendingPost.id, id), eq(pendingPost.sessionId, sessionId)));
 }

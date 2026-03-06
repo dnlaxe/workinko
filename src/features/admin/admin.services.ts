@@ -4,17 +4,16 @@ import {
   getPendingSessions,
   approvePendingSession,
   insertLivePost,
-} from "./admin.repo.js";
-import {
-  ApproveSessionResult,
-  GetPendingSessionsResult,
-  GetSessionPostsResult,
-} from "./admin.types.js";
+} from "../../repo/admin.repo.js";
+import { Result } from "../../shared/error.js";
+import { JobRow, SessionRow } from "../../types/types.js";
 
-export async function fetchPendingSessions(): Promise<GetPendingSessionsResult> {
+export async function fetchPendingSessions(): Promise<
+  Result<SessionRow[]>
+> {
   try {
     const sessions = await getPendingSessions();
-    return { success: true, sessions };
+    return { success: true, data: sessions };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }
@@ -22,7 +21,7 @@ export async function fetchPendingSessions(): Promise<GetPendingSessionsResult> 
 
 export async function fetchSessionPosts(
   sessionId: number,
-): Promise<GetSessionPostsResult> {
+): Promise<Result<{ session: SessionRow; jobs: JobRow[] }>> {
   try {
     const session = await getPendingSessionById(sessionId);
     if (!session) {
@@ -30,7 +29,7 @@ export async function fetchSessionPosts(
     }
 
     const jobs = await getJobsBySessionId(sessionId);
-    return { success: true, session, jobs };
+    return { success: true, data: { session, jobs } };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }
@@ -38,7 +37,7 @@ export async function fetchSessionPosts(
 
 export async function approveSessionByAdmin(
   sessionId: number,
-): Promise<ApproveSessionResult> {
+): Promise<Result<void>> {
   const livePostExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
   let email;
@@ -83,7 +82,7 @@ export async function approveSessionByAdmin(
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
-  return { success: true };
+  return { success: true, data: undefined };
 }
 
 // Find the pending_session by sessionId.
@@ -93,7 +92,7 @@ export async function approveSessionByAdmin(
 // status = approved
 // approved_at = now
 // rejected_at = null
-// Load all pending_jobs for that session.
+// Load all pending_post rows for that session.
 // Insert those jobs into live_posts (one row per pending job), including:
 // session_id
 // source_pending_job_id

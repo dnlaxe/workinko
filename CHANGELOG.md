@@ -38,6 +38,12 @@
 ### Added
 
 - Multi-step form with step navigation
-- Drafts section on /jobs/new showing session drafts and drafts page at /jobs/drafts
+- Drafts section on `/jobs/new` showing session drafts and drafts page at `/jobs/drafts`
 - Admin moderation flow
 - Improved job form validation + UX
+
+## [Error handling] - 2026-03-06
+
+### Changed
+
+- Refactored error handling for business logic and database queries
