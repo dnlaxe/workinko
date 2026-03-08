@@ -3,8 +3,6 @@ import { jobFormOptions } from "./jobs.constants.js";
 
 export const jobFormSchema = z
   .object({
-    email: z.email({ error: "Please enter a valid email" }).trim(),
-
     contactMethod: z.enum(jobFormOptions.contactMethod, {
       error: "Choose a contact method",
     }),
@@ -12,11 +10,6 @@ export const jobFormSchema = z
     contactUrl: z.preprocess(
       (val) => (val === "" ? undefined : val),
       z.url({ error: "Please enter a valid URL" }).trim().optional(),
-    ),
-
-    contactEmail: z.preprocess(
-      (val) => (val === "" ? undefined : val),
-      z.email({ error: "Please enter a valid email" }).trim().optional(),
     ),
 
     heading: z.string({ error: "Heading is required" }).trim().min(1),
@@ -64,15 +57,12 @@ export const jobFormSchema = z
       path: ["contactUrl"], //
     },
   )
-  .refine(
-    (data) => {
-      if (data.contactMethod === "relay" && !data.contactEmail) return false;
-      return true;
-    },
-    {
-      message: "Email is required when contact method is relay",
-      path: ["contactEmail"],
-    },
-  );
+;
 
 export type JobFormInput = z.infer<typeof jobFormSchema>;
+
+export const startSchema = z.object({
+  email: z.email({ error: "Please enter a valid email" }).trim(),
+});
+
+export type StartInput = z.infer<typeof startSchema>;

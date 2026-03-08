@@ -1,0 +1,11 @@
+<h1>Board</h1>
+
+{{#if boardError}}
+  <p>Something went wrong loading posts.</p>
+{{else if posts}}
+  {{#each posts}}
+    {{> public-job-card this}}
+  {{/each}}
+{{else}}
+  <p>No live posts yet.</p>
+{{/if}}

@@ -47,3 +47,10 @@
 ### Changed
 
 - Refactored error handling for business logic and database queries
+
+## [Magic Links] - 2026-03-08
+
+### Added
+
+- Resend for recipt emails
+- Magic token links sent in receipt emails

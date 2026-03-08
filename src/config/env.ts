@@ -14,6 +14,10 @@ const envSchema = z.object({
   COOKIE_SECRET: z
     .string()
     .min(32, { error: "COOKIE_SECRET must be at least 32 characters" }),
+  RESEND_API_KEY: z
+    .string()
+    .length(36, { error: "RESEND_API_KEY needs to be 36 characters long" }),
+  BASE_URL: z.url({ error: "BASE_URL must be a valid URL" }),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -1,0 +1,19 @@
+{{! views/jobs/start.hbs }}
+<form action="/jobs/start" method="POST">
+  <div class="flex flex-col gap-2">
+    <label for="email">Email</label>
+    <legend>We'll only use this to send you a receipt</legend>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+      required
+      value="{{values.email}}"
+    />
+    {{#if fieldErrors.email}}
+      <div data-error="email">{{fieldErrors.email.[0]}}</div>
+    {{/if}}
+  </div>
+  <button type="submit" class="px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Continue</button>
+</form>

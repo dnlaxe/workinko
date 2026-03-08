@@ -4,6 +4,8 @@ export const config = {
   port: env.PORT,
   node_env: env.NODE_ENV,
   db_url: env.DATABASE_URL,
+  resend_api: env.RESEND_API_KEY,
+  base_url: env.BASE_URL,
 };
 
 export const isDevelopment = config.node_env === "development";

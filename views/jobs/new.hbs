@@ -5,26 +5,6 @@
   <p>{{serverError}}</p>
 {{/if}}
 
-  <div class="step p-2">
-    <div class="step__content">
-      <div class="flex flex-col gap-2">
-        <label for="email">Email</label>
-        <legend>We’ll only use this to send you a receipt</legend>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
-          required
-          value="{{values.email}}"
-        />
-        {{#if fieldErrors.email}}
-          <div data-error="email">{{fieldErrors.email.[0]}}</div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-
   <div class="step">
     <div class="step__content">
       <fieldset>
@@ -69,23 +49,13 @@
           data-contact-field="relay"
           {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
         >
-          <label for="contactEmail">Email</label>
-          <input
-            id="contactEmail"
-            name="contactEmail"
-            type="email"
-            class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
-            value="{{values.contactEmail}}"
-          />
-          {{#if fieldErrors.contactEmail}}
-            <div data-error="contactEmail">{{fieldErrors.contactEmail.[0]}}</div>
-          {{/if}}
+          <p>We'll use your email: <strong>{{sessionEmail}}</strong></p>
         </div>
       </fieldset>
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <div>
         <label for="heading">Heading</label>
@@ -104,7 +74,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <div>
         <label for="subheading">Subheading</label>
@@ -123,13 +93,13 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Category</legend>
 
         {{#each jobFormOptions.category}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="m-4 flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
             <input
               type="radio"
               name="category"
@@ -145,7 +115,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Specialization</legend>
@@ -167,7 +137,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Contract type</legend>
@@ -190,7 +160,7 @@
   </div>
 
   {{!-- Location split into Province then City (both radio groups) --}}
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Province</legend>
@@ -212,7 +182,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>City</legend>
@@ -234,7 +204,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Korean proficiency</legend>
@@ -256,7 +226,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>English proficiency</legend>
@@ -278,7 +248,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <div>
         <label for="otherLanguages">Other languages</label>
@@ -296,7 +266,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Visa sponsorship</legend>
@@ -318,7 +288,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <fieldset>
         <legend>Start date</legend>
@@ -340,7 +310,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step" hidden>
     <div class="step__content">
       <div>
         <label for="fullDescription">Full description</label>
@@ -357,16 +327,16 @@
   </div>
 
   <nav class="step__nav p-2">
-    <button type="button" class="btn-back justify-between px-5 py-3 bg-transparent text-[#0a0a0a] font-semibold text-base tracking-wide border-2 border-[#e0e0e0] hover:border-[#0a0a0a] transition-all duration-75 hover:cursor-pointer">Back</button>
-    <button type="button" class="btn-next px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
-    <button type="button" class="btn-last-next px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
-    <button type="button" class="btn-back-to-review px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer" hidden>Back to review</button>
+    <button type="button" class="btn-back justify-between px-5 py-3 bg-transparent text-[#0a0a0a] text-[16px] leading-none font-semibold tracking-[0.01em] border-2 border-[#e0e0e0] hover:border-[#0a0a0a] transition-all duration-75 hover:cursor-pointer">Back</button>
+    <button type="button" class="btn-next px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
+    <button type="button" class="btn-last-next px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
+    <button type="button" class="btn-back-to-review px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer" hidden>Back to review</button>
   </nav>
 
 
   <div class="review" hidden>
-    <button type="button" class="btn-add-another px-5 py-3 bg-[#0f62fe] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Add another job</button>
-    <button type="submit" class="btn-confirm px-5 py-3 bg-[#00703c] text-white font-semibold text-base tracking-wide shadow-[inset_0_-3px_0_#005a30] hover:bg-[#005a30] hover:shadow-[inset_0_-3px_0_#003d20] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Confirm</button>
+    <button type="submit" formaction="/jobs/new/add-another" class="btn-add-another px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Add another job</button>
+    <button type="submit" class="btn-confirm px-5 py-3 bg-[#00703c] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#005a30] hover:bg-[#005a30] hover:shadow-[inset_0_-3px_0_#003d20] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Confirm</button>
   </div>
 
 </form>

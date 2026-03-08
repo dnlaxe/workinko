@@ -10,7 +10,7 @@ export async function createSession(expiresAt: Date) {
   return session;
 }
 
-export async function findSessionByToken(token: string) {
+export async function getSessionByToken(token: string) {
   const [session] = await db
     .select()
     .from(currentSession)
@@ -46,7 +46,7 @@ export async function getSessionBySessionId(id: number) {
   return session ?? null;
 }
 
-export async function getPendingSessions() {
+export async function getPendingSessionsPendingReview() {
   return db
     .select()
     .from(currentSession)
@@ -61,6 +61,19 @@ export async function approveSession(sessionId: number) {
       status: "approved",
       approvedAt: now,
       rejectedAt: null,
+      expiresAt: now,
+    })
+    .where(eq(currentSession.id, sessionId));
+}
+
+export async function rejectSession(sessionId: number) {
+  const now = new Date();
+  return db
+    .update(currentSession)
+    .set({
+      status: "rejected",
+      approvedAt: null,
+      rejectedAt: now,
       expiresAt: now,
     })
     .where(eq(currentSession.id, sessionId));

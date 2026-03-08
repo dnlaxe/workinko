@@ -1,4 +1,5 @@
-import { currentSession, pendingPost } from "../db/schema.js";
+import { currentSession, livePost, pendingPost } from "../db/schema.js";
 
 export type SessionRow = typeof currentSession.$inferSelect;
-export type JobRow = typeof pendingPost.$inferSelect;
+export type PendingPostRow = typeof pendingPost.$inferSelect;
+export type LivePostRow = typeof livePost.$inferSelect;

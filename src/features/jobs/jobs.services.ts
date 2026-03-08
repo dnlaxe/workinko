@@ -1,32 +1,18 @@
-import { setSessionEmail } from "../../repo/session.repo.js";
 import {
   insertPendingPost,
   deletePendingPostBySessionId,
   getPendingPostsBySessionId,
 } from "../../repo/pending-post.repo.js";
+import { getAllLivePosts } from "../../repo/live-post.repo.js";
 import { JobFormInput } from "./jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
 import { Result } from "../../shared/error.js";
-import { JobRow } from "../../types/types.js";
+import { PendingPostRow, SessionRow, LivePostRow } from "../../types/types.js";
+import { getSessionBySessionId } from "../../repo/session.repo.js";
 
 export async function storeDraftPost(
-  data: JobFormInput & { sessionId: number },
-): Promise<Result<JobRow>> {
-  let session;
-  try {
-    session = await setSessionEmail(data.sessionId, data.email);
-  } catch (err) {
-    appLogger.error(
-      { err, sessionId: data.sessionId },
-      "setSessionEmail failed",
-    );
-    return { success: false, error: { reason: "DB_ERROR" } };
-  }
-
-  if (session.rowCount === 0) {
-    return { success: false, error: { reason: "NO_SESSION" } };
-  }
-
+  data: JobFormInput & { sessionId: number; contactEmail?: string | null },
+): Promise<Result<PendingPostRow>> {
   let draft;
   try {
     [draft] = await insertPendingPost(data);
@@ -47,7 +33,7 @@ export async function storeDraftPost(
 
 export async function getSessionDrafts(
   sessionId: number,
-): Promise<Result<JobRow[]>> {
+): Promise<Result<PendingPostRow[]>> {
   try {
     const drafts = await getPendingPostsBySessionId(sessionId);
     return { success: true, data: drafts };
@@ -63,6 +49,29 @@ export async function removeDraft(
   try {
     await deletePendingPostBySessionId(id, sessionId);
     return { success: true, data: undefined };
+  } catch {
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+}
+
+export async function getLivePosts(): Promise<Result<LivePostRow[]>> {
+  try {
+    const posts = await getAllLivePosts();
+    return { success: true, data: posts };
+  } catch {
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+}
+
+export async function getSessionAndDrafts(
+  sessionId: number,
+): Promise<Result<{ drafts: PendingPostRow[]; session: SessionRow | null }>> {
+  const draftsResult = await getSessionDrafts(sessionId);
+  if (!draftsResult.success) return draftsResult;
+
+  try {
+    const session = await getSessionBySessionId(sessionId);
+    return { success: true, data: { drafts: draftsResult.data, session } };
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }

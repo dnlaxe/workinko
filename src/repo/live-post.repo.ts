@@ -1,9 +1,10 @@
+import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { livePost } from "../db/schema.js";
-import { JobRow } from "../types/types.js";
+import { PendingPostRow } from "../types/types.js";
 
 export async function insertLivePost(
-  job: JobRow,
+  job: PendingPostRow,
   sessionId: number,
   email: string,
   livePostExpiresAt: Date,
@@ -36,4 +37,21 @@ export async function insertLivePost(
     publishedAt: now,
     expiresAt: livePostExpiresAt,
   });
+}
+
+export async function getAllLivePosts() {
+  return db.select().from(livePost);
+}
+
+export async function getLivePostById(id: number) {
+  const [post] = await db.select().from(livePost).where(eq(livePost.id, id));
+  return post ?? null;
+}
+
+export async function getLivePostsBySessionId(sessionId: number) {
+  const posts = await db
+    .select()
+    .from(livePost)
+    .where(eq(livePost.sessionId, sessionId));
+  return posts;
 }

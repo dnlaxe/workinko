@@ -65,3 +65,16 @@
 Rule for logging:
 Has req? → req.log
 No req? → appLogger
+
+formaction
+
+## 2026-03-08
+
+- Learned about Constraint Validation API and used it in steps.js.
+
+- Manage page → users viewing their live posts via magic link token
+
+- When repo returns data to services it checks for errors.
+  → The try catch catches db errors
+  → Empty arrays are classed as valid
+  → A single record not found is checked as it means something went wrong

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { isProduction } from "../config/config.js";
 import {
   createSession,
-  findSessionByToken,
+  getSessionByToken,
   refreshSession,
 } from "../repo/session.repo.js";
 
@@ -26,7 +26,7 @@ export async function resolveSession(
     const token = req.signedCookies["sid"];
 
     if (token) {
-      const session = await findSessionByToken(token);
+      const session = await getSessionByToken(token);
       if (session) {
         req.sessionId = session.id;
         res.cookie("sid", session.token, cookieOptions);

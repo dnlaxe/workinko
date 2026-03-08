@@ -1,21 +1,20 @@
 {{> admin-navbar}}
 
-<h1 class="p-2">Pending Queue</h1>
+<h1 class="p-2">Live Posts</h1>
 
 {{#if serverError}}
   <p class="p-2">Errors are happening</p>
 {{else}}
-  {{#each sessions}}
+  {{#each posts}}
     <div class="p-2 border-b">
       <span>{{this.id}}</span>
       <span>{{this.email}}</span>
-      <span>{{this.status}}</span>
-      <span>{{this.createdAt}}</span>
+      <span>{{this.heading}}</span>
+      <span>{{this.publishedAt}}</span>
       <span>{{this.expiresAt}}</span>
-      <a href="/admin/queue/{{this.id}}">See posts</a>
+      <a href="/admin/liveposts/{{this.id}}">See details</a>
     </div>
-
   {{else}}
-    <p class="p-2">No sessions pending review.</p>
+    <p class="p-2">No live posts.</p>
   {{/each}}
 {{/if}}

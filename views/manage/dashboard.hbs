@@ -1,0 +1,11 @@
+<h1>Your Posts</h1>
+
+{{#if error}}
+  <p>Something went wrong loading your posts.</p>
+{{else if posts}}
+  {{#each posts}}
+    {{> manage-post-card}}
+  {{/each}}
+{{else}}
+  <p>No posts found.</p>
+{{/if}}

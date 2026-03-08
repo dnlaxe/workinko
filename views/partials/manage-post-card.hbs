@@ -1,0 +1,32 @@
+<div>
+  <div>
+    <span>{{status}}</span>
+    <span>Expires: {{expiresAt}}</span>
+  </div>
+  <div>
+    <span>{{startDate}}</span>
+    <span>{{province}}</span>
+    <span>{{city}}</span>
+  </div>
+  <div>
+    <span>{{contractType}}</span>
+    <span>{{category}}</span>
+    <span>{{specialization}}</span>
+  </div>
+  <div>{{heading}}</div>
+  <div>{{subheading}}</div>
+  <div>
+    <span>Korean: {{koreanProficiency}}</span>
+    <span>English: {{englishProficiency}}</span>
+    <span>Visa: {{visaSponsorship}}</span>
+  </div>
+  <div>
+    <a href="/manage/edit/{{id}}?token={{../token}}">Edit</a>
+    <form method="POST" action="/manage/extend/{{id}}?token={{../token}}">
+      <button type="submit">Extend</button>
+    </form>
+    <form method="POST" action="/manage/delete/{{id}}?token={{../token}}">
+      <button type="submit">Delete</button>
+    </form>
+  </div>
+</div>
