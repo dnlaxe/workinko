@@ -1,7 +1,8 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { livePost } from "../db/schema.js";
 import { PendingPostRow } from "../types/types.js";
+import { JobFormInput } from "../features/jobs/jobs.schema.js";
 
 export async function insertLivePost(
   job: PendingPostRow,
@@ -37,6 +38,33 @@ export async function insertLivePost(
     publishedAt: now,
     expiresAt: livePostExpiresAt,
   });
+}
+
+export async function updateLivePost(
+  id: number,
+  sessionId: number,
+  data: JobFormInput,
+) {
+  return db
+    .update(livePost)
+    .set({
+      contactMethod: data.contactMethod,
+      contactUrl: data.contactUrl,
+      heading: data.heading,
+      subheading: data.subheading,
+      category: data.category,
+      specialization: data.specialization,
+      contractType: data.contractType,
+      province: data.province,
+      city: data.city,
+      koreanProficiency: data.koreanProficiency,
+      englishProficiency: data.englishProficiency,
+      otherLanguages: data.otherLanguages,
+      visaSponsorship: data.visaSponsorship,
+      startDate: data.startDate,
+      fullDescription: data.fullDescription,
+    })
+    .where(and(eq(livePost.id, id), eq(livePost.sessionId, sessionId)));
 }
 
 export async function getAllLivePosts() {

@@ -52,5 +52,9 @@
 
 ### Added
 
-- Resend for recipt emails
+- Resend for receipt emails
 - Magic token links sent in receipt emails
+
+## [Post Management] - 2026-03-09
+
+- Edit and post flow for post management

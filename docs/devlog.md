@@ -78,3 +78,7 @@ formaction
   → The try catch catches db errors
   → Empty arrays are classed as valid
   → A single record not found is checked as it means something went wrong
+
+make copy of original and edit- too much complexity-- do next version
+
+validate in controller because token
