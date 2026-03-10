@@ -1,32 +1,54 @@
-<div class="p-2">
+<div class="p-4">
   <a href="/jobs/board" class="underline text-slate-700">Back to listings</a>
-  <div class="border border-slate-400 mt-4">
+  <div class="border border-slate-300 mt-4">
     <div class="flex flex-row">
-      <div class="w-8 border-r border-slate-400 bg-slate-100"></div>
+      <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
 
-      <div class="flex flex-col p-4">
-        <div class="underline text-xl">{{heading}}</div>
-        <div class="text-xl">{{subheading}}</div>
+      <div class="flex-1">
 
-        <div class="flex flex-row gap-2 text-slate-700">
-          <span>{{startDate}}</span>
-          <span>{{city}}, {{province}}</span>
-          <span>{{contractType}}</span>
-          <span>{{specialization}}</span>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="underline">{{heading}}</div>
+          <div>{{subheading}}</div>
+          <div>{{specialization}}</div>
         </div>
 
-        <div class="flex flex-row gap-2 text-slate-700">
-          <span>Korean: {{koreanProficiency}}</span>
-          <span>English: {{englishProficiency}}</span>
-          {{#if otherLanguages}}
-            <span>Other: {{otherLanguages}}</span>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>{{startDate}}</span>
+            <span>{{province}}, {{city}}</span>
+            <span>{{contractType}}</span>
+          </div>
+        </div>
+
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>Korean: {{koreanProficiency}}</span>
+            <span>English: {{englishProficiency}}</span>
+            {{#if otherLanguages}}
+              <span>Other: {{otherLanguages}}</span>
+            {{/if}}
+            <span>Visa: {{visaSponsorship}}</span>
+          </div>
+        </div>
+
+        <div class="flex px-4 py-2">
+          {{#if isRelay}}
+            <a
+              href="/jobs/{{slug}}/contact"
+              class="text-blue-500 underline ml-auto"
+            >Apply</a>
+          {{else}}
+            <a
+              href="{{contactUrl}}"
+              class="text-blue-500 underline ml-auto"
+            >Apply</a>
           {{/if}}
-          <span>Visa: {{visaSponsorship}}</span>
         </div>
+
       </div>
     </div>
 
-    <div class="flex flex-col gap-4 border-t border-slate-400 p-2">
+    <div class="flex flex-col gap-4 border-t border-slate-300 p-2">
       <div class="flex flex-col gap-2">
         <div class="underline">Description</div>
         <p>{{fullDescription}}</p>
@@ -36,10 +58,13 @@
         {{#if isRelay}}
           <a
             href="/jobs/{{slug}}/contact"
-            class="text-blue-500 underline"
+            class="w-full p-2 text-center text-white bg-blue-500"
           >Contact employer</a>
         {{else}}
-          <a href="{{contactUrl}}" class="text-blue-500 underline">Apply here</a>
+          <a
+            href="{{contactUrl}}"
+            class="w-full p-2 text-center text-white bg-blue-500"
+          >Apply here</a>
         {{/if}}
       </div>
     </div>

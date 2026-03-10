@@ -1,57 +1,79 @@
 {{> admin-navbar}}
 
-<a href="/admin/queue">← Back to queue</a>
-<h1>Session {{session.id}} — {{session.email}}</h1>
+<div class="flex flex-col gap-4 p-4">
+  <a href="/admin/queue" class="underline text-slate-700">← Back to queue</a>
 
-<div >
-  <h2><strong>Session details</strong></h2>
-  <p><strong>ID</strong> {{session.id}}</p>
-  <p><strong>Email</strong> {{session.email}}</p>
-  <p><strong>Status</strong> {{session.status}}</p>
-  <p><strong>Created at</strong> {{session.createdAt}}</p>
-  <p><strong>Updated at</strong> {{session.updatedAt}}</p>
-  <p><strong>Expires at</strong> {{session.expiresAt}}</p>
-</div>
-
-{{#each jobs}}
-  <div >
-    <p><strong>Job ID</strong> {{this.id}}</p>
-    <p><strong>Session ID</strong> {{this.sessionId}}</p>
-    <p><strong>Tier</strong> {{this.tier}}</p>
-    <p><strong>Heading</strong> {{this.heading}}</p>
-    <p><strong>Subheading</strong> {{this.subheading}}</p>
-    <p><strong>Category</strong> {{this.category}}</p>
-    <p><strong>Specialization</strong> {{this.specialization}}</p>
-    <p><strong>Contract type</strong> {{this.contractType}}</p>
-    <p><strong>Province</strong> {{this.province}}</p>
-    <p><strong>City</strong> {{this.city}}</p>
-    <p><strong>Korean proficiency</strong> {{this.koreanProficiency}}</p>
-    <p><strong>English proficiency</strong> {{this.englishProficiency}}</p>
-    <p><strong>Other languages</strong> {{this.otherLanguages}}</p>
-    <p><strong>Visa sponsorship</strong> {{this.visaSponsorship}}</p>
-    <p><strong>Start date</strong> {{this.startDate}}</p>
-    <p><strong>Contact method</strong> {{this.contactMethod}}</p>
-    <p><strong>Contact URL</strong> {{this.contactUrl}}</p>
-    <p><strong>Contact email</strong> {{this.contactEmail}}</p>
-    <p><strong>Description</strong> {{this.fullDescription}}</p>
-    <p><strong>Created at</strong> {{this.createdAt}}</p>
-    <p><strong>Updated at</strong> {{this.updatedAt}}</p>
+  <div class="border border-slate-300">
+    <div class="flex flex-row">
+      <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
+      <div class="flex-1">
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="underline">{{session.email}}</div>
+        </div>
+        <div class="px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>ID: {{session.id}}</span>
+            <span>Status: {{session.status}}</span>
+            <span>Created: {{session.createdAt}}</span>
+            <span>Updated: {{session.updatedAt}}</span>
+            <span>Expires: {{session.expiresAt}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-{{else}}
-  <p>No jobs in this session.</p>
-{{/each}}
 
-<form
-  method="POST"
-  action="/admin/queue/{{session.id}}/approve"
-  style="display:inline"
->
-  <button type="submit">Approve</button>
-</form>
-<form
-  method="POST"
-  action="/admin/queue/{{session.id}}/reject"
-  style="display:inline"
->
-  <button type="submit">Reject</button>
-</form>
+  {{#each jobs}}
+    <div class="border border-slate-300">
+      <div class="flex flex-row">
+        <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
+        <div class="flex-1">
+          <div class="border-b border-slate-300 px-4 py-2">
+            <div class="underline">{{this.heading}}</div>
+            <div>{{this.subheading}}</div>
+            <div>{{this.specialization}}</div>
+          </div>
+          <div class="border-b border-slate-300 px-4 py-2">
+            <div class="flex flex-col text-slate-700">
+              <span>{{this.startDate}}</span>
+              <span>{{this.province}}, {{this.city}}</span>
+              <span>{{this.contractType}}</span>
+            </div>
+          </div>
+          <div class="border-b border-slate-300 px-4 py-2">
+            <div class="flex flex-col text-slate-700">
+              <span>Korean: {{this.koreanProficiency}}</span>
+              <span>English: {{this.englishProficiency}}</span>
+              {{#if this.otherLanguages}}<span>Other: {{this.otherLanguages}}</span>{{/if}}
+              <span>Visa: {{this.visaSponsorship}}</span>
+            </div>
+          </div>
+          <div class="border-b border-slate-300 px-4 py-2">
+            <div class="flex flex-col text-slate-700">
+              <span>Contact: {{this.contactMethod}}</span>
+              {{#if this.contactUrl}}<span>URL: {{this.contactUrl}}</span>{{/if}}
+              {{#if this.contactEmail}}<span>Email: {{this.contactEmail}}</span>{{/if}}
+            </div>
+          </div>
+          <div class="px-4 py-2">
+            <div class="flex flex-col text-slate-700">
+              <span>ID: {{this.id}} · Tier: {{this.tier}}</span>
+              <span>Created: {{this.createdAt}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <p class="text-slate-500 text-sm p-4">No jobs in this session.</p>
+  {{/each}}
+
+  <div class="flex gap-4">
+    <form method="POST" action="/admin/queue/{{session.id}}/approve">
+      <button type="submit" class="rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Approve</button>
+    </form>
+    <form method="POST" action="/admin/queue/{{session.id}}/reject">
+      <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1">Reject</button>
+    </form>
+  </div>
+</div>

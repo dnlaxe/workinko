@@ -1,4 +1,4 @@
-import { and, eq, like } from "drizzle-orm";
+import { and, eq, like, lt } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { livePost } from "../db/schema.js";
 import { PendingPostRow } from "../types/types.js";
@@ -108,4 +108,13 @@ export async function unpublishLivePost(id: number, sessionId: number) {
     .update(livePost)
     .set({ status: "unpublished", unpublishedAt: new Date() })
     .where(and(eq(livePost.id, id), eq(livePost.sessionId, sessionId)));
+}
+
+export async function expireOverduePosts() {
+  await db
+    .update(livePost)
+    .set({ status: "expired" })
+    .where(
+      and(eq(livePost.status, "active"), lt(livePost.expiresAt, new Date())),
+    );
 }

@@ -1,5 +1,5 @@
 {{! views/jobs/new.hbs }}
-<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-4 border border-slate-400 m-4">
+<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8">
 
 {{#if serverError}}
   <p>{{serverError}}</p>
@@ -37,7 +37,7 @@
             name="contactUrl"
             type="url"
             value="{{values.contactUrl}}"
-            class="block w-full border border-slate-400"
+            class="block w-full border border-slate-300"
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -62,7 +62,7 @@
           id="heading"
           name="heading"
           type="text"
-          class="block w-full border border-slate-400"
+          class="block w-full border border-slate-300"
           required
           value="{{values.heading}}"
         />
@@ -70,18 +70,14 @@
           <div data-error="heading">{{fieldErrors.heading.[0]}}</div>
         {{/if}}
       </div>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <div>
         <label class="block" for="subheading">Subheading</label>
         <input
           id="subheading"
           name="subheading"
           type="text"
-          class="block w-full border border-slate-400"
+          class="block w-full border border-slate-300"
           required
           value="{{values.subheading}}"
         />
@@ -110,11 +106,7 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>Specialization</legend>
 
@@ -137,28 +129,6 @@
   <div class="step" hidden>
     <div class="step__content">
       <fieldset>
-        <legend>Contract type</legend>
-
-        {{#each jobFormOptions.contractType}}
-          <label class="block">
-            <input
-              type="radio"
-              name="contractType"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.contractType this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  {{!-- Location split into Province then City (both radio groups) --}}
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
         <legend>Province</legend>
 
         {{#each jobFormOptions.province}}
@@ -174,11 +144,7 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>City</legend>
 
@@ -216,11 +182,7 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>English proficiency</legend>
 
@@ -237,18 +199,14 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <div>
         <label class="block" for="otherLanguages">Other languages</label>
         <input
           id="otherLanguages"
           name="otherLanguages"
           type="text"
-          class="block w-full border border-slate-400"
+          class="block w-full border border-slate-300"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -282,6 +240,23 @@
   <div class="step" hidden>
     <div class="step__content">
       <fieldset>
+        <legend>Contract type</legend>
+
+        {{#each jobFormOptions.contractType}}
+          <label class="block">
+            <input
+              type="radio"
+              name="contractType"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.contractType this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
         <legend>Start date</legend>
 
         {{#each jobFormOptions.startDate}}
@@ -305,7 +280,7 @@
       <div>
         <label class="block" for="fullDescription">Full description</label>
         <textarea
-          class="block w-full h-[40%] border border-slate-400 resize-none p-2"
+          class="block w-full h-[40%] border border-slate-300 resize-none p-2"
           id="fullDescription"
           name="fullDescription"
           required
@@ -319,23 +294,23 @@
 
   <nav class="step__nav flex flex-rows mt-8">
     <button type="button" class="btn-back disabled:opacity-50 underline">Back</button>
-    <button type="button" class="btn-next disabled:opacity-50 ml-auto rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Next</button>
-    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Next</button>
-    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1" hidden>Back to review</button>
+    <button type="button" class="btn-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-green-500 text-white">Next</button>
+    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-green-500 text-white">Next</button>
+    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-slate-500 text-white" hidden>Back to review</button>
   </nav>
 
 
   <div class="review" hidden>
     <div class="flex flex-rows justify-end space-x-8 px-4">
       <button type="submit" formaction="/jobs/new/add-another" class="btn-add-another underline">Add another job</button>
-      <button type="submit" class="btn-confirm rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Confirm</button>
+      <button type="submit" class="btn-confirm px-4 py-1 rounded-full bg-green-500 text-white">Confirm</button>
     </div>
   </div>
 
 </form>
 
 {{#if drafts}}
-<div class="drafts-bar fixed bottom-0 left-0 right-0 border-t bg-slate-100 border-slate-400 p-4">
+<div class="drafts-bar fixed bottom-0 left-0 right-0 border-t bg-slate-100 border-slate-300 p-4">
   <div class="flex flex-rows justify-between">
     <div>
       {{#each drafts}}
@@ -345,7 +320,7 @@
       {{/each}}
     </div>
     <div>
-      <a href="/jobs/drafts" class="underline">See drafts</a>
+      <a href="/jobs/drafts" class="px-4 py-1 rounded-full bg-slate-500 text-white">See drafts</a>
     </div>
   </div>
 </div>
@@ -358,4 +333,4 @@
 </div>
 {{/if}}
 
-<script src="/steps.js" defer></script>
+<script src="/new.js" defer></script>

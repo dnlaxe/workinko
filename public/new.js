@@ -26,6 +26,7 @@ function validate(step) {
   return !step.querySelector(":invalid");
 }
 
+// reveal url or relay
 function syncContactFields() {
   const selected = document.querySelector(
     'input[name="contactMethod"]:checked',
@@ -49,6 +50,85 @@ function syncContactFields() {
   });
 }
 
+// review builder
+const fieldGroups = [
+  ["contactMethod", "contactUrl"],
+  ["heading", "subheading"],
+  ["category", "specialization"],
+  ["province", "city"],
+  ["contractType", "startDate"],
+  ["koreanProficiency", "englishProficiency", "otherLanguages"],
+  ["visaSponsorship"],
+  ["fullDescription"],
+];
+
+function buildReviewItem(entries, stepIndex) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "border-b border-x border-slate-300 p-4 first:border-t";
+
+  const header = document.createElement("div");
+  header.className = "flex justify-between";
+
+  const fields = document.createElement("div");
+  for (const [name, value] of entries) {
+    const dt = document.createElement("dt");
+    dt.textContent = name;
+    dt.className = "underline";
+
+    const dd = document.createElement("dd");
+    dd.textContent = value;
+
+    fields.append(dt, dd);
+  }
+
+  const change = document.createElement("button");
+  change.type = "button";
+  change.textContent = "change";
+  change.className = "text-blue-500 underline";
+  change.addEventListener("click", () => goToStep(stepIndex));
+
+  header.append(fields, change);
+  wrapper.append(header);
+
+  for (const [name] of entries) {
+    const errorEl = steps[stepIndex]?.querySelector(`[data-error="${name}"]`);
+    if (errorEl) {
+      const err = document.createElement("p");
+      err.textContent = errorEl.textContent;
+      wrapper.append(err);
+    }
+  }
+
+  return wrapper;
+}
+
+function buildReview() {
+  const data = new FormData(document.querySelector("form"));
+  const dataMap = Object.fromEntries(data.entries());
+
+  const heading = document.createElement("p");
+  heading.textContent = "Please check your information";
+  heading.className = "review-heading mb-2";
+
+  const dl = document.createElement("dl");
+  dl.className = "flex flex-col";
+
+  for (const group of fieldGroups) {
+    const entries = group
+      .filter((name) => name in dataMap)
+      .map((name) => [name, dataMap[name]]);
+
+    if (entries.length === 0) continue;
+
+    const stepIndex = nameToStep[entries[0][0]];
+    dl.append(buildReviewItem(entries, stepIndex));
+  }
+
+  review.prepend(dl);
+  review.prepend(heading);
+}
+
+// navigation
 function updateNav() {
   if (editingFromReview) {
     btnBack.hidden = true;
@@ -76,54 +156,12 @@ function show(index) {
 function goToStep(stepIndex) {
   editingFromReview = true;
   review.querySelector("dl")?.remove();
+  review.querySelector(".review-heading")?.remove();
   review.hidden = true;
   nav.hidden = false;
   if (draftsBar) draftsBar.hidden = false;
   current = stepIndex;
   show(current);
-}
-
-function buildReviewItem(name, value, stepIndex) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "border border-slate-400 p-4";
-
-  const dt = document.createElement("dt");
-  dt.textContent = name;
-  dt.className = "underline";
-
-  const valueRow = document.createElement("div");
-  valueRow.className = "flex justify-between";
-
-  const dd = document.createElement("dd");
-  dd.textContent = value;
-
-  const change = document.createElement("button");
-  change.type = "button";
-  change.textContent = "change";
-  change.className = "text-blue-500 underline";
-  change.addEventListener("click", () => goToStep(stepIndex));
-
-  valueRow.append(dd, change);
-  wrapper.append(dt, valueRow);
-
-  const errorEl = steps[stepIndex].querySelector(`[data-error="${name}"]`);
-  if (errorEl) {
-    const err = document.createElement("p");
-    err.textContent = errorEl.textContent;
-    wrapper.append(err);
-  }
-
-  return wrapper;
-}
-
-function buildReview() {
-  const data = new FormData(document.querySelector("form"));
-  const dl = document.createElement("dl");
-  dl.className = "flex flex-col gap-2 p-4";
-  for (const [name, value] of data.entries()) {
-    dl.append(buildReviewItem(name, value, nameToStep[name]));
-  }
-  review.prepend(dl);
 }
 
 btnBack.addEventListener("click", () => {

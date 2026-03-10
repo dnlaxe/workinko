@@ -92,3 +92,7 @@ No req? → appLogger
 - Whether token never existed or has expired, return a generic error page with no reason.
 
 - Added more logs
+
+## 2026-03-10
+
+- Expired expired posts when board is called.

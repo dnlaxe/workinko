@@ -1,30 +1,52 @@
 {{> admin-navbar}}
 
-<a href="/admin/liveposts">← Back to live posts</a>
-<h1>Live Post {{post.id}} — {{post.heading}}</h1>
-
-<div>
-  <p><strong>ID</strong> {{post.id}}</p>
-  <p><strong>Email</strong> {{post.email}}</p>
-  <p><strong>Session ID</strong> {{post.sessionId}}</p>
-  <p><strong>Heading</strong> {{post.heading}}</p>
-  <p><strong>Subheading</strong> {{post.subheading}}</p>
-  <p><strong>Category</strong> {{post.category}}</p>
-  <p><strong>Specialization</strong> {{post.specialization}}</p>
-  <p><strong>Contract type</strong> {{post.contractType}}</p>
-  <p><strong>Province</strong> {{post.province}}</p>
-  <p><strong>City</strong> {{post.city}}</p>
-  <p><strong>Korean proficiency</strong> {{post.koreanProficiency}}</p>
-  <p><strong>English proficiency</strong> {{post.englishProficiency}}</p>
-  <p><strong>Other languages</strong> {{post.otherLanguages}}</p>
-  <p><strong>Visa sponsorship</strong> {{post.visaSponsorship}}</p>
-  <p><strong>Start date</strong> {{post.startDate}}</p>
-  <p><strong>Contact method</strong> {{post.contactMethod}}</p>
-  <p><strong>Contact URL</strong> {{post.contactUrl}}</p>
-  <p><strong>Contact email</strong> {{post.contactEmail}}</p>
-  <p><strong>Description</strong> {{post.fullDescription}}</p>
-  <p><strong>Tier</strong> {{post.tier}}</p>
-  <p><strong>Slug</strong> {{post.slug}}</p>
-  <p><strong>Published at</strong> {{post.publishedAt}}</p>
-  <p><strong>Expires at</strong> {{post.expiresAt}}</p>
+<div class="p-4">
+  <a href="/admin/liveposts" class="underline text-slate-700">← Back to live posts</a>
+  <div class="border border-slate-300 mt-4">
+    <div class="flex flex-row">
+      <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
+      <div class="flex-1">
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="underline">{{post.heading}}</div>
+          <div>{{post.subheading}}</div>
+          <div>{{post.specialization}}</div>
+        </div>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>{{post.startDate}}</span>
+            <span>{{post.province}}, {{post.city}}</span>
+            <span>{{post.contractType}}</span>
+          </div>
+        </div>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>Korean: {{post.koreanProficiency}}</span>
+            <span>English: {{post.englishProficiency}}</span>
+            {{#if post.otherLanguages}}<span>Other: {{post.otherLanguages}}</span>{{/if}}
+            <span>Visa: {{post.visaSponsorship}}</span>
+          </div>
+        </div>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>Contact: {{post.contactMethod}}</span>
+            {{#if post.contactUrl}}<span>URL: {{post.contactUrl}}</span>{{/if}}
+            {{#if post.contactEmail}}<span>Email: {{post.contactEmail}}</span>{{/if}}
+          </div>
+        </div>
+        <div class="border-b border-slate-300 px-4 py-2">
+          <div class="flex flex-col text-slate-700">
+            <span>ID: {{post.id}}</span>
+            <span>Session: {{post.sessionId}}</span>
+            <span>Tier: {{post.tier}}</span>
+            <span>Slug: {{post.slug}}</span>
+            <span>Published: {{post.publishedAt}}</span>
+            <span>Expires: {{post.expiresAt}}</span>
+          </div>
+        </div>
+        <div class="px-4 py-2">
+          <p>{{post.fullDescription}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

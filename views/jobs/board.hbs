@@ -1,11 +1,17 @@
-<div class="flex flex-col gap-4 p-4">
-  {{#if boardError}}
-    <p class="text-slate-500 text-sm p-4">Something went wrong loading posts.</p>
-  {{else if posts}}
-    {{#each posts}}
-      {{> public-job-card this}}
-    {{/each}}
-  {{else}}
-    <p class="text-slate-500 text-sm p-4">No live posts yet.</p>
-  {{/if}}
+<div>
+  <div class="flex justify-end px-4">
+    <button class="px-4 py-1 rounded-full border border-slate-300">Filter</button>
+  </div>
+
+  <div class="flex flex-col gap-4 p-4">
+    {{#if boardError}}
+      <p class="text-slate-500 text-sm p-4">Something went wrong loading posts.</p>
+    {{else if posts}}
+      {{#each posts}}
+        {{> public-job-card this}}
+      {{/each}}
+    {{else}}
+      <p class="text-slate-500 text-sm p-4">No live posts yet.</p>
+    {{/if}}
+  </div>
 </div>

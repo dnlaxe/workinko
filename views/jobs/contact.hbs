@@ -1,33 +1,48 @@
-<h1>Contact: {{heading}}</h1>
+<div class="p-4">
+  <a href="/jobs/{{slug}}" class="underline text-slate-700">Back to listing</a>
+  <form
+    method="POST"
+    action="/jobs/{{slug}}/contact"
+    class="border border-slate-300 mt-4"
+  >
+    {{#if serverError}}
+      <div class="border-b border-slate-300 px-4 py-2">
+        <p class="text-slate-500 text-sm">{{serverError}}</p>
+      </div>
+    {{/if}}
 
-<form method="POST" action="/jobs/{{slug}}/contact" class="p-4 border border-slate-400 m-4">
-  {{#if serverError}}
-    <p>{{serverError}}</p>
-  {{/if}}
+    <input type="hidden" name="slug" value="{{slug}}" />
+    <input type="hidden" name="heading" value="{{heading}}" />
 
-  <input type="hidden" name="slug" value="{{slug}}" />
-  <input type="hidden" name="heading" value="{{heading}}" />
+    <div class="border-b border-slate-300 px-4 py-2">
+      <label class="block" for="email">Your email</label>
+      <input
+        class="block w-full border border-slate-300"
+        type="email"
+        id="email"
+        name="email"
+        value="{{values.email}}"
+        required
+      />
+      {{#if fieldErrors.email}}<p class="text-slate-500 text-sm">{{fieldErrors.email}}</p>{{/if}}
+    </div>
 
-  <div>
-    <label class="block" for="email">Your email</label>
-    <input
-      class="block w-full border border-slate-400"
-      type="email"
-      id="email"
-      name="email"
-      value="{{values.email}}"
-      required
-    />
-    {{#if fieldErrors.email}}<p>{{fieldErrors.email}}</p>{{/if}}
-  </div>
+    <div class="border-b border-slate-300 px-4 py-2">
+      <label class="block" for="message">Message</label>
+      <textarea
+        class="block w-full border border-slate-300 resize-none"
+        id="message"
+        name="message"
+        required
+      >{{values.message}}</textarea>
+      {{#if fieldErrors.message}}<p class="text-slate-500 text-sm">{{fieldErrors.message}}</p>{{/if}}
+    </div>
 
-  <div>
-    <label class="block" for="message">Message</label>
-    <textarea class="block w-full border border-slate-400 resize-none" id="message" name="message" required>{{values.message}}</textarea>
-    {{#if fieldErrors.message}}<p>{{fieldErrors.message}}</p>{{/if}}
-  </div>
-
-  <div class="flex mt-8">
-    <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1 ml-auto">Send</button>
-  </div>
-</form>
+    <div class="flex px-4 py-2">
+      <button
+        type="submit"
+        class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1 ml-auto"
+      >Send</button>
+    </div>
+  </form>
+</div>

@@ -1,5 +1,5 @@
 {{! views/manage/edit.hbs }}
-<form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}}>
+<form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8">
 
 {{#if serverError}}
   <p>{{serverError}}</p>
@@ -11,7 +11,7 @@
         <legend>How do you want to be contacted?</legend>
 
         {{#each jobFormOptions.contactMethod}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="contactMethod"
@@ -31,12 +31,13 @@
           data-contact-field="link"
           {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
         >
-          <label for="contactUrl">URL</label>
+          <label class="block" for="contactUrl">URL</label>
           <input
             id="contactUrl"
             name="contactUrl"
             type="url"
             value="{{values.contactUrl}}"
+            class="block w-full border border-slate-300"
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -56,11 +57,12 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="heading">Heading</label>
+        <label class="block" for="heading">Heading</label>
         <input
           id="heading"
           name="heading"
           type="text"
+          class="block w-full border border-slate-300"
           required
           value="{{values.heading}}"
         />
@@ -68,17 +70,14 @@
           <div data-error="heading">{{fieldErrors.heading.[0]}}</div>
         {{/if}}
       </div>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <div>
-        <label for="subheading">Subheading</label>
+        <label class="block" for="subheading">Subheading</label>
         <input
           id="subheading"
           name="subheading"
           type="text"
+          class="block w-full border border-slate-300"
           required
           value="{{values.subheading}}"
         />
@@ -95,7 +94,7 @@
         <legend>Category</legend>
 
         {{#each jobFormOptions.category}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="category"
@@ -107,16 +106,12 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>Specialization</legend>
 
         {{#each jobFormOptions.specialization}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="specialization"
@@ -134,32 +129,10 @@
   <div class="step" hidden>
     <div class="step__content">
       <fieldset>
-        <legend>Contract type</legend>
-
-        {{#each jobFormOptions.contractType}}
-          <label>
-            <input
-              type="radio"
-              name="contractType"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.contractType this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  {{!-- Location split into Province then City (both radio groups) --}}
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
         <legend>Province</legend>
 
         {{#each jobFormOptions.province}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="province"
@@ -171,16 +144,12 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>City</legend>
 
         {{#each jobFormOptions.city}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="city"
@@ -201,7 +170,7 @@
         <legend>Korean proficiency</legend>
 
         {{#each jobFormOptions.koreanProficiency}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="koreanProficiency"
@@ -213,16 +182,12 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <fieldset>
         <legend>English proficiency</legend>
 
         {{#each jobFormOptions.englishProficiency}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="englishProficiency"
@@ -234,17 +199,14 @@
           </label>
         {{/each}}
       </fieldset>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
       <div>
-        <label for="otherLanguages">Other languages</label>
+        <label class="block" for="otherLanguages">Other languages</label>
         <input
           id="otherLanguages"
           name="otherLanguages"
           type="text"
+          class="block w-full border border-slate-300"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -260,7 +222,7 @@
         <legend>Visa sponsorship</legend>
 
         {{#each jobFormOptions.visaSponsorship}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="visaSponsorship"
@@ -278,10 +240,27 @@
   <div class="step" hidden>
     <div class="step__content">
       <fieldset>
+        <legend>Contract type</legend>
+
+        {{#each jobFormOptions.contractType}}
+          <label class="block">
+            <input
+              type="radio"
+              name="contractType"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.contractType this)}}checked{{/if}}
+            />
+            {{this}}
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
         <legend>Start date</legend>
 
         {{#each jobFormOptions.startDate}}
-          <label>
+          <label class="block">
             <input
               type="radio"
               name="startDate"
@@ -299,8 +278,9 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="fullDescription">Full description</label>
+        <label class="block" for="fullDescription">Full description</label>
         <textarea
+          class="block w-full h-[40%] border border-slate-300 resize-none p-2"
           id="fullDescription"
           name="fullDescription"
           required
@@ -312,15 +292,16 @@
     </div>
   </div>
 
-  <nav class="step__nav">
-    <button type="button" class="btn-back-to-review" hidden>Apply changes</button>
+  <nav class="step__nav flex flex-rows mt-8">
+    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1" hidden>Apply changes</button>
   </nav>
 
-
   <div class="review" hidden>
-    <button type="submit" class="btn-confirm">Save Changes</button>
+    <div class="flex flex-rows justify-end space-x-8 px-4">
+      <button type="submit" class="btn-confirm rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Save Changes</button>
+    </div>
   </div>
 
 </form>
 
-<script src="/edit-steps.js" defer></script>
+<script src="/edit.js" defer></script>

@@ -1,19 +1,34 @@
-<h1>Pending Relay Messages</h1>
+{{> admin-navbar}}
 
-{{#if messages}}
-  {{#each messages}}
-    <div>
-      <p>From: {{fromEmail}}</p>
-      <p>To: {{toEmail}}</p>
-      <p>{{message}}</p>
-      <form method="POST" action="/admin/relay/{{id}}/approve">
-        <button type="submit">Approve</button>
-      </form>
-      <form method="POST" action="/admin/relay/{{id}}/reject">
-        <button type="submit">Reject</button>
-      </form>
-    </div>
-  {{/each}}
-{{else}}
-  <p>No pending messages.</p>
-{{/if}}
+<div class="flex flex-col gap-4 p-4">
+  {{#if messages}}
+    {{#each messages}}
+      <div class="border border-slate-300">
+        <div class="flex flex-row">
+          <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
+          <div class="flex-1">
+            <div class="border-b border-slate-300 px-4 py-2">
+              <div class="flex flex-col text-slate-700">
+                <span>From: {{fromEmail}}</span>
+                <span>To: {{toEmail}}</span>
+              </div>
+            </div>
+            <div class="border-b border-slate-300 px-4 py-2">
+              <span>{{message}}</span>
+            </div>
+            <div class="flex px-4 py-2 gap-4">
+              <form method="POST" action="/admin/relay/{{id}}/approve">
+                <button type="submit" class="rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Approve</button>
+              </form>
+              <form method="POST" action="/admin/relay/{{id}}/reject">
+                <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1">Reject</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  {{else}}
+    <p class="text-slate-500 text-sm p-4">No pending messages.</p>
+  {{/if}}
+</div>

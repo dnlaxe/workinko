@@ -1,10 +1,10 @@
 {{! views/jobs/start.hbs }}
-<form action="/jobs/start" method="POST" class="p-4 border border-slate-400 m-4">
+<form action="/jobs/start" method="POST" class="p-8">
   <div>
     <label class="block" for="email">Email</label>
     <legend>We'll only use this to send you a receipt</legend>
     <input
-      class="block w-full border border-slate-400"
+      class="block w-full border border-slate-300"
       id="email"
       name="email"
       type="email"
@@ -16,6 +16,9 @@
     {{/if}}
   </div>
   <div class="flex mt-8">
-    <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1 ml-auto">Continue</button>
+    <button
+      type="submit"
+      class="px-4 py-1 rounded-full bg-blue-500 text-white ml-auto"
+    >Continue</button>
   </div>
 </form>

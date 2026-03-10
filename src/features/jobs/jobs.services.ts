@@ -4,6 +4,7 @@ import {
   getPendingPostsBySessionId,
 } from "../../repo/pending-post.repo.js";
 import {
+  expireOverduePosts,
   getAllLivePosts,
   getLivePostBySlug,
 } from "../../repo/live-post.repo.js";
@@ -11,7 +12,10 @@ import { ContactInput, JobFormInput } from "./jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
 import { Result } from "../../shared/error.js";
 import { PendingPostRow, SessionRow, LivePostRow } from "../../types/types.js";
-import { getSessionBySessionId, submitSession } from "../../repo/session.repo.js";
+import {
+  getSessionBySessionId,
+  submitSession,
+} from "../../repo/session.repo.js";
 import { insertRelayMessage } from "../../repo/relay-message.repo.js";
 
 export async function storeDraftPost(
@@ -41,7 +45,8 @@ export async function getSessionDrafts(
   try {
     const drafts = await getPendingPostsBySessionId(sessionId);
     return { success: true, data: drafts };
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, sessionId }, "getSessionDrafts failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }
@@ -53,16 +58,19 @@ export async function removeDraft(
   try {
     await deletePendingPostBySessionId(id, sessionId);
     return { success: true, data: undefined };
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, id, sessionId }, "removeDraft failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }
 
 export async function getLivePosts(): Promise<Result<LivePostRow[]>> {
   try {
+    await expireOverduePosts();
     const posts = await getAllLivePosts();
     return { success: true, data: posts };
-  } catch {
+  } catch (err) {
+    appLogger.error({ err }, "getLivePosts failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }
@@ -74,7 +82,8 @@ export async function getLivePost(slug: string): Promise<Result<LivePostRow>> {
       return { success: false, error: { reason: "SLUG_NOT_FOUND" } };
     }
     return { success: true, data: post };
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, slug }, "getLivePost failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }
@@ -88,7 +97,8 @@ export async function getSessionAndDrafts(
   try {
     const session = await getSessionBySessionId(sessionId);
     return { success: true, data: { drafts: draftsResult.data, session } };
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, sessionId }, "getSessionAndDrafts failed fetching session");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }
@@ -100,16 +110,15 @@ export async function getPostTitle(slug: string): Promise<Result<string>> {
     if (!post) {
       return { success: false, error: { reason: "POST_NOT_FOUND" } };
     }
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, slug }, "getPostTitle failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
   return { success: true, data: post.heading };
 }
 
-export async function submitDrafts(
-  sessionId: number,
-): Promise<Result<void>> {
+export async function submitDrafts(sessionId: number): Promise<Result<void>> {
   try {
     await submitSession(sessionId);
     return { success: true, data: undefined };
@@ -138,7 +147,8 @@ export async function submitApplicationForApproval(
     if (!relay) {
       return { success: false, error: { reason: "DB_ERROR" } };
     }
-  } catch {
+  } catch (err) {
+    appLogger.error({ err }, "submitApplicationForApproval failed");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
