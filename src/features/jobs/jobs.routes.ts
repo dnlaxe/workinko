@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { validate } from "../../middleware/validate.js";
-import { jobFormSchema } from "./jobs.schema.js";
+import { contactSchema, jobFormSchema } from "./jobs.schema.js";
 import {
   addAnotherJob,
   deleteDraft,
@@ -9,6 +9,10 @@ import {
   storeGatewayEmail,
   getForm,
   showBoard,
+  showJobDetails,
+  showContactForm,
+  submitContactForm,
+  submitSessionDrafts,
 } from "./jobs.controller.js";
 import { jobFormOptions } from "./jobs.constants.js";
 import { resolveSession } from "../../middleware/session.js";
@@ -32,7 +36,10 @@ router.post(
 router.get("/jobs/new", resolveSession, getForm);
 
 router.get("/jobs/drafts", resolveSession, showSessionDrafts);
+
 router.post("/jobs/drafts/:id/delete", resolveSession, deleteDraft);
+
+router.post("/jobs/drafts/submit", resolveSession, submitSessionDrafts);
 
 router.post(
   "/jobs/new",
@@ -46,6 +53,16 @@ router.post(
   resolveSession,
   validate(jobFormSchema, "jobs/new", { jobFormOptions }),
   addAnotherJob,
+);
+
+router.get("/jobs/:slug", showJobDetails);
+
+router.get("/jobs/:slug/contact", showContactForm);
+
+router.post(
+  "/jobs/:slug/contact",
+  validate(contactSchema, "jobs/contact"),
+  submitContactForm,
 );
 
 export default router;

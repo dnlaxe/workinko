@@ -1,5 +1,5 @@
 {{! views/jobs/new.hbs }}
-<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}}>
+<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-4 border border-slate-400 m-4">
 
 {{#if serverError}}
   <p>{{serverError}}</p>
@@ -11,12 +11,11 @@
         <legend>How do you want to be contacted?</legend>
 
         {{#each jobFormOptions.contactMethod}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="contactMethod"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
             />
@@ -32,13 +31,13 @@
           data-contact-field="link"
           {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
         >
-          <label for="contactUrl">URL</label>
+          <label class="block" for="contactUrl">URL</label>
           <input
             id="contactUrl"
             name="contactUrl"
             type="url"
-            class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
             value="{{values.contactUrl}}"
+            class="block w-full border border-slate-400"
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -58,12 +57,12 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="heading">Heading</label>
+        <label class="block" for="heading">Heading</label>
         <input
           id="heading"
           name="heading"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          class="block w-full border border-slate-400"
           required
           value="{{values.heading}}"
         />
@@ -77,12 +76,12 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="subheading">Subheading</label>
+        <label class="block" for="subheading">Subheading</label>
         <input
           id="subheading"
           name="subheading"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          class="block w-full border border-slate-400"
           required
           value="{{values.subheading}}"
         />
@@ -99,11 +98,10 @@
         <legend>Category</legend>
 
         {{#each jobFormOptions.category}}
-          <label class="m-4 flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="category"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               value="{{this}}"
               required
               {{#if (eq ../values.category this)}}checked{{/if}}
@@ -121,12 +119,11 @@
         <legend>Specialization</legend>
 
         {{#each jobFormOptions.specialization}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="specialization"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.specialization this)}}checked{{/if}}
             />
@@ -143,12 +140,11 @@
         <legend>Contract type</legend>
 
         {{#each jobFormOptions.contractType}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="contractType"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.contractType this)}}checked{{/if}}
             />
@@ -166,12 +162,11 @@
         <legend>Province</legend>
 
         {{#each jobFormOptions.province}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="province"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.province this)}}checked{{/if}}
             />
@@ -188,12 +183,11 @@
         <legend>City</legend>
 
         {{#each jobFormOptions.city}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="city"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.city this)}}checked{{/if}}
             />
@@ -210,12 +204,11 @@
         <legend>Korean proficiency</legend>
 
         {{#each jobFormOptions.koreanProficiency}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="koreanProficiency"
               value="{{value}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
             />
@@ -232,12 +225,11 @@
         <legend>English proficiency</legend>
 
         {{#each jobFormOptions.englishProficiency}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="englishProficiency"
               value="{{value}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
             />
@@ -251,12 +243,12 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="otherLanguages">Other languages</label>
+        <label class="block" for="otherLanguages">Other languages</label>
         <input
           id="otherLanguages"
           name="otherLanguages"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
+          class="block w-full border border-slate-400"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -272,12 +264,11 @@
         <legend>Visa sponsorship</legend>
 
         {{#each jobFormOptions.visaSponsorship}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="visaSponsorship"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
             />
@@ -294,12 +285,11 @@
         <legend>Start date</legend>
 
         {{#each jobFormOptions.startDate}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label class="block">
             <input
               type="radio"
               name="startDate"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.startDate this)}}checked{{/if}}
             />
@@ -313,8 +303,9 @@
   <div class="step" hidden>
     <div class="step__content">
       <div>
-        <label for="fullDescription">Full description</label>
+        <label class="block" for="fullDescription">Full description</label>
         <textarea
+          class="block w-full h-[40%] border border-slate-400 resize-none p-2"
           id="fullDescription"
           name="fullDescription"
           required
@@ -326,32 +317,41 @@
     </div>
   </div>
 
-  <nav class="step__nav p-2">
-    <button type="button" class="btn-back justify-between px-5 py-3 bg-transparent text-[#0a0a0a] text-[16px] leading-none font-semibold tracking-[0.01em] border-2 border-[#e0e0e0] hover:border-[#0a0a0a] transition-all duration-75 hover:cursor-pointer">Back</button>
-    <button type="button" class="btn-next px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
-    <button type="button" class="btn-last-next px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Next</button>
-    <button type="button" class="btn-back-to-review px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer" hidden>Back to review</button>
+  <nav class="step__nav flex flex-rows mt-8">
+    <button type="button" class="btn-back disabled:opacity-50 underline">Back</button>
+    <button type="button" class="btn-next disabled:opacity-50 ml-auto rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Next</button>
+    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Next</button>
+    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1" hidden>Back to review</button>
   </nav>
 
 
   <div class="review" hidden>
-    <button type="submit" formaction="/jobs/new/add-another" class="btn-add-another px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Add another job</button>
-    <button type="submit" class="btn-confirm px-5 py-3 bg-[#00703c] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#005a30] hover:bg-[#005a30] hover:shadow-[inset_0_-3px_0_#003d20] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Confirm</button>
+    <div class="flex flex-rows justify-end space-x-8 px-4">
+      <button type="submit" formaction="/jobs/new/add-another" class="btn-add-another underline">Add another job</button>
+      <button type="submit" class="btn-confirm rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Confirm</button>
+    </div>
   </div>
 
 </form>
 
 {{#if drafts}}
-<div class="bg-gray-100 p-2">
-  <h2>Drafts</h2>
-  {{#each drafts}}
-    <div class="p-2">
-      <span>{{this.id}}</span>
-      <span>{{this.heading}}</span>
+<div class="drafts-bar fixed bottom-0 left-0 right-0 border-t bg-slate-100 border-slate-400 p-4">
+  <div class="flex flex-rows justify-between">
+    <div>
+      {{#each drafts}}
+        <div>
+          {{this.heading}}
+        </div>
+      {{/each}}
     </div>
-  {{/each}}
-  <a href="/jobs/drafts" class="px-5 py-3 bg-transparent text-[#0f62fe] font-semibold text-base tracking-wide border-2 border-[#0f62fe] hover:bg-[#0f62fe] hover:text-white transition-all duration-75 hover:cursor-pointer">Your Drafts</a>
+    <div>
+      <a href="/jobs/drafts" class="underline">See drafts</a>
+    </div>
+  </div>
 </div>
+
+
+
 {{else if draftsError}}
 <div>
   <p>Could not load drafts.</p>

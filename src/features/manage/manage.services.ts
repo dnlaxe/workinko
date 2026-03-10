@@ -1,12 +1,14 @@
 import {
   getLivePostById,
   getLivePostsBySessionId,
+  unpublishLivePost,
   updateLivePost,
 } from "../../repo/live-post.repo.js";
 import { getSessionIdByToken } from "../../repo/magic-token.repo.js";
 import { Result } from "../../shared/error.js";
 import { LivePostRow } from "../../types/types.js";
 import { JobFormInput } from "../jobs/jobs.schema.js";
+import { appLogger } from "../../middleware/logger.js";
 
 export async function getUsersPosts(
   token: string,
@@ -22,14 +24,16 @@ export async function getUsersPosts(
       return { success: false, error: { reason: "TOKEN_EXPIRED" } };
     }
     sessionId = row.sessionId;
-  } catch {
+  } catch (err) {
+    appLogger.error({ err }, "getUsersPosts failed resolving token");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
   let posts;
   try {
     posts = await getLivePostsBySessionId(sessionId);
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, sessionId }, "getUsersPosts failed fetching posts");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -47,7 +51,8 @@ export async function getPostToEdit(
     if (row.expiresAt < new Date())
       return { success: false, error: { reason: "TOKEN_EXPIRED" } };
     sessionId = row.sessionId;
-  } catch {
+  } catch (err) {
+    appLogger.error({ err }, "getPostToEdit failed resolving token");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -57,7 +62,8 @@ export async function getPostToEdit(
     if (!post || post.sessionId !== sessionId) {
       return { success: false, error: { reason: "POST_NOT_FOUND" } };
     }
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, id, sessionId }, "getPostToEdit failed fetching post");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -76,13 +82,39 @@ export async function updatePost(
     if (row.expiresAt < new Date())
       return { success: false, error: { reason: "TOKEN_EXPIRED" } };
     sessionId = row.sessionId;
-  } catch {
+  } catch (err) {
+    appLogger.error({ err }, "updatePost failed resolving token");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
   try {
     await updateLivePost(postId, sessionId, data);
-  } catch {
+  } catch (err) {
+    appLogger.error({ err, postId, sessionId }, "updatePost DB error");
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+
+  return { success: true, data: undefined };
+}
+
+export async function unpublishUserPost(
+  id: number,
+  token: string,
+): Promise<Result<void>> {
+  try {
+    const row = await getSessionIdByToken(token);
+    if (!row) {
+      return { success: false, error: { reason: "SESSION_NOT_FOUND" } };
+    }
+    if (row.expiresAt < new Date()) {
+      return { success: false, error: { reason: "TOKEN_EXPIRED" } };
+    }
+    const unpublish = await unpublishLivePost(id, row.sessionId);
+    if (unpublish.rowCount === 0) {
+      return { success: false, error: { reason: "POST_NOT_FOUND" } };
+    }
+  } catch (err) {
+    appLogger.error({ err, id }, "unpublishUserPost DB error");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 

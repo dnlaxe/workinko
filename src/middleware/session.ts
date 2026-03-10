@@ -38,8 +38,10 @@ export async function resolveSession(
     const session = await createSession(expiresAt); // no email yet
     res.cookie("sid", session.token, cookieOptions);
     req.sessionId = session.id;
+    req.log.info({ sessionId: session.id }, "New session created");
     next();
   } catch (err) {
+    req.log.error({ err }, "Session middleware error");
     next(err);
   }
 }

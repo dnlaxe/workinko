@@ -56,8 +56,7 @@ export const jobFormSchema = z
       message: "URL is required when contact method is link",
       path: ["contactUrl"], //
     },
-  )
-;
+  );
 
 export type JobFormInput = z.infer<typeof jobFormSchema>;
 
@@ -66,3 +65,12 @@ export const startSchema = z.object({
 });
 
 export type StartInput = z.infer<typeof startSchema>;
+
+export const contactSchema = z.object({
+  slug: z.string().min(1),
+  heading: z.string().min(1),
+  email: z.email({ error: "Please enter a valid email" }).trim(),
+  message: z.string({ error: "Message is required" }).trim().min(1),
+});
+
+export type ContactInput = z.infer<typeof contactSchema>;

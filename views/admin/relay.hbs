@@ -1,0 +1,19 @@
+<h1>Pending Relay Messages</h1>
+
+{{#if messages}}
+  {{#each messages}}
+    <div>
+      <p>From: {{fromEmail}}</p>
+      <p>To: {{toEmail}}</p>
+      <p>{{message}}</p>
+      <form method="POST" action="/admin/relay/{{id}}/approve">
+        <button type="submit">Approve</button>
+      </form>
+      <form method="POST" action="/admin/relay/{{id}}/reject">
+        <button type="submit">Reject</button>
+      </form>
+    </div>
+  {{/each}}
+{{else}}
+  <p>No pending messages.</p>
+{{/if}}

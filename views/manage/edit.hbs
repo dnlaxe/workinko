@@ -1,5 +1,5 @@
 {{! views/manage/edit.hbs }}
-<form action="/manage/edit/{{postId}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}}>
+<form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}}>
 
 {{#if serverError}}
   <p>{{serverError}}</p>
@@ -11,12 +11,11 @@
         <legend>How do you want to be contacted?</legend>
 
         {{#each jobFormOptions.contactMethod}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="contactMethod"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
             />
@@ -37,7 +36,6 @@
             id="contactUrl"
             name="contactUrl"
             type="url"
-            class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
             value="{{values.contactUrl}}"
           />
           {{#if fieldErrors.contactUrl}}
@@ -63,7 +61,6 @@
           id="heading"
           name="heading"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
           required
           value="{{values.heading}}"
         />
@@ -82,7 +79,6 @@
           id="subheading"
           name="subheading"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
           required
           value="{{values.subheading}}"
         />
@@ -99,11 +95,10 @@
         <legend>Category</legend>
 
         {{#each jobFormOptions.category}}
-          <label class="m-4 flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="category"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               value="{{this}}"
               required
               {{#if (eq ../values.category this)}}checked{{/if}}
@@ -121,12 +116,11 @@
         <legend>Specialization</legend>
 
         {{#each jobFormOptions.specialization}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="specialization"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.specialization this)}}checked{{/if}}
             />
@@ -143,12 +137,11 @@
         <legend>Contract type</legend>
 
         {{#each jobFormOptions.contractType}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="contractType"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.contractType this)}}checked{{/if}}
             />
@@ -166,12 +159,11 @@
         <legend>Province</legend>
 
         {{#each jobFormOptions.province}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="province"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.province this)}}checked{{/if}}
             />
@@ -188,12 +180,11 @@
         <legend>City</legend>
 
         {{#each jobFormOptions.city}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="city"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.city this)}}checked{{/if}}
             />
@@ -210,12 +201,11 @@
         <legend>Korean proficiency</legend>
 
         {{#each jobFormOptions.koreanProficiency}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="koreanProficiency"
               value="{{value}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
             />
@@ -232,12 +222,11 @@
         <legend>English proficiency</legend>
 
         {{#each jobFormOptions.englishProficiency}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="englishProficiency"
               value="{{value}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
             />
@@ -256,7 +245,6 @@
           id="otherLanguages"
           name="otherLanguages"
           type="text"
-          class="text-[19px] px-3 py-2 border-2 border-[#393939] bg-white text-[#0a0a0a] leading-relaxed appearance-none rounded-none placeholder:text-[#a8a8a8] focus:outline-none"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -272,12 +260,11 @@
         <legend>Visa sponsorship</legend>
 
         {{#each jobFormOptions.visaSponsorship}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="visaSponsorship"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
             />
@@ -294,12 +281,11 @@
         <legend>Start date</legend>
 
         {{#each jobFormOptions.startDate}}
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-[#e0e0e0] mb-2 cursor-pointer hover:border-[#0a0a0a] transition-colors duration-75 text-base has-checked:border-[#0a0a0a]">
+          <label>
             <input
               type="radio"
               name="startDate"
               value="{{this}}"
-              class="w-5 h-5 cursor-pointer accent-[#0f62fe]"
               required
               {{#if (eq ../values.startDate this)}}checked{{/if}}
             />
@@ -326,13 +312,13 @@
     </div>
   </div>
 
-  <nav class="step__nav p-2">
-    <button type="button" class="btn-back-to-review px-5 py-3 bg-[#0f62fe] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#0043ce] hover:bg-[#0043ce] hover:shadow-[inset_0_-3px_0_#002590] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer" hidden>Apply changes</button>
+  <nav class="step__nav">
+    <button type="button" class="btn-back-to-review" hidden>Apply changes</button>
   </nav>
 
 
   <div class="review" hidden>
-    <button type="submit" class="btn-confirm px-5 py-3 bg-[#00703c] text-white text-[16px] leading-none font-semibold tracking-[0.01em] shadow-[inset_0_-3px_0_#005a30] hover:bg-[#005a30] hover:shadow-[inset_0_-3px_0_#003d20] active:translate-y-0.5 active:shadow-none transition-all duration-75 hover:cursor-pointer">Save Changes</button>
+    <button type="submit" class="btn-confirm">Save Changes</button>
   </div>
 
 </form>

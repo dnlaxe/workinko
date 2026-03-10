@@ -1,23 +1,32 @@
-<h1 class="p-2">DRAFTS</h1>
-{{#if draftsError}}
-  <p>Could not load drafts.</p>
-{{else}}
-  {{#each drafts}}
-    <div class="p-2">
-      <span>{{this.id}}</span>
-      <span>{{this.heading}}</span>
-      <form method="POST" action="/jobs/drafts/{{this.id}}/delete">
-        <button
-          type="submit"
-          class="border-2 border-red-500 p-2 hover:cursor-pointer"
-        >Delete</button>
-        <a
-          href="/jobs/new"
-          class="border-2 border-gray-500 p-2 hover:cursor-pointer"
-        >Add another job</a>
-      </form>
-    </div>
+<h1>Drafts</h1>
+
+<div class="flex flex-col gap-2 p-4">
+  {{#if draftsError}}
+    <p>Could not load drafts.</p>
   {{else}}
-    <p class="p-2">No drafts yet.</p>
-  {{/each}}
-{{/if}}
+    {{#each drafts}}
+      <div class="border border-slate-400">
+        <div class="flex flex-row">
+          <div class="w-4 border-r border-slate-400 bg-slate-100"></div>
+          <div class="p-4 flex-1">
+            <div class="underline">{{this.heading}}</div>
+            <div class="flex gap-4 mt-2">
+              <form method="POST" action="/jobs/drafts/{{this.id}}/delete">
+                <button type="submit" class="text-blue-500 underline">Delete</button>
+              </form>
+              <a href="/jobs/new" class="text-blue-500 underline">Add another job</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <p>No drafts yet.</p>
+    {{/each}}
+  {{/if}}
+
+  <div class="flex mt-4">
+    <form method="POST" action="/jobs/drafts/submit" class="ml-auto">
+      <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1">Submit posts</button>
+    </form>
+  </div>
+</div>

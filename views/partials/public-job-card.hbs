@@ -1,25 +1,30 @@
-<div>
-  <div>
-    <span>{{startDate}}</span>
-    >
-    <span>{{province}}</span>
-    >
-    <span>{{city}}</span>
+<div class="border border-slate-400 bg-white rounded">
+
+  <div class="flex flex-row">
+
+    <div class="w-8 border-r border-slate-400 bg-slate-100 rounded-l"></div>
+
+    <div class="p-4">
+
+      <div class="text-slate-700">
+        <span>{{startDate}}</span>
+        <span>{{city}}</span>
+        <span>{{contractType}}</span>
+        <span>{{specialization}}</span>
+      </div>
+
+      <div class="underline">{{heading}}</div>
+      <div>{{subheading}}</div>
+
+      <div class="text-slate-700">
+        <span>Korean: {{koreanProficiency}}</span>
+        <span>English: {{englishProficiency}}</span>
+        <span>Visa: {{visaSponsorship}}</span>
+      </div>
+
+      <a href="/jobs/{{slug}}" class="text-blue-600 underline">See details</a>
+    </div>
+
   </div>
-  <div>
-    <span>{{contractType}}</span>
-    >
-    <span>{{category}}</span>
-    >
-    <span>{{specialization}}</span>
-  </div>
-  <div>{{heading}}</div>
-  <div>{{subheading}}</div>
-  <div>
-    <span>Korean: {{koreanProficiency}}</span>
-    >
-    <span>English: {{englishProficiency}}</span>
-    >
-    <span>Visa: {{visaSponsorship}}</span>
-  </div>
+
 </div>

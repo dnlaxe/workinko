@@ -1,32 +1,42 @@
-<div>
-  <div>
-    <span>{{status}}</span>
-    <span>Expires: {{expiresAt}}</span>
+<div class="border border-slate-400">
+
+  <div class="flex flex-row">
+
+    <div class="w-4 border-r border-slate-400 bg-slate-100"></div>
+
+    <div class="p-4">
+      <div class="underline">{{heading}}</div>
+      <div>{{subheading}}</div>
+
+      <div class="flex gap-6 text-slate-700">
+        <span>{{startDate}}</span>
+        <span>{{city}}</span>
+        <span>{{contractType}}</span>
+        <span>{{specialization}}</span>
+      </div>
+
+      <div class="text-slate-700">
+        <span>Korean: {{koreanProficiency}}</span>
+        <span>English: {{englishProficiency}}</span>
+        <span>Visa: {{visaSponsorship}}</span>
+      </div>
+
+      <div class="text-slate-700">
+        <span>{{status}}</span>
+        <span>Expires: {{expiresAt}}</span>
+      </div>
+
+      <div class="flex gap-4">
+        <a href="/manage/edit/{{id}}?token={{token}}" class="text-blue-500 underline">Edit</a>
+        <form method="POST" action="/manage/extend/{{id}}?token={{token}}">
+          <button type="submit" class="text-blue-500 underline">Extend</button>
+        </form>
+        <form method="POST" action="/manage/delete/{{id}}?token={{token}}">
+          <button type="submit" class="text-blue-500 underline">Delete</button>
+        </form>
+      </div>
+    </div>
+
   </div>
-  <div>
-    <span>{{startDate}}</span>
-    <span>{{province}}</span>
-    <span>{{city}}</span>
-  </div>
-  <div>
-    <span>{{contractType}}</span>
-    <span>{{category}}</span>
-    <span>{{specialization}}</span>
-  </div>
-  <div>{{heading}}</div>
-  <div>{{subheading}}</div>
-  <div>
-    <span>Korean: {{koreanProficiency}}</span>
-    <span>English: {{englishProficiency}}</span>
-    <span>Visa: {{visaSponsorship}}</span>
-  </div>
-  <div>
-    <a href="/manage/edit/{{id}}?token={{token}}">Edit</a>
-    <form method="POST" action="/manage/extend/{{id}}?token={{../token}}">
-      <button type="submit">Extend</button>
-    </form>
-    <form method="POST" action="/manage/delete/{{id}}?token={{../token}}">
-      <button type="submit">Delete</button>
-    </form>
-  </div>
+
 </div>

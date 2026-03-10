@@ -1,15 +1,17 @@
 <h1>Your Posts</h1>
 
-{{#if error}}
-  <p>Something went wrong loading your posts.</p>
-{{else if posts}}
-  {{#each posts}}
-    {{> manage-post-card token=../token}}
-  {{/each}}
-{{else}}
-  <p>No posts found.</p>
-{{/if}}
+<div class="flex flex-col gap-2 p-2">
+  {{#if error}}
+    <p>Something went wrong loading your posts.</p>
+  {{else if posts}}
+    {{#each posts}}
+      {{> manage-post-card token=../token}}
+    {{/each}}
+  {{else}}
+    <p>No posts found.</p>
+  {{/if}}
 
-{{#if serverError}}
-  <p>Something went wrong. Please try again.</p>
-{{/if}}
+  {{#if serverError}}
+    <p>Something went wrong. Please try again.</p>
+  {{/if}}
+</div>

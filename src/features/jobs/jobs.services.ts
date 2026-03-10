@@ -3,12 +3,16 @@ import {
   deletePendingPostBySessionId,
   getPendingPostsBySessionId,
 } from "../../repo/pending-post.repo.js";
-import { getAllLivePosts } from "../../repo/live-post.repo.js";
-import { JobFormInput } from "./jobs.schema.js";
+import {
+  getAllLivePosts,
+  getLivePostBySlug,
+} from "../../repo/live-post.repo.js";
+import { ContactInput, JobFormInput } from "./jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
 import { Result } from "../../shared/error.js";
 import { PendingPostRow, SessionRow, LivePostRow } from "../../types/types.js";
-import { getSessionBySessionId } from "../../repo/session.repo.js";
+import { getSessionBySessionId, submitSession } from "../../repo/session.repo.js";
+import { insertRelayMessage } from "../../repo/relay-message.repo.js";
 
 export async function storeDraftPost(
   data: JobFormInput & { sessionId: number; contactEmail?: string | null },
@@ -63,6 +67,18 @@ export async function getLivePosts(): Promise<Result<LivePostRow[]>> {
   }
 }
 
+export async function getLivePost(slug: string): Promise<Result<LivePostRow>> {
+  try {
+    const post = await getLivePostBySlug(slug);
+    if (!post) {
+      return { success: false, error: { reason: "SLUG_NOT_FOUND" } };
+    }
+    return { success: true, data: post };
+  } catch {
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+}
+
 export async function getSessionAndDrafts(
   sessionId: number,
 ): Promise<Result<{ drafts: PendingPostRow[]; session: SessionRow | null }>> {
@@ -75,4 +91,56 @@ export async function getSessionAndDrafts(
   } catch {
     return { success: false, error: { reason: "DB_ERROR" } };
   }
+}
+
+export async function getPostTitle(slug: string): Promise<Result<string>> {
+  let post;
+  try {
+    post = await getLivePostBySlug(slug);
+    if (!post) {
+      return { success: false, error: { reason: "POST_NOT_FOUND" } };
+    }
+  } catch {
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+
+  return { success: true, data: post.heading };
+}
+
+export async function submitDrafts(
+  sessionId: number,
+): Promise<Result<void>> {
+  try {
+    await submitSession(sessionId);
+    return { success: true, data: undefined };
+  } catch (err) {
+    appLogger.error({ err, sessionId }, "Failed to submit session");
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+}
+
+export async function submitApplicationForApproval(
+  data: ContactInput,
+): Promise<Result<void>> {
+  let relay;
+  try {
+    const post = await getLivePostBySlug(data.slug);
+    if (!post) {
+      return { success: false, error: { reason: "POST_NOT_FOUND" } };
+    }
+
+    relay = await insertRelayMessage(
+      post.id,
+      data.email,
+      post.email,
+      data.message,
+    );
+    if (!relay) {
+      return { success: false, error: { reason: "DB_ERROR" } };
+    }
+  } catch {
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+
+  return { success: true, data: undefined };
 }

@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, like } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { livePost } from "../db/schema.js";
 import { PendingPostRow } from "../types/types.js";
@@ -68,7 +68,7 @@ export async function updateLivePost(
 }
 
 export async function getAllLivePosts() {
-  return db.select().from(livePost);
+  return db.select().from(livePost).where(eq(livePost.status, "active"));
 }
 
 export async function getLivePostById(id: number) {
@@ -76,10 +76,36 @@ export async function getLivePostById(id: number) {
   return post ?? null;
 }
 
+export async function getLivePostBySlug(slug: string) {
+  const [post] = await db
+    .select()
+    .from(livePost)
+    .where(eq(livePost.slug, slug));
+  return post;
+}
+
 export async function getLivePostsBySessionId(sessionId: number) {
   const posts = await db
     .select()
     .from(livePost)
-    .where(eq(livePost.sessionId, sessionId));
+    .where(
+      and(eq(livePost.sessionId, sessionId), eq(livePost.status, "active")),
+    );
   return posts;
+}
+
+export async function findPostsWithSimilarSlug(slug: string) {
+  const rows = await db
+    .select({ slug: livePost.slug })
+    .from(livePost)
+    .where(like(livePost.slug, `${slug}%`));
+
+  return rows.map((s) => s.slug);
+}
+
+export async function unpublishLivePost(id: number, sessionId: number) {
+  return db
+    .update(livePost)
+    .set({ status: "unpublished", unpublishedAt: new Date() })
+    .where(and(eq(livePost.id, id), eq(livePost.sessionId, sessionId)));
 }

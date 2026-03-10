@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
-import { getPostToEdit, getUsersPosts, updatePost } from "./manage.services.js";
+import {
+  getPostToEdit,
+  getUsersPosts,
+  unpublishUserPost,
+  updatePost,
+} from "./manage.services.js";
 import { jobFormOptions } from "../jobs/jobs.constants.js";
-import { jobFormSchema } from "../jobs/jobs.schema.js";
-import z from "zod";
 
 export async function showUserDashboard(req: Request, res: Response) {
   const serverError = req.query.error as string | undefined;
@@ -10,10 +13,14 @@ export async function showUserDashboard(req: Request, res: Response) {
   const result = await getUsersPosts(token);
 
   if (!result.success) {
+    if (
+      result.error.reason === "TOKEN_EXPIRED" ||
+      result.error.reason === "TOKEN_NOT_FOUND"
+    ) {
+      return res.status(403).render("manage/invalid-token");
+    }
     req.log.error({ reason: result.error.reason }, "Failed to get posts");
-    return res.status(500).render("jobs/new", {
-      serverError: "Failed to load posts.",
-    });
+    return res.status(500).render("error");
   }
 
   res.render("manage/dashboard", { posts: result.data, serverError, token });
@@ -32,7 +39,7 @@ export async function showEditform(req: Request, res: Response) {
   res.render("manage/edit", {
     jobFormOptions,
     values: result.data,
-    postId,
+    id: postId,
     token,
   });
 }
@@ -41,22 +48,23 @@ export async function submitEditform(req: Request, res: Response) {
   const token = req.query.token as string;
   const postId = Number(req.params.id);
 
-  const parsed = jobFormSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const { fieldErrors } = z.flattenError(parsed.error);
-    return res.render("manage/edit", {
-      jobFormOptions,
-      fieldErrors,
-      values: req.body,
-      postId,
-      token,
-    });
-  }
-
-  const result = await updatePost(postId, token, parsed.data);
+  const result = await updatePost(postId, token, req.body);
   if (!result.success) {
     req.log.error({ reason: result.error.reason }, "Failed to update post");
     return res.redirect(`/manage?token=${token}&error=update_failed`);
+  }
+
+  res.redirect(`/manage?token=${token}`);
+}
+
+export async function unpublishPost(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  const token = req.query.token as string;
+  const result = await unpublishUserPost(id, token);
+
+  if (!result.success) {
+    req.log.error({ reason: result.error.reason }, "Failed to update post");
+    return res.redirect(`/manage?token=${token}&error=deletion_failed`);
   }
 
   res.redirect(`/manage?token=${token}`);

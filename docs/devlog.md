@@ -66,8 +66,6 @@ Rule for logging:
 Has req? → req.log
 No req? → appLogger
 
-formaction
-
 ## 2026-03-08
 
 - Learned about Constraint Validation API and used it in steps.js.
@@ -79,6 +77,18 @@ formaction
   → Empty arrays are classed as valid
   → A single record not found is checked as it means something went wrong
 
-make copy of original and edit- too much complexity-- do next version
+## 2026-03-09
 
-validate in controller because token
+- Future versions would have an admin check for edits (make a copy of original in db)
+
+- Problem: accessing route params and query params to use their values when pages rerender on Zod errors.
+
+→ Solution: add them to validate middleware by spreading them. Validate middleware now spreads `req.params`, `req.query`, and `req.body` at the top level (alongside `values: req.body`) when re-rendering on error. This lets templates use route params (e.g. `{{id}}`) and query params (e.g. `{{token}}`) on validation failure.
+
+- Drizzle's 'like' is same as SQL's 'LIKE' which uses wildcards: `%` (matches any sequence) and `_` (which matches any single character). So `slug%` will find all slugs with numbers appended to them (slug-1, slug-2, etc)
+
+- When Drizzle runs an update, PostgreSQL executes it and reports back how many rows were changed. Drizzle exposes that as `result.rowCount`, so by checking `rowCount == 0`, we can see if the update was successful.
+
+- Whether token never existed or has expired, return a generic error page with no reason.
+
+- Added more logs

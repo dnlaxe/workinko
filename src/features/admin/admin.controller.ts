@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import {
+  approveRelayMessageByAdmin,
   approveSessionByAdmin,
   fetchLivePostById,
   fetchLivePosts,
   fetchPendingSessions,
   fetchSessionPosts,
+  getPendingRelayMessages,
+  rejectRelayMessageByAdmin,
   rejectSessionByAdmin,
 } from "./admin.services.js";
 
@@ -86,4 +89,47 @@ export async function showLivePostDetail(req: Request, res: Response) {
   }
 
   return res.render("admin/livepost", { post: result.data });
+}
+
+export async function showPendingRelayMessages(req: Request, res: Response) {
+  const result = await getPendingRelayMessages();
+
+  if (!result.success) {
+    req.log.error("Failed to load relay messages");
+    return res.status(500).render("error");
+  }
+
+  return res.render("admin/relay", { messages: result.data });
+}
+
+export async function rejectRelayMessage(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  const result = await rejectRelayMessageByAdmin(id);
+
+  if (!result.success) {
+    req.log.error(
+      { reason: result.error.reason },
+      "Failed to reject relay message",
+    );
+    return res.status(500).redirect("/admin/relay");
+  }
+
+  req.log.info({ id }, "Relay message rejected");
+  return res.redirect("/admin/relay");
+}
+
+export async function approveRelayMessage(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  const result = await approveRelayMessageByAdmin(id);
+
+  if (!result.success) {
+    req.log.error(
+      { reason: result.error.reason },
+      "Failed to approve relay message",
+    );
+    return res.status(500).redirect("/admin/relay");
+  }
+
+  req.log.info({ id }, "Relay message approved and sent");
+  return res.redirect("/admin/relay");
 }

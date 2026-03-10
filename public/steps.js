@@ -5,6 +5,7 @@ const lastBtnNext = document.querySelector(".btn-last-next");
 const btnBackToReview = document.querySelector(".btn-back-to-review");
 const review = document.querySelector(".review");
 const nav = document.querySelector(".step__nav");
+const draftsBar = document.querySelector(".drafts-bar");
 const contactMethodInputs = Array.from(
   document.querySelectorAll('input[name="contactMethod"]'),
 );
@@ -22,7 +23,7 @@ steps.forEach((step, i) => {
 });
 
 function validate(step) {
-  return !step.querySelector(':invalid');
+  return !step.querySelector(":invalid");
 }
 
 function syncContactFields() {
@@ -77,13 +78,21 @@ function goToStep(stepIndex) {
   review.querySelector("dl")?.remove();
   review.hidden = true;
   nav.hidden = false;
+  if (draftsBar) draftsBar.hidden = false;
   current = stepIndex;
   show(current);
 }
 
 function buildReviewItem(name, value, stepIndex) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "border border-slate-400 p-4";
+
   const dt = document.createElement("dt");
   dt.textContent = name;
+  dt.className = "underline";
+
+  const valueRow = document.createElement("div");
+  valueRow.className = "flex justify-between";
 
   const dd = document.createElement("dd");
   dd.textContent = value;
@@ -91,22 +100,28 @@ function buildReviewItem(name, value, stepIndex) {
   const change = document.createElement("button");
   change.type = "button";
   change.textContent = "change";
+  change.className = "text-blue-500 underline";
   change.addEventListener("click", () => goToStep(stepIndex));
+
+  valueRow.append(dd, change);
+  wrapper.append(dt, valueRow);
 
   const errorEl = steps[stepIndex].querySelector(`[data-error="${name}"]`);
   if (errorEl) {
     const err = document.createElement("p");
     err.textContent = errorEl.textContent;
-    return [dt, dd, change, err];
+    wrapper.append(err);
   }
-  return [dt, dd, change];
+
+  return wrapper;
 }
 
 function buildReview() {
   const data = new FormData(document.querySelector("form"));
   const dl = document.createElement("dl");
+  dl.className = "flex flex-col gap-2 p-4";
   for (const [name, value] of data.entries()) {
-    dl.append(...buildReviewItem(name, value, nameToStep[name]));
+    dl.append(buildReviewItem(name, value, nameToStep[name]));
   }
   review.prepend(dl);
 }
@@ -123,6 +138,7 @@ function showReview() {
   editingFromReview = false;
   steps[current].hidden = true;
   nav.hidden = true;
+  if (draftsBar) draftsBar.hidden = true;
   buildReview();
   review.hidden = false;
 }

@@ -6,7 +6,9 @@ export type appError =
   | { reason: "POST_NOT_FOUND" }
   | { reason: "EMAIL_API_ERROR" }
   | { reason: "TOKEN_NOT_FOUND" }
-  | { reason: "TOKEN_EXPIRED" };
+  | { reason: "TOKEN_EXPIRED" }
+  | { reason: "SLUG_CREATION_ERROR" }
+  | { reason: "SLUG_NOT_FOUND" };
 
 export type Result<T> =
   | { success: true; data: T }

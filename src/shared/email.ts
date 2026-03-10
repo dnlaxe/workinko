@@ -34,3 +34,24 @@ export async function sendReceipt(
   appLogger.info("Receipt email sending success");
   return { success: true, data: undefined };
 }
+
+export async function sendRelayMessage(
+  from: string,
+  to: string,
+  message: string,
+): Promise<Result<void>> {
+  const { error } = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: "dnlaxe@gmail.com",
+    subject: "Someone applied to your job posting",
+    html: `<p>From: ${from}</p><p>${message}</p>`,
+  });
+
+  if (error) {
+    appLogger.error({ error }, "Relay email sending failure");
+    return { success: false, error: { reason: "EMAIL_API_ERROR" } };
+  }
+
+  appLogger.info("Relay email sending success");
+  return { success: true, data: undefined };
+}

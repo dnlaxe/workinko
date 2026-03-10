@@ -1,6 +1,7 @@
 import { pgTable, text, integer, timestamp, pgEnum } from "drizzle-orm/pg-core";
 
 export const currentSessionStatus = pgEnum("pending_session_status", [
+  "draft",
   "pending_review",
   "approved",
   "rejected",

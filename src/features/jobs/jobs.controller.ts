@@ -5,6 +5,10 @@ import {
   getLivePosts,
   removeDraft,
   storeDraftPost,
+  getLivePost,
+  getPostTitle,
+  submitApplicationForApproval,
+  submitDrafts,
 } from "./jobs.services.js";
 import { jobFormOptions } from "./jobs.constants.js";
 import {
@@ -143,6 +147,15 @@ export async function showSessionDrafts(req: Request, res: Response) {
   res.render("jobs/drafts", { drafts });
 }
 
+export async function submitSessionDrafts(req: Request, res: Response) {
+  const result = await submitDrafts(req.sessionId);
+  if (!result.success) {
+    req.log.error({ sessionId: req.sessionId }, "Failed to submit drafts");
+    return res.status(500).render("jobs/drafts", { serverError: true });
+  }
+  res.render("success", { message: "Your posts are under review. We'll be in touch soon." });
+}
+
 export async function deleteDraft(req: Request, res: Response) {
   const id = Number(req.params.id);
   const result = await removeDraft(id, req.sessionId);
@@ -182,4 +195,47 @@ export async function getForm(req: Request, res: Response) {
     drafts,
     sessionEmail: result.data.session?.email,
   });
+}
+
+export async function showJobDetails(req: Request, res: Response) {
+  const slug = req.params.slug as string;
+
+  const post = await getLivePost(slug);
+
+  if (!post.success) {
+    req.log.error({ slug }, "Failed to find post by slug");
+    return res.status(500).render("jobs/board");
+  }
+
+  res.render("jobs/details", {
+    ...post.data,
+    isRelay: post.data.contactMethod === "relay",
+  });
+}
+
+export async function showContactForm(req: Request, res: Response) {
+  const slug = req.params.slug as string;
+  const title = await getPostTitle(slug);
+
+  if (!title.success) {
+    return res.status(404).render("error");
+  }
+
+  res.render("jobs/contact", { heading: title.data, slug });
+}
+
+export async function submitContactForm(req: Request, res: Response) {
+  const applicationData = req.body;
+  const result = await submitApplicationForApproval(applicationData);
+
+  if (!result.success) {
+    return res.render("jobs/contact", {
+      serverError: "Something went wrong.",
+      values: { email: applicationData.email, message: applicationData.message },
+      slug: applicationData.slug,
+      heading: applicationData.heading,
+    });
+  }
+
+  res.render("success", { message: "Your application has been forwarded." });
 }

@@ -24,6 +24,6 @@ export function validate(
       },
       "Validation fails",
     );
-    res.render(view, { ...viewData, fieldErrors, values: req.body });
+    res.render(view, { ...viewData, ...req.query, ...req.params, ...req.body, fieldErrors, values: req.body });
   };
 }

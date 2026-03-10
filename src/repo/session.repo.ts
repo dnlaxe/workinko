@@ -61,7 +61,6 @@ export async function approveSession(sessionId: number) {
       status: "approved",
       approvedAt: now,
       rejectedAt: null,
-      expiresAt: now,
     })
     .where(eq(currentSession.id, sessionId));
 }
@@ -74,7 +73,13 @@ export async function rejectSession(sessionId: number) {
       status: "rejected",
       approvedAt: null,
       rejectedAt: now,
-      expiresAt: now,
     })
     .where(eq(currentSession.id, sessionId));
+}
+
+export async function submitSession(id: number) {
+  return db
+    .update(currentSession)
+    .set({ status: "pending_review", expiresAt: new Date() })
+    .where(eq(currentSession.id, id));
 }

@@ -3,7 +3,7 @@
 <a href="/admin/queue">← Back to queue</a>
 <h1>Session {{session.id}} — {{session.email}}</h1>
 
-<div class="p-2 border-b">
+<div >
   <h2><strong>Session details</strong></h2>
   <p><strong>ID</strong> {{session.id}}</p>
   <p><strong>Email</strong> {{session.email}}</p>
@@ -14,7 +14,7 @@
 </div>
 
 {{#each jobs}}
-  <div class="p-2 border-b">
+  <div >
     <p><strong>Job ID</strong> {{this.id}}</p>
     <p><strong>Session ID</strong> {{this.sessionId}}</p>
     <p><strong>Tier</strong> {{this.tier}}</p>

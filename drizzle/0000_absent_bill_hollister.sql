@@ -55,7 +55,6 @@ CREATE TABLE "magic_tokens" (
 	"session_id" integer NOT NULL,
 	"payment_id" text,
 	"expires_at" timestamp with time zone NOT NULL,
-	"used_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "magic_tokens_token_unique" UNIQUE("token")
 );
