@@ -96,3 +96,27 @@ No req? → appLogger
 ## 2026-03-10
 
 - Expired expired posts when board is called.
+
+## 2026-03-11
+
+- Reworked the public job board and posting flow.
+
+- Added board filtering by category and province. Live posts are now shown newest first.
+
+- Expanded form options a lot: more specializations, full province list, more cities, and month-based start dates.
+
+- Added dependent options on the form:
+  - specialization now depends on category
+  - city now depends on province
+
+- Did a broad UI pass across public, admin, and manage pages:
+  - cleaner cards and borders
+  - better spacing and button styles
+  - mobile filter toggle on the board
+  - proficiency values now render as labels instead of raw numbers
+
+- Kept the app on the system font stack for now.
+
+- CSS: `.current-element:has(input[name='category']:checked) .select-tag-hint {display: block;}`
+- Tailwind: `<div class="[&:has(input[name='category']:checked)_.select-tag-hint]:block">`
+- English: If this element contains a checked input with name="category", then any descendant with class .select-tag-hint should be displayed as block

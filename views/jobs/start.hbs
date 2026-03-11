@@ -1,24 +1,29 @@
 {{! views/jobs/start.hbs }}
-<form action="/jobs/start" method="POST" class="p-8">
-  <div>
-    <label class="block" for="email">Email</label>
-    <legend>We'll only use this to send you a receipt</legend>
-    <input
-      class="block w-full border border-slate-300"
-      id="email"
-      name="email"
-      type="email"
-      required
-      value="{{values.email}}"
-    />
-    {{#if fieldErrors.email}}
-      <div data-error="email">{{fieldErrors.email.[0]}}</div>
-    {{/if}}
-  </div>
-  <div class="flex mt-8">
-    <button
-      type="submit"
-      class="px-4 py-1 rounded-full bg-blue-500 text-white ml-auto"
-    >Continue</button>
-  </div>
-</form>
+<div class="max-w-3xl mx-auto w-full">
+  <form action="/jobs/start" method="POST" class="p-8">
+    <div>
+      <h1 class="text-2xl mb-6">Let's create your job post</h1>
+    </div>
+    <div>
+      <label class="block mb-2" for="email">First, we need you email address</label>
+      <p class="text-gray-700 mb-2">We'll only use this to send you a receipt</p>
+      <input
+        class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+        id="email"
+        name="email"
+        type="email"
+        required
+        value="{{values.email}}"
+      />
+      {{#if fieldErrors.email}}
+        <div data-error="email">{{fieldErrors.email.[0]}}</div>
+      {{/if}}
+    </div>
+    <div class="flex mt-8">
+      <button
+        type="submit"
+        class="px-4 py-1 rounded-full bg-blue-500 text-white ml-auto"
+      >Continue</button>
+    </div>
+  </form>
+</div>

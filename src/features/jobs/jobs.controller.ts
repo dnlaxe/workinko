@@ -5,10 +5,10 @@ import {
   getLivePosts,
   removeDraft,
   storeDraftPost,
-  getLivePost,
   getPostTitle,
   submitApplicationForApproval,
   submitDrafts,
+  getLivePost,
 } from "./jobs.services.js";
 import { jobFormOptions } from "./jobs.constants.js";
 import {
@@ -78,62 +78,6 @@ export async function storePendingJob(req: Request, res: Response) {
   return res.redirect("/jobs/drafts");
 }
 
-export async function addAnotherJob(req: Request, res: Response) {
-  const session = await getSessionBySessionId(req.sessionId);
-  const {
-    contactMethod,
-    contactUrl,
-    heading,
-    subheading,
-    category,
-    specialization,
-    contractType,
-    province,
-    city,
-    koreanProficiency,
-    englishProficiency,
-    otherLanguages,
-    visaSponsorship,
-    startDate,
-    fullDescription,
-  } = req.body;
-
-  const result = await storeDraftPost({
-    sessionId: req.sessionId,
-    contactMethod,
-    contactUrl,
-    contactEmail: session?.email ?? null,
-    heading,
-    subheading,
-    category,
-    specialization,
-    contractType,
-    province,
-    city,
-    koreanProficiency,
-    englishProficiency,
-    otherLanguages,
-    visaSponsorship,
-    startDate,
-    fullDescription,
-  });
-
-  if (!result.success) {
-    req.log.error(
-      { sessionId: req.sessionId, reason: result.error.reason },
-      "Failed to store draft",
-    );
-    return res.status(500).render("jobs/new", {
-      jobFormOptions,
-      values: req.body,
-      serverError: "Something went wrong. Please try again.",
-      sessionEmail: session?.email,
-    });
-  }
-
-  return res.redirect("/jobs/new");
-}
-
 export async function showSessionDrafts(req: Request, res: Response) {
   const result = await getSessionDrafts(req.sessionId);
 
@@ -153,7 +97,9 @@ export async function submitSessionDrafts(req: Request, res: Response) {
     req.log.error({ sessionId: req.sessionId }, "Failed to submit drafts");
     return res.status(500).render("jobs/drafts", { serverError: true });
   }
-  res.render("success", { message: "Your posts are under review. We'll be in touch soon." });
+  res.render("success", {
+    message: "Your posts are under review. We'll be in touch soon.",
+  });
 }
 
 export async function deleteDraft(req: Request, res: Response) {
@@ -166,15 +112,31 @@ export async function deleteDraft(req: Request, res: Response) {
 }
 
 export async function showBoard(req: Request, res: Response) {
-  const result = await getLivePosts();
+  const category = req.query.category as string | string[] | undefined;
+  const province = req.query.province as string | string[] | undefined;
+  const result = await getLivePosts(category, province);
+  const categories = jobFormOptions.category;
+  const provinces = jobFormOptions.province;
 
   if (!result.success) {
     req.log.error({ sessionId: req.sessionId }, "Failed to load live posts");
-    return res.status(500).render("jobs/board", { boardError: true });
+    return res.status(500).render("jobs/board", {
+      boardError: true,
+      categories,
+      provinces,
+      activeCategory: category,
+      activeProvince: province,
+    });
   }
 
   const posts = result.data.length ? result.data : null;
-  res.render("jobs/board", { posts });
+  res.render("jobs/board", {
+    posts,
+    categories,
+    provinces,
+    activeCategory: category,
+    activeProvince: province,
+  });
 }
 
 export async function getForm(req: Request, res: Response) {
@@ -231,7 +193,10 @@ export async function submitContactForm(req: Request, res: Response) {
   if (!result.success) {
     return res.render("jobs/contact", {
       serverError: "Something went wrong.",
-      values: { email: applicationData.email, message: applicationData.message },
+      values: {
+        email: applicationData.email,
+        message: applicationData.message,
+      },
       slug: applicationData.slug,
       heading: applicationData.heading,
     });

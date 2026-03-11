@@ -1,4 +1,4 @@
-import { and, eq, like, lt } from "drizzle-orm";
+import { and, desc, eq, like, lt } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { livePost } from "../db/schema.js";
 import { PendingPostRow } from "../types/types.js";
@@ -68,7 +68,11 @@ export async function updateLivePost(
 }
 
 export async function getAllLivePosts() {
-  return db.select().from(livePost).where(eq(livePost.status, "active"));
+  return db
+    .select()
+    .from(livePost)
+    .where(eq(livePost.status, "active"))
+    .orderBy(desc(livePost.publishedAt));
 }
 
 export async function getLivePostById(id: number) {

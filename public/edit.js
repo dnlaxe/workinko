@@ -133,6 +133,7 @@ function show(index) {
     step.hidden = i !== index;
   });
   updateNav();
+  window.scrollTo(0, 0);
 }
 
 function goToStep(stepIndex) {

@@ -1,9 +1,34 @@
-<div>
-  <div class="flex justify-end px-4">
-    <button class="px-4 py-1 rounded-full border border-slate-300">Filter</button>
+<div class="md:flex">
+
+  <div class="md:w-60 md:shrink-0">
+    <div class="flex justify-end p-4 md:hidden">
+      <button class="filterBtn px-4 py-1 rounded-full border border-slate-200">Filter</button>
+    </div>
+    <form method="GET" action="/jobs/board" class="filter max-h-0 overflow-hidden md:max-h-none md:p-4 md:flex md:flex-col md:gap-4">
+      <div class="p-4 md:p-0 flex flex-wrap gap-4">
+        {{#each categories}}
+          <label class="cursor-pointer group">
+            <input type="checkbox" name="category" value="{{this}}" class="sr-only peer" {{#if (contains ../activeCategory this)}}checked{{/if}}>
+            <span class="px-4 py-1 rounded-full border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+          </label>
+        {{/each}}
+      </div>
+      <div class="pb-4 px-4 md:p-0 flex flex-wrap gap-4">
+        {{#each provinces}}
+          <label class="cursor-pointer group">
+            <input type="checkbox" name="province" value="{{this}}" class="sr-only peer" {{#if (contains ../activeProvince this)}}checked{{/if}}>
+            <span class="px-4 py-1 rounded-full border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+          </label>
+        {{/each}}
+      </div>
+      <div class="px-4 py-8 md:px-0 flex justify-between">
+        <button type="submit" class="px-4 py-1 rounded-full bg-blue-500 text-white">Apply</button>
+        <a href="/jobs/board" class="px-4 py-1 rounded-full text-slate-900 bg-white underline decoration-slate-900">Reset</a>
+      </div>
+    </form>
   </div>
 
-  <div class="flex flex-col gap-4 p-4">
+  <div class="flex-1 flex flex-col gap-4 p-4 border-t md:border-t-0 md:border-l border-slate-200">
     {{#if boardError}}
       <p class="text-slate-500 text-sm p-4">Something went wrong loading posts.</p>
     {{else if posts}}
@@ -11,7 +36,10 @@
         {{> public-job-card this}}
       {{/each}}
     {{else}}
-      <p class="text-slate-500 text-sm p-4">No live posts yet.</p>
+      <p class="text-slate-500 p-4 pb-0">No live posts yet.</p><a href="/jobs/board" class="px-4 rounded-full text-slate-900 bg-white underline decoration-slate-900">Reset</a>
     {{/if}}
   </div>
+
 </div>
+
+<script src="/filter.js" defer></script>

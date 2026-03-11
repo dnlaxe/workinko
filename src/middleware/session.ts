@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { isProduction } from "../config/config.js";
 import {
   createSession,
+  getSessionBySessionId,
   getSessionByToken,
   refreshSession,
 } from "../repo/session.repo.js";
@@ -35,7 +36,7 @@ export async function resolveSession(
       }
     }
 
-    const session = await createSession(expiresAt); // no email yet
+    const session = await createSession(expiresAt);
     res.cookie("sid", session.token, cookieOptions);
     req.sessionId = session.id;
     req.log.info({ sessionId: session.id }, "New session created");
@@ -44,4 +45,16 @@ export async function resolveSession(
     req.log.error({ err }, "Session middleware error");
     next(err);
   }
+}
+
+export async function requireGatewayEmail(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const session = await getSessionBySessionId(req.sessionId);
+  if (!session?.email) {
+    return res.redirect("/jobs/start");
+  }
+  next();
 }

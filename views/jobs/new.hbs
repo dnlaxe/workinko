@@ -1,5 +1,28 @@
-{{! views/jobs/new.hbs }}
-<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8">
+  {{#if drafts}}
+<div class="drafts-bar border-b bg-slate-100 border-slate-200 p-4 md:border-x md:border-t max-w-3xl mx-auto md:mt-4 md:rounded">
+  <div class="flex flex-rows justify-between">
+    <div>
+      {{#each drafts}}
+        <div>
+          {{this.heading}}
+        </div>
+      {{/each}}
+    </div>
+    <div>
+      <a href="/jobs/drafts" class="px-4 py-1 rounded-full bg-slate-500 text-white">See drafts</a>
+    </div>
+  </div>
+</div>
+
+{{else if draftsError}}
+<div>
+  <p>Could not load drafts.</p>
+</div>
+{{/if}}
+
+<div class="max-w-3xl mx-auto w-full">
+
+<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8 pb-24">
 
 {{#if serverError}}
   <p>{{serverError}}</p>
@@ -8,18 +31,23 @@
   <div class="step">
     <div class="step__content">
       <fieldset>
-        <legend>How do you want to be contacted?</legend>
+        <h1 class="text-lg underline mb-2">Contact details</h1>
+        <p class="mb-2">How do you want to be contacted?</p>
 
         {{#each jobFormOptions.contactMethod}}
-          <label class="block">
+          <label class="block mb-1.5 cursor-pointer group">
             <input
               type="radio"
               name="contactMethod"
               value="{{this}}"
               required
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
+              class="sr-only peer"
             />
-            {{this}}
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
+
+            </span>
           </label>
         {{/each}}
 
@@ -29,15 +57,16 @@
 
         <div
           data-contact-field="link"
+          class="mt-4"
           {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
         >
-          <label class="block" for="contactUrl">URL</label>
+          <label class="block" for="contactUrl">Url</label>
           <input
             id="contactUrl"
             name="contactUrl"
             type="url"
             value="{{values.contactUrl}}"
-            class="block w-full border border-slate-300"
+            class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -46,6 +75,7 @@
 
         <div
           data-contact-field="relay"
+          class="mt-4"
           {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
         >
           <p>We'll use your email: <strong>{{sessionEmail}}</strong></p>
@@ -55,14 +85,236 @@
   </div>
 
   <div class="step" hidden>
+    <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
+      <fieldset>
+        <h1 class="text-lg underline mb-2">Job details</h1>
+        <p class="mb-2">Is this a teaching or non-teaching job?</p>
+
+        {{#each jobFormOptions.category}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="category"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.category this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <div class="select-tag-hint hidden">
+        <p class="mt-4 mb-2">Select a tag</p>
+      </div>
+
+      {{#each jobFormOptions.specialization}}
+        <label class="block mb-1.5 cursor-pointer group">
+          <input
+            type="radio"
+            name="specialization"
+            value="{{this}}"
+            required
+            {{#if (eq ../values.specialization this)}}checked{{/if}}
+            class="sr-only peer"
+          />
+          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            {{this}}
+          </span>
+        </label>
+      {{/each}}
+    </div>
+  </div>
+
+<div class="step" hidden>
+  <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
+    <fieldset>
+      <h1 class="text-lg underline mb-2">Location</h1>
+      <p class="mb-2">Province</p>
+
+      <div class="grid grid-cols-2 gap-1">
+        {{#each jobFormOptions.province}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="province"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.province this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </div>
+    </fieldset>
+
+    <div class="select-tag-hint hidden">
+      <p class="mt-4 mb-2">Select the nearest city</p>
+    </div>
+
+    {{#each jobFormOptions.city}}
+      <label class="block mb-1.5 cursor-pointer group">
+        <input
+          type="radio"
+          name="city"
+          value="{{this}}"
+          required
+          {{#if (eq ../values.city this)}}checked{{/if}}
+          class="sr-only peer"
+        />
+        <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+          {{this}}
+        </span>
+      </label>
+    {{/each}}
+  </div>
+</div>
+
+  <div class="step" hidden>
+    <div class="step__content">
+      <fieldset>
+        <h1 class="text-lg underline mb-2">Language proficiency</h1>
+        <p class="mb-2">Korean proficiency</p>
+
+        {{#each jobFormOptions.koreanProficiency}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="koreanProficiency"
+              value="{{value}}"
+              required
+              {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{label}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
+        <p class="mb-2 mt-4">English proficiency</p>
+
+        {{#each jobFormOptions.englishProficiency}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="englishProficiency"
+              value="{{value}}"
+              required
+              {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{label}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <div class="mt-4">
+        <label class="block" for="otherLanguages">Other languages</label>
+        <input
+          id="otherLanguages"
+          name="otherLanguages"
+          type="text"
+          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mt-2"
+          value="{{values.otherLanguages}}"
+        />
+        {{#if fieldErrors.otherLanguages}}
+          <div data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <div class="step" hidden>
+    <div class="step__content">
+      <fieldset>
+        <h1 class="text-lg underline mb-2">Contract </h1>
+        <p class="mb-2">Type</p>
+
+        {{#each jobFormOptions.contractType}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="contractType"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.contractType this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
+        <p class="mb-2 mt-4">Visa sponsorship</p>
+
+        {{#each jobFormOptions.visaSponsorship}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="visaSponsorship"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="step" hidden>
+    <div class="step__content">
+      <fieldset>
+        <h1 class="text-lg underline mb-2">Start date</h1>
+        <p class="mb-2">When does this position begin?</p>
+
+        {{#each jobFormOptions.startDate}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="startDate"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.startDate this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="step" hidden>
     <div class="step__content">
       <div>
+        <h1 class="text-lg underline mb-2">Job description</h1>
         <label class="block" for="heading">Heading</label>
         <input
           id="heading"
           name="heading"
           type="text"
-          class="block w-full border border-slate-300"
+          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mb-2"
           required
           value="{{values.heading}}"
         />
@@ -77,7 +329,7 @@
           id="subheading"
           name="subheading"
           type="text"
-          class="block w-full border border-slate-300"
+          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mb-2"
           required
           value="{{values.subheading}}"
         />
@@ -85,202 +337,11 @@
           <div data-error="subheading">{{fieldErrors.subheading.[0]}}</div>
         {{/if}}
       </div>
-    </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Category</legend>
-
-        {{#each jobFormOptions.category}}
-          <label class="block">
-            <input
-              type="radio"
-              name="category"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.category this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>Specialization</legend>
-
-        {{#each jobFormOptions.specialization}}
-          <label class="block">
-            <input
-              type="radio"
-              name="specialization"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.specialization this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Province</legend>
-
-        {{#each jobFormOptions.province}}
-          <label class="block">
-            <input
-              type="radio"
-              name="province"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.province this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>City</legend>
-
-        {{#each jobFormOptions.city}}
-          <label class="block">
-            <input
-              type="radio"
-              name="city"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.city this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Korean proficiency</legend>
-
-        {{#each jobFormOptions.koreanProficiency}}
-          <label class="block">
-            <input
-              type="radio"
-              name="koreanProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
-            />
-            {{label}}
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>English proficiency</legend>
-
-        {{#each jobFormOptions.englishProficiency}}
-          <label class="block">
-            <input
-              type="radio"
-              name="englishProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
-            />
-            {{label}}
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <div>
-        <label class="block" for="otherLanguages">Other languages</label>
-        <input
-          id="otherLanguages"
-          name="otherLanguages"
-          type="text"
-          class="block w-full border border-slate-300"
-          value="{{values.otherLanguages}}"
-        />
-        {{#if fieldErrors.otherLanguages}}
-          <div data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Visa sponsorship</legend>
-
-        {{#each jobFormOptions.visaSponsorship}}
-          <label class="block">
-            <input
-              type="radio"
-              name="visaSponsorship"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Contract type</legend>
-
-        {{#each jobFormOptions.contractType}}
-          <label class="block">
-            <input
-              type="radio"
-              name="contractType"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.contractType this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>Start date</legend>
-
-        {{#each jobFormOptions.startDate}}
-          <label class="block">
-            <input
-              type="radio"
-              name="startDate"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.startDate this)}}checked{{/if}}
-            />
-            {{this}}
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
       <div>
         <label class="block" for="fullDescription">Full description</label>
         <textarea
-          class="block w-full h-[40%] border border-slate-300 resize-none p-2"
+          class="block w-full h-[40%] px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 resize-none"
           id="fullDescription"
           name="fullDescription"
           required
@@ -302,35 +363,13 @@
 
   <div class="review" hidden>
     <div class="flex flex-rows justify-end space-x-8 px-4">
-      <button type="submit" formaction="/jobs/new/add-another" class="btn-add-another underline">Add another job</button>
       <button type="submit" class="btn-confirm px-4 py-1 rounded-full bg-green-500 text-white">Confirm</button>
     </div>
   </div>
 
 </form>
 
-{{#if drafts}}
-<div class="drafts-bar fixed bottom-0 left-0 right-0 border-t bg-slate-100 border-slate-300 p-4">
-  <div class="flex flex-rows justify-between">
-    <div>
-      {{#each drafts}}
-        <div>
-          {{this.heading}}
-        </div>
-      {{/each}}
-    </div>
-    <div>
-      <a href="/jobs/drafts" class="px-4 py-1 rounded-full bg-slate-500 text-white">See drafts</a>
-    </div>
-  </div>
 </div>
-
-
-
-{{else if draftsError}}
-<div>
-  <p>Could not load drafts.</p>
-</div>
-{{/if}}
 
 <script src="/new.js" defer></script>
+<script src="/options.js" defer></script>

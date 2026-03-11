@@ -3,17 +3,17 @@
 <div class="flex flex-col gap-4 p-4">
   {{#if messages}}
     {{#each messages}}
-      <div class="border border-slate-300">
+      <div class="border border-slate-200 rounded">
         <div class="flex flex-row">
-          <div class="w-8 border-r border-slate-300 bg-slate-100"></div>
+          <div class="w-8 border-r border-slate-200 bg-slate-100"></div>
           <div class="flex-1">
-            <div class="border-b border-slate-300 px-4 py-2">
+            <div class="border-b border-slate-200 px-4 py-2">
               <div class="flex flex-col text-slate-700">
                 <span>From: {{fromEmail}}</span>
                 <span>To: {{toEmail}}</span>
               </div>
             </div>
-            <div class="border-b border-slate-300 px-4 py-2">
+            <div class="border-b border-slate-200 px-4 py-2">
               <span>{{message}}</span>
             </div>
             <div class="flex px-4 py-2 gap-4">
@@ -21,7 +21,7 @@
                 <button type="submit" class="rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Approve</button>
               </form>
               <form method="POST" action="/admin/relay/{{id}}/reject">
-                <button type="submit" class="border-b-2 bg-slate-400 border-slate-500 text-slate-100 px-4 py-1">Reject</button>
+                <button type="submit" class="rounded-full bg-slate-500 text-white px-4 py-1">Reject</button>
               </form>
             </div>
           </div>

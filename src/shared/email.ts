@@ -6,10 +6,7 @@ import { Result } from "./error.js";
 
 const resend = new Resend(config.resend_api);
 
-export async function sendReceipt(
-  manageUrl: string,
-  //   email: string,
-): Promise<Result<void>> {
+export async function sendReceipt(manageUrl: string): Promise<Result<void>> {
   appLogger.info({ manageUrl }, "Url link");
   const content = `
     <h1>Thank you for posting. Click the link to manage your post.</h1>

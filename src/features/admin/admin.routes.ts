@@ -1,10 +1,8 @@
 import { Router } from "express";
 import {
   approveRelayMessage,
-  // approveRelayMessage,
   approveSession,
   rejectRelayMessage,
-  // rejectRelayMessage,
   rejectSession,
   showLivePostDetail,
   showLivePosts,

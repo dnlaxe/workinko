@@ -64,7 +64,7 @@ const fieldGroups = [
 
 function buildReviewItem(entries, stepIndex) {
   const wrapper = document.createElement("div");
-  wrapper.className = "border-b border-x border-slate-300 p-4 first:border-t";
+  wrapper.className = "border-b border-x border-slate-200 p-4 first:border-t";
 
   const header = document.createElement("div");
   header.className = "flex justify-between";
@@ -151,6 +151,7 @@ function show(index) {
     step.hidden = i !== index;
   });
   updateNav();
+  window.scrollTo(0, 0);
 }
 
 function goToStep(stepIndex) {
@@ -176,7 +177,7 @@ function showReview() {
   editingFromReview = false;
   steps[current].hidden = true;
   nav.hidden = true;
-  if (draftsBar) draftsBar.hidden = true;
+  if (draftsBar) draftsBar.hidden = false;
   buildReview();
   review.hidden = false;
 }

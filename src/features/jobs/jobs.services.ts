@@ -64,10 +64,19 @@ export async function removeDraft(
   }
 }
 
-export async function getLivePosts(): Promise<Result<LivePostRow[]>> {
+export async function getLivePosts(
+  category: string | string[] | undefined,
+  province: string | string[] | undefined,
+): Promise<Result<LivePostRow[]>> {
   try {
     await expireOverduePosts();
-    const posts = await getAllLivePosts();
+    let posts = await getAllLivePosts();
+    if (category && category.length !== 0) {
+      posts = posts.filter((p) => category.includes(p.category));
+    }
+    if (province && province.length !== 0) {
+      posts = posts.filter((p) => province.includes(p.province));
+    }
     return { success: true, data: posts };
   } catch (err) {
     appLogger.error({ err }, "getLivePosts failed");
@@ -98,7 +107,10 @@ export async function getSessionAndDrafts(
     const session = await getSessionBySessionId(sessionId);
     return { success: true, data: { drafts: draftsResult.data, session } };
   } catch (err) {
-    appLogger.error({ err, sessionId }, "getSessionAndDrafts failed fetching session");
+    appLogger.error(
+      { err, sessionId },
+      "getSessionAndDrafts failed fetching session",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }

@@ -63,3 +63,21 @@
 ## [UI] - 2026-03-10
 
 - Layout and basic styling
+
+## [Board + Form UX] - 2026-03-11
+
+### Added
+
+- Multistep form styling
+- Category and province filters on the public job board
+- Dynamic specialization and city options in the job form
+
+### Changed
+
+- Live posts now sort by newest published first
+- Refined the UI across public, admin, and manage pages
+- Proficiency values now display as human-readable labels
+
+### Removed
+
+- 'Add another job' button from review
