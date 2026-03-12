@@ -119,4 +119,37 @@ No req? → appLogger
 
 - CSS: `.current-element:has(input[name='category']:checked) .select-tag-hint {display: block;}`
 - Tailwind: `<div class="[&:has(input[name='category']:checked)_.select-tag-hint]:block">`
-- English: If this element contains a checked input with name="category", then any descendant with class .select-tag-hint should be displayed as block
+- English: If this element contains a checked input with name="category", then any descendant with class .select-tag-hint should be displayed as block.
+
+## 2026-03-12
+
+- Express docs recommend rate limiter flexible
+- made simple rate limiter
+
+- a simple test for rate limiter:
+
+`for i in {1..12}; do
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000/db-check
+done
+200
+200
+200
+200
+200
+200
+200
+200
+200
+200
+429
+429`
+
+- Made hideFooter, step progress bar for mobile UI
+- No need for CSRF worries
+- Audit table
+
+Later:
+
+idea: make expiry and audit insert happen in one DB transaction
+
+idempotent?

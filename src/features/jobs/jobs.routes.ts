@@ -15,29 +15,44 @@ import {
 } from "./jobs.controller.js";
 import { jobFormOptions } from "./jobs.constants.js";
 import {
+  hasCurrentSession,
   requireGatewayEmail,
   resolveSession,
 } from "../../middleware/session.js";
 import { startSchema } from "./jobs.schema.js";
+import hideFooter from "../../middleware/hideFooter.js";
 
 const router = Router();
 
 router.get("/jobs/board", showBoard);
 
-router.get("/jobs/start", resolveSession, (_req: Request, res: Response) => {
-  res.render("jobs/start");
-});
+router.get(
+  "/jobs/start",
+  resolveSession,
+  hasCurrentSession,
+  hideFooter,
+  (_req: Request, res: Response) => {
+    res.render("jobs/start");
+  },
+);
 
 router.post(
   "/jobs/start",
   resolveSession,
+  hideFooter,
   validate(startSchema, "jobs/start"),
   storeGatewayEmail,
 );
 
-router.get("/jobs/new", resolveSession, requireGatewayEmail, getForm);
+router.get(
+  "/jobs/new",
+  resolveSession,
+  requireGatewayEmail,
+  hideFooter,
+  getForm,
+);
 
-router.get("/jobs/drafts", resolveSession, showSessionDrafts);
+router.get("/jobs/drafts", resolveSession, hideFooter, showSessionDrafts);
 
 router.post("/jobs/drafts/:id/delete", resolveSession, deleteDraft);
 
@@ -47,6 +62,7 @@ router.post(
   "/jobs/new",
   resolveSession,
   requireGatewayEmail,
+  hideFooter,
   validate(jobFormSchema, "jobs/new", { jobFormOptions }),
   storePendingJob,
 );

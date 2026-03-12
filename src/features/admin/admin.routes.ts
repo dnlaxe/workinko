@@ -6,12 +6,15 @@ import {
   rejectSession,
   showLivePostDetail,
   showLivePosts,
+  showLog,
   showPendingPosts,
   showPendingRelayMessages,
   showSessionPosts,
 } from "./admin.controller.js";
 
 const router = Router();
+
+router.get("/admin/dashboard", showLog);
 
 router.get("/admin/queue", showPendingPosts);
 

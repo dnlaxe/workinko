@@ -8,7 +8,8 @@ export type appError =
   | { reason: "TOKEN_NOT_FOUND" }
   | { reason: "TOKEN_EXPIRED" }
   | { reason: "SLUG_CREATION_ERROR" }
-  | { reason: "SLUG_NOT_FOUND" };
+  | { reason: "SLUG_NOT_FOUND" }
+  | { reason: "EMAIL_NOT_SENT" };
 
 export type Result<T> =
   | { success: true; data: T }

@@ -1,11 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
-  a, button, input[type="radio"], input[type="checkbox"] {
+  a,
+  button,
+  input[type="radio"],
+  input[type="checkbox"] {
     cursor: pointer;
   }
 }

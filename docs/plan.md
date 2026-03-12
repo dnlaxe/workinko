@@ -4,10 +4,8 @@
 
 Job board.
 No accounts.
-Posters post and manage listings via magic
-links.
-Job seekers browse and contact employers through a hidden
-email relay.
+Posters post and manage listings via magic links.
+Job seekers browse and contact employers through a hidden email relay.
 Admin approves everything before it goes live.
 
 ## Stack

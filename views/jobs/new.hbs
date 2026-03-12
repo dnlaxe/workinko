@@ -1,34 +1,54 @@
-  {{#if drafts}}
-<div class="drafts-bar border-b bg-slate-100 border-slate-200 p-4 md:border-x md:border-t max-w-3xl mx-auto md:mt-4 md:rounded">
-  <div class="flex flex-rows justify-between">
-    <div>
-      {{#each drafts}}
-        <div>
-          {{this.heading}}
-        </div>
-      {{/each}}
-    </div>
-    <div>
-      <a href="/jobs/drafts" class="px-4 py-1 rounded-full bg-slate-500 text-white">See drafts</a>
-    </div>
-  </div>
-</div>
 
-{{else if draftsError}}
-<div>
-  <p>Could not load drafts.</p>
-</div>
-{{/if}}
 
-<div class="max-w-3xl mx-auto w-full">
+<div class="max-w-2xl mx-auto w-full border border-slate-200 md:mt-4 md:rounded flex flex-col flex-1">
 
-<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8 pb-24">
+<form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8 flex flex-col flex-1">
 
 {{#if serverError}}
   <p>{{serverError}}</p>
 {{/if}}
 
-  <div class="step">
+  <div class="mb-6" aria-label="Form progress">
+    <div class="flex gap-1">
+      <span
+        data-progress-index="0"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="1"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="2"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="3"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="4"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="5"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+      <span
+        data-progress-index="6"
+        class="flex-1 bg-slate-200"
+        style="height: 6px;"
+      ></span>
+    </div>
+  </div>
+
+  <div class="step flex-1">
     <div class="step__content">
       <fieldset>
         <h1 class="text-lg underline mb-2">Contact details</h1>
@@ -84,7 +104,7 @@
     </div>
   </div>
 
-  <div class="step" hidden>
+  <div class="step flex-1" hidden>
     <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
       <fieldset>
         <h1 class="text-lg underline mb-2">Job details</h1>
@@ -129,7 +149,7 @@
     </div>
   </div>
 
-<div class="step" hidden>
+<div class="step flex-1" hidden>
   <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
     <fieldset>
       <h1 class="text-lg underline mb-2">Location</h1>
@@ -158,25 +178,27 @@
       <p class="mt-4 mb-2">Select the nearest city</p>
     </div>
 
-    {{#each jobFormOptions.city}}
-      <label class="block mb-1.5 cursor-pointer group">
-        <input
-          type="radio"
-          name="city"
-          value="{{this}}"
-          required
-          {{#if (eq ../values.city this)}}checked{{/if}}
-          class="sr-only peer"
-        />
-        <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
-          {{this}}
-        </span>
-      </label>
-    {{/each}}
+    <div class="grid grid-cols-2 gap-1">
+      {{#each jobFormOptions.city}}
+        <label class="block mb-1.5 cursor-pointer group">
+          <input
+            type="radio"
+            name="city"
+            value="{{this}}"
+            required
+            {{#if (eq ../values.city this)}}checked{{/if}}
+            class="sr-only peer"
+          />
+          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            {{this}}
+          </span>
+        </label>
+      {{/each}}
+    </div>
   </div>
 </div>
 
-  <div class="step" hidden>
+  <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
         <h1 class="text-lg underline mb-2">Language proficiency</h1>
@@ -235,7 +257,7 @@
     </div>
   </div>
 
-  <div class="step" hidden>
+  <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
         <h1 class="text-lg underline mb-2">Contract </h1>
@@ -280,7 +302,7 @@
     </div>
   </div>
 
-  <div class="step" hidden>
+  <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
         <h1 class="text-lg underline mb-2">Start date</h1>
@@ -305,7 +327,7 @@
     </div>
   </div>
 
-  <div class="step" hidden>
+  <div class="step flex-1" hidden>
     <div class="step__content">
       <div>
         <h1 class="text-lg underline mb-2">Job description</h1>
@@ -355,19 +377,41 @@
 
   <nav class="step__nav flex flex-rows mt-8">
     <button type="button" class="btn-back disabled:opacity-50 underline">Back</button>
-    <button type="button" class="btn-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-green-500 text-white">Next</button>
-    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-green-500 text-white">Next</button>
-    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-slate-500 text-white" hidden>Back to review</button>
+    <button type="button" class="btn-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-emerald-300 border border-emerald-400 text-slate-700">Next</button>
+    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-emerald-300 border border-emerald-400 text-slate-700">Next</button>
+    <button type="button" class="btn-back-to-review text-lg disabled:opacity-50 ml-auto px-6 py-2 rounded bg-slate-500 text-white font-semibold" hidden>Back to review</button>
   </nav>
 
 
   <div class="review" hidden>
-    <div class="flex flex-rows justify-end space-x-8 px-4">
+    <div class="flex flex-rows justify-end px-4">
       <button type="submit" class="btn-confirm px-4 py-1 rounded-full bg-green-500 text-white">Confirm</button>
     </div>
   </div>
 
 </form>
+
+{{#if drafts}}
+  <div class="drafts-bar border-t bg-slate-50 border-slate-200 p-8 w-full md:mt-4 md:rounded-b">
+    <div class="flex flex-row justify-between">
+      <div>
+        {{#each drafts}}
+          <div>
+            {{this.heading}}
+          </div>
+        {{/each}}
+      </div>
+      <div>
+        <a href="/jobs/drafts" class="px-4 py-1 rounded-full bg-slate-500 text-white">See drafts</a>
+      </div>
+    </div>
+  </div>
+
+{{else if draftsError}}
+<div>
+  <p>Could not load drafts.</p>
+</div>
+{{/if}}
 
 </div>
 

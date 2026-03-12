@@ -48,13 +48,12 @@ function syncContactFields() {
 // review builder
 const fieldGroups = [
   ["contactMethod", "contactUrl"],
-  ["heading", "subheading"],
   ["category", "specialization"],
   ["province", "city"],
-  ["contractType", "startDate"],
   ["koreanProficiency", "englishProficiency", "otherLanguages"],
-  ["visaSponsorship"],
-  ["fullDescription"],
+  ["contractType", "visaSponsorship"],
+  ["startDate"],
+  ["heading", "subheading", "fullDescription"],
 ];
 
 function buildReviewItem(entries, stepIndex) {
@@ -62,7 +61,7 @@ function buildReviewItem(entries, stepIndex) {
   wrapper.className = "border-b border-x border-slate-300 p-4 first:border-t";
 
   const header = document.createElement("div");
-  header.className = "flex justify-between";
+  header.className = "flex w-full flex-col items-start gap-2";
 
   const fields = document.createElement("div");
   for (const [name, value] of entries) {
@@ -79,7 +78,7 @@ function buildReviewItem(entries, stepIndex) {
   const change = document.createElement("button");
   change.type = "button";
   change.textContent = "change";
-  change.className = "text-blue-500 underline";
+  change.className = "self-end text-blue-500 underline";
   change.addEventListener("click", () => goToStep(stepIndex));
 
   header.append(fields, change);

@@ -6,6 +6,8 @@ export const config = {
   db_url: env.DATABASE_URL,
   resend_api: env.RESEND_API_KEY,
   base_url: env.BASE_URL,
+  admin_username: env.ADMIN_USERNAME,
+  admin_password: env.ADMIN_PASSWORD,
 };
 
 export const isDevelopment = config.node_env === "development";

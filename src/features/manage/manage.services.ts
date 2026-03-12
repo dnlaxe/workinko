@@ -9,6 +9,7 @@ import { Result } from "../../shared/error.js";
 import { LivePostRow } from "../../types/types.js";
 import { JobFormInput } from "../jobs/jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
+import { insertAuditEvents } from "../../repo/audit.repo.js";
 
 export async function getUsersPosts(
   token: string,
@@ -63,7 +64,10 @@ export async function getPostToEdit(
       return { success: false, error: { reason: "POST_NOT_FOUND" } };
     }
   } catch (err) {
-    appLogger.error({ err, id, sessionId }, "getPostToEdit failed fetching post");
+    appLogger.error(
+      { err, id, sessionId },
+      "getPostToEdit failed fetching post",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -89,6 +93,23 @@ export async function updatePost(
 
   try {
     await updateLivePost(postId, sessionId, data);
+
+    await insertAuditEvents([
+      {
+        eventType: "post.updated",
+        actorType: "employer",
+        entityType: "live_post",
+        entityId: postId,
+        sessionId,
+        postId,
+        message: "Live post updated by employer",
+        metadata: {
+          heading: data.heading,
+          subheading: data.subheading,
+          contactMethod: data.contactMethod,
+        },
+      },
+    ]);
   } catch (err) {
     appLogger.error({ err, postId, sessionId }, "updatePost DB error");
     return { success: false, error: { reason: "DB_ERROR" } };
@@ -113,6 +134,17 @@ export async function unpublishUserPost(
     if (unpublish.rowCount === 0) {
       return { success: false, error: { reason: "POST_NOT_FOUND" } };
     }
+    await insertAuditEvents([
+      {
+        eventType: "post.unpublished",
+        actorType: "employer",
+        entityType: "live_post",
+        entityId: id,
+        sessionId: row.sessionId,
+        postId: id,
+        message: "Live post unpublished by employer",
+      },
+    ]);
   } catch (err) {
     appLogger.error({ err, id }, "unpublishUserPost DB error");
     return { success: false, error: { reason: "DB_ERROR" } };

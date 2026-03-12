@@ -1,4 +1,11 @@
-import { pgTable, text, integer, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  integer,
+  timestamp,
+  pgEnum,
+  jsonb,
+} from "drizzle-orm/pg-core";
 
 export const currentSessionStatus = pgEnum("pending_session_status", [
   "draft",
@@ -181,4 +188,19 @@ export const payment = pgTable("payments", {
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
     .notNull()
     .defaultNow(),
+});
+
+export const auditEvent = pgTable("audit_events", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  eventType: text("event_type").notNull(),
+  actorType: text("actor_type").notNull(),
+  entityType: text("entity_type").notNull(),
+  entityId: integer("entity_id"),
+  sessionId: integer("session_id"),
+  postId: integer("post_id"),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
+    .notNull()
+    .defaultNow(),
+  metadata: jsonb("metadata").$type<Record<string, unknown>>(),
 });

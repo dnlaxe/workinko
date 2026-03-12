@@ -16,6 +16,7 @@ import {
   LivePostRow,
   SessionRow,
   RelayMessageRow,
+  AuditEventRow,
 } from "../../types/types.js";
 import { createMagicToken } from "../../repo/magic-token.repo.js";
 import { sendReceipt, sendRelayMessage } from "../../shared/email.js";
@@ -27,6 +28,7 @@ import {
   updateRelayMessageStatus,
 } from "../../repo/relay-message.repo.js";
 import { appLogger } from "../../middleware/logger.js";
+import { getLogs, insertAuditEvents } from "../../repo/audit.repo.js";
 
 export async function fetchPendingSessions(): Promise<Result<SessionRow[]>> {
   try {
@@ -79,9 +81,27 @@ export async function approveSessionByAdmin(
     // 3. If capture fails → return error (nothing published yet)
 
     await approveSession(sessionId);
+
+    await insertAuditEvents([
+      {
+        eventType: "session.approved",
+        actorType: "admin",
+        entityType: "session",
+        entityId: sessionId,
+        sessionId,
+        message: "Session approved by admin",
+        metadata: {
+          email,
+        },
+      },
+    ]);
+
     appLogger.info({ sessionId }, "Session approved");
   } catch (err) {
-    appLogger.error({ err, sessionId }, "approveSessionByAdmin failed approving session");
+    appLogger.error(
+      { err, sessionId },
+      "approveSessionByAdmin failed approving session",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -109,10 +129,32 @@ export async function approveSessionByAdmin(
         slugResult.data,
         tier,
       );
+
+      await insertAuditEvents([
+        {
+          eventType: "post.published",
+          actorType: "admin",
+          entityType: "live_post",
+          sessionId,
+          message: "Post published from approved session",
+          metadata: {
+            sourcePendingJobId: job.id,
+            slug: slugResult.data,
+            heading: job.heading,
+            subheading: job.subheading,
+            tier,
+            expiresAt: livePostExpiresAt,
+          },
+        },
+      ]);
     }
+
     appLogger.info({ sessionId, jobCount: jobs.length }, "Live posts inserted");
   } catch (err) {
-    appLogger.error({ err, sessionId }, "approveSessionByAdmin failed inserting live posts");
+    appLogger.error(
+      { err, sessionId },
+      "approveSessionByAdmin failed inserting live posts",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -145,6 +187,18 @@ export async function rejectSessionByAdmin(
 ): Promise<Result<void>> {
   try {
     await rejectSession(sessionId);
+
+    await insertAuditEvents([
+      {
+        eventType: "session.rejected",
+        actorType: "admin",
+        entityType: "session",
+        entityId: sessionId,
+        sessionId,
+        message: "Session rejected by admin",
+      },
+    ]);
+
     appLogger.info({ sessionId }, "Session rejected");
   } catch (err) {
     appLogger.error({ err, sessionId }, "rejectSessionByAdmin DB error");
@@ -191,13 +245,53 @@ export async function getPendingRelayMessages(): Promise<
 export async function rejectRelayMessageByAdmin(
   id: number,
 ): Promise<Result<void>> {
+  let message;
   try {
-    await updateRelayMessageStatus(id, "rejected");
-    return { success: true, data: undefined };
+    message = await getRelayMessageById(id);
+    if (!message) {
+      return { success: false, error: { reason: "POST_NOT_FOUND" } };
+    }
   } catch (err) {
-    appLogger.error({ err, id }, "rejectRelayMessageByAdmin DB error");
+    appLogger.error(
+      { err, id },
+      "rejectRelayMessageByAdmin failed fetching message",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
+
+  try {
+    await updateRelayMessageStatus(id, "rejected");
+  } catch (err) {
+    appLogger.error(
+      { err, id },
+      "updateRelayMessageStatus failed setting relay status to rejected",
+    );
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+
+  try {
+    await insertAuditEvents([
+      {
+        eventType: "relay.rejected",
+        actorType: "admin",
+        entityType: "relay_message",
+        entityId: id,
+        postId: message.jobId,
+        message: "Relay message rejected by admin",
+        metadata: {
+          fromEmail: message.fromEmail,
+          toEmail: message.toEmail,
+        },
+      },
+    ]);
+  } catch (err) {
+    appLogger.error(
+      { err, id },
+      "insertAuditEvents failed after relay was rejected",
+    );
+  }
+
+  return { success: true, data: undefined };
 }
 
 export async function approveRelayMessageByAdmin(
@@ -209,11 +303,18 @@ export async function approveRelayMessageByAdmin(
     if (!message)
       return { success: false, error: { reason: "POST_NOT_FOUND" } };
   } catch (err) {
-    appLogger.error({ err, id }, "approveRelayMessageByAdmin failed fetching message");
+    appLogger.error(
+      { err, id },
+      "approveRelayMessageByAdmin failed fetching message",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
   if (!message.fromEmail || !message.toEmail) {
+    appLogger.error(
+      { id, messageId: message.id },
+      "Relay message missing email fields",
+    );
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
@@ -222,13 +323,56 @@ export async function approveRelayMessageByAdmin(
     message.toEmail,
     message.message,
   );
-  if (!emailResult.success) return emailResult;
+
+  if (!emailResult.success) {
+    appLogger.error(
+      { id, fromEmail: message.fromEmail, toEmail: message.toEmail },
+      "sendRelayMessage failed",
+    );
+    return { success: false, error: { reason: "EMAIL_NOT_SENT" } };
+  }
 
   try {
     await updateRelayMessageStatus(id, "sent");
-    return { success: true, data: undefined };
   } catch (err) {
-    appLogger.error({ err, id }, "approveRelayMessageByAdmin failed updating status to sent");
+    appLogger.error(
+      { err, id },
+      "updateRelayMessageStatus failed setting relay status to sent",
+    );
+    return { success: false, error: { reason: "DB_ERROR" } };
+  }
+
+  try {
+    await insertAuditEvents([
+      {
+        eventType: "relay.sent",
+        actorType: "admin",
+        entityType: "relay_message",
+        entityId: id,
+        postId: message.jobId,
+        message: "Relay message approved and sent",
+        metadata: {
+          fromEmail: message.fromEmail,
+          toEmail: message.toEmail,
+        },
+      },
+    ]);
+  } catch (err) {
+    appLogger.error(
+      { err, id },
+      "insertAuditEvents failed after relay was sent",
+    );
+  }
+
+  return { success: true, data: undefined };
+}
+
+export async function getDataForLogs(): Promise<Result<AuditEventRow[]>> {
+  try {
+    const logs = await getLogs();
+    return { success: true, data: logs };
+  } catch (err) {
+    appLogger.error({ err }, "getDataForLogs DB error");
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 }

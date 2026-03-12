@@ -3,10 +3,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-<link rel="stylesheet" href="/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="max-w-6xl mx-auto w-full">
+  <body class="max-w-6xl mx-auto w-full flex flex-col min-h-screen">
     {{> public-navbar}}
-    {{{body}}}
+    <div class="flex-1 flex flex-col pb-8">
+      {{{body}}}
+    </div>
+    {{> public-footer}}
   </body>
 </html>

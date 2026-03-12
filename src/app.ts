@@ -13,6 +13,8 @@ import manageRouter from "./features/manage/manage.routes.js";
 import { sql } from "drizzle-orm";
 import { db } from "./db/db.js";
 import cookieParser from "cookie-parser";
+import rateLimiterMiddleware from "./middleware/rateLimiter.js";
+import { requireBasicAuth } from "./middleware/basicAuth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +34,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use(rateLimiterMiddleware);
+
 app.use(jobsRouter);
+app.use("/admin", requireBasicAuth);
 app.use(adminRouter);
 app.use(manageRouter);
 

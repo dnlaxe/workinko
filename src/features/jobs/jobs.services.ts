@@ -17,6 +17,7 @@ import {
   submitSession,
 } from "../../repo/session.repo.js";
 import { insertRelayMessage } from "../../repo/relay-message.repo.js";
+import { insertAuditEvents } from "../../repo/audit.repo.js";
 
 export async function storeDraftPost(
   data: JobFormInput & { sessionId: number; contactEmail?: string | null },
@@ -69,7 +70,39 @@ export async function getLivePosts(
   province: string | string[] | undefined,
 ): Promise<Result<LivePostRow[]>> {
   try {
-    await expireOverduePosts();
+    const expiredPosts = await expireOverduePosts();
+    if (expiredPosts.length !== 0) {
+      expiredPosts.forEach((p) => {
+        appLogger.info(
+          {
+            id: p.id,
+            sessionId: p.sessionId,
+            slug: p.slug,
+            title: p.heading,
+            expirayDate: p.expiresAt,
+          },
+          "post expired",
+        );
+      });
+    }
+    await insertAuditEvents(
+      expiredPosts.map((post) => ({
+        eventType: "post.expired",
+        actorType: "system",
+        entityType: "live_post",
+        entityId: post.id,
+        sessionId: post.sessionId,
+        postId: post.id,
+        message: "Post expired automatically",
+        metadata: {
+          slug: post.slug,
+          heading: post.heading,
+          scheduledExpiresAt: post.expiresAt,
+          source: "lazy_expiration",
+        },
+      })),
+    );
+
     let posts = await getAllLivePosts();
     if (category && category.length !== 0) {
       posts = posts.filter((p) => category.includes(p.category));
@@ -90,6 +123,7 @@ export async function getLivePost(slug: string): Promise<Result<LivePostRow>> {
     if (!post) {
       return { success: false, error: { reason: "SLUG_NOT_FOUND" } };
     }
+
     return { success: true, data: post };
   } catch (err) {
     appLogger.error({ err, slug }, "getLivePost failed");
@@ -133,6 +167,18 @@ export async function getPostTitle(slug: string): Promise<Result<string>> {
 export async function submitDrafts(sessionId: number): Promise<Result<void>> {
   try {
     await submitSession(sessionId);
+
+    await insertAuditEvents([
+      {
+        eventType: "session.submitted",
+        actorType: "employer",
+        entityType: "session",
+        entityId: sessionId,
+        sessionId,
+        message: "Session submitted for review",
+      },
+    ]);
+
     return { success: true, data: undefined };
   } catch (err) {
     appLogger.error({ err, sessionId }, "Failed to submit session");
@@ -159,6 +205,20 @@ export async function submitApplicationForApproval(
     if (!relay) {
       return { success: false, error: { reason: "DB_ERROR" } };
     }
+    await insertAuditEvents([
+      {
+        eventType: "relay.submitted",
+        actorType: "applicant",
+        entityType: "relay_message",
+        entityId: relay.id,
+        postId: post.id,
+        message: "Relay message submitted for admin review",
+        metadata: {
+          slug: data.slug,
+          fromEmail: data.email,
+        },
+      },
+    ]);
   } catch (err) {
     appLogger.error({ err }, "submitApplicationForApproval failed");
     return { success: false, error: { reason: "DB_ERROR" } };

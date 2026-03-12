@@ -18,6 +18,10 @@ const envSchema = z.object({
     .string()
     .length(36, { error: "RESEND_API_KEY needs to be 36 characters long" }),
   BASE_URL: z.url({ error: "BASE_URL must be a valid URL" }),
+  ADMIN_USERNAME: z.string().min(1, { error: "ADMIN_USERNAME is required" }),
+  ADMIN_PASSWORD: z
+    .string()
+    .min(4, { error: "ADMIN_PASSWORD must be at least 4 characters" }),
 });
 
 const parsed = envSchema.safeParse(process.env);

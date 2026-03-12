@@ -9,6 +9,7 @@ import {
   getPendingRelayMessages,
   rejectRelayMessageByAdmin,
   rejectSessionByAdmin,
+  getDataForLogs,
 } from "./admin.services.js";
 
 export async function showPendingPosts(req: Request, res: Response) {
@@ -132,4 +133,15 @@ export async function approveRelayMessage(req: Request, res: Response) {
 
   req.log.info({ id }, "Relay message approved and sent");
   return res.redirect("/admin/relay");
+}
+
+export async function showLog(req: Request, res: Response) {
+  const result = await getDataForLogs();
+
+  if (!result.success) {
+    req.log.error({ reason: result.error.reason }, "Failed to get logs");
+    return res.status(500).render("admin/dashboard", { serverError: true });
+  }
+
+  return res.render("admin/dashboard", { logs: result.data });
 }

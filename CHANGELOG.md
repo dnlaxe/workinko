@@ -81,3 +81,16 @@
 ### Removed
 
 - 'Add another job' button from review
+
+## [Security + Audit] - 2026-03-12
+
+### Added
+
+- Basic rate limiter
+- Basic auth protection for `/admin`
+- Audit event logging and admin audit dashboard
+
+### Changed
+
+- Improved posting flow and session routing
+- Refined public and admin UI

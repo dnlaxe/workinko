@@ -1,1 +1,25 @@
 {{> admin-navbar}}
+
+<div>
+  <h1>Admin Dashboard</h1>
+
+  {{#if serverError}}
+    <p>Something went wrong while loading logs.</p>
+  {{else}}
+    {{#if logs.length}}
+      <ul>
+        {{#each logs}}
+          <li>
+            <div>{{this.createdAt}}</div>
+            <div>{{this.eventType}}</div>
+            <div>{{this.actorType}}</div>
+            <div>{{this.entityType}}</div>
+            <div>{{this.message}}</div>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>No logs yet.</p>
+    {{/if}}
+  {{/if}}
+</div>

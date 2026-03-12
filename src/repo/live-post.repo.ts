@@ -115,10 +115,16 @@ export async function unpublishLivePost(id: number, sessionId: number) {
 }
 
 export async function expireOverduePosts() {
-  await db
+  const now = new Date();
+  return db
     .update(livePost)
     .set({ status: "expired" })
-    .where(
-      and(eq(livePost.status, "active"), lt(livePost.expiresAt, new Date())),
-    );
+    .where(and(eq(livePost.status, "active"), lt(livePost.expiresAt, now)))
+    .returning({
+      id: livePost.id,
+      sessionId: livePost.sessionId,
+      slug: livePost.slug,
+      heading: livePost.heading,
+      expiresAt: livePost.expiresAt,
+    });
 }

@@ -1,28 +1,30 @@
-<div class="md:flex">
+<div class="md:flex md:border border-slate-200 md:rounded">
 
   <div class="md:w-60 md:shrink-0">
+    <div class="text-slate-700 bg-blue-300 px-8 py-2 md:p-4 md:rounded-tl-sm">A job board for opportunities in Korea</div>
+    <div class="md:border-b text-white bg-slate-700 px-8 py-2 md:p-4">Last updated: Jan 26</div>
     <div class="flex justify-end p-4 md:hidden">
       <button class="filterBtn px-4 py-1 rounded-full border border-slate-200">Filter</button>
     </div>
-    <form method="GET" action="/jobs/board" class="filter max-h-0 overflow-hidden md:max-h-none md:p-4 md:flex md:flex-col md:gap-4">
-      <div class="p-4 md:p-0 flex flex-wrap gap-4">
+    <form method="GET" action="/jobs/board" class="filter max-h-0 overflow-hidden md:max-h-none md:flex md:flex-col">
+      <div class="px-2 py-0 flex flex-wrap gap-2 md:flex-col md:border-b border-slate-200 md:py-2 md:px-0">
         {{#each categories}}
-          <label class="cursor-pointer group">
+          <label class="block cursor-pointer group">
             <input type="checkbox" name="category" value="{{this}}" class="sr-only peer" {{#if (contains ../activeCategory this)}}checked{{/if}}>
-            <span class="px-4 py-1 rounded-full border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+            <span class="flex px-4 py-1 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
           </label>
         {{/each}}
       </div>
-      <div class="pb-4 px-4 md:p-0 flex flex-wrap gap-4">
+      <div class="px-2 py-2 flex flex-wrap md:flex-col gap-2 md:border-b border-slate-200 md:py-2 md:px-0">
         {{#each provinces}}
-          <label class="cursor-pointer group">
+          <label class="block cursor-pointer group">
             <input type="checkbox" name="province" value="{{this}}" class="sr-only peer" {{#if (contains ../activeProvince this)}}checked{{/if}}>
-            <span class="px-4 py-1 rounded-full border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+            <span class="flex px-4 py-1 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
           </label>
         {{/each}}
       </div>
-      <div class="px-4 py-8 md:px-0 flex justify-between">
-        <button type="submit" class="px-4 py-1 rounded-full bg-blue-500 text-white">Apply</button>
+      <div class="px-4 py-4 md:px-2 flex justify-between">
+        <button type="submit" class="px-4 py-1 rounded-full bg-blue-300 border border-blue-400 text-slate-700">Apply</button>
         <a href="/jobs/board" class="px-4 py-1 rounded-full text-slate-900 bg-white underline decoration-slate-900">Reset</a>
       </div>
     </form>

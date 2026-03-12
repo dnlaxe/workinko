@@ -58,3 +58,15 @@ export async function requireGatewayEmail(
   }
   next();
 }
+
+export async function hasCurrentSession(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const session = await getSessionBySessionId(req.sessionId);
+  if (session?.email) {
+    return res.redirect("/jobs/new");
+  }
+  next();
+}

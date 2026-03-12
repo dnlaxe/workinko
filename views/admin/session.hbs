@@ -1,7 +1,7 @@
 {{> admin-navbar}}
 
 <div class="flex flex-col gap-4 p-4">
-  <a href="/admin/queue" class="underline text-slate-700">← Back to queue</a>
+  <a href="/admin/queue" class="underline text-slate-700">Back to queue</a>
 
   <div class="border border-slate-200">
     <div class="flex flex-row">
@@ -54,6 +54,15 @@
               {{#if this.contactUrl}}<span>URL: {{this.contactUrl}}</span>{{/if}}
               {{#if this.contactEmail}}<span>Email: {{this.contactEmail}}</span>{{/if}}
             </div>
+          </div>
+          <div class="border-b border-slate-200 px-4 py-2">
+            <div class="flex flex-col gap-1 text-slate-700">
+              <div class="underline">{{this.heading}}</div>
+              <div>{{this.subheading}}</div>
+            </div>
+          </div>
+          <div class="border-b border-slate-200 px-4 py-2">
+            <p style="white-space: pre-line;">{{this.fullDescription}}</p>
           </div>
           <div class="px-4 py-2">
             <div class="flex flex-col text-slate-700">
