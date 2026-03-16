@@ -22,8 +22,6 @@ export async function createMagicToken(
   return tokenRow;
 }
 
-// expiry should match furthest away expiry date in session
-
 export async function getSessionIdByToken(token: string) {
   const [session] = await db
     .select()

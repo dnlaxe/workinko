@@ -222,10 +222,13 @@ export const specializationsByCategory = {
   Teaching: [
     "Kindergarten",
     "Elementary",
+    "Kindergarten + Elementary",
     "Middle School",
     "High School",
     "University",
-    "Corporate English",
+    "Adults",
+    "English Cafe",
+    "Business English",
     "Private Tutoring",
   ],
   "Non-teaching": [

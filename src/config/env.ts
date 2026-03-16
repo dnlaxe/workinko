@@ -22,6 +22,9 @@ const envSchema = z.object({
   ADMIN_PASSWORD: z
     .string()
     .min(4, { error: "ADMIN_PASSWORD must be at least 4 characters" }),
+  BASIC_AUTH_ENABLED: z.stringbool({
+    error: "BASIC_AUTH_ENABLED needs to be chosen",
+  }),
 });
 
 const parsed = envSchema.safeParse(process.env);

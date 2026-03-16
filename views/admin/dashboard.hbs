@@ -4,7 +4,7 @@
   <h1>Admin Dashboard</h1>
 
   {{#if serverError}}
-    <p>Something went wrong while loading logs.</p>
+    <p>{{serverError}}</p>
   {{else}}
     {{#if logs.length}}
       <ul>

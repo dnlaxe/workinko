@@ -9,7 +9,11 @@ export type appError =
   | { reason: "TOKEN_EXPIRED" }
   | { reason: "SLUG_CREATION_ERROR" }
   | { reason: "SLUG_NOT_FOUND" }
-  | { reason: "EMAIL_NOT_SENT" };
+  | { reason: "IDS_MISMATCH" }
+  | { reason: "EMAIL_NOT_SENT" }
+  | { reason: "EMAIL_NOT_FOUND" }
+  | { reason: "PAYMENT_PROVIDER_ERROR" }
+  | { reason: "AMOUNT_CALCULATION_FAILURE" };
 
 export type Result<T> =
   | { success: true; data: T }

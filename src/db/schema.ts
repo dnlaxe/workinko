@@ -34,6 +34,8 @@ export const relayMessageStatus = pgEnum("relay_message_status", [
 ]);
 
 export const paymentStatus = pgEnum("payment_status", [
+  "awaiting",
+  "initiated",
   "holding",
   "captured",
   "cancelled",
@@ -181,7 +183,8 @@ export const payment = pgTable("payments", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   sessionId: integer("session_id").references(() => currentSession.id),
   email: text("email").notNull(),
-  status: paymentStatus("status").notNull().default("holding"),
+  status: paymentStatus("status").notNull().default("awaiting"),
+  paymentRef: text("payment_ref").notNull().unique(),
   paymentId: text("payment_id").notNull().unique(),
   paymentIntentId: text("payment_intent_id").notNull().unique(),
   amount: integer("amount").notNull(),

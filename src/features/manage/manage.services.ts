@@ -97,12 +97,12 @@ export async function updatePost(
     await insertAuditEvents([
       {
         eventType: "post.updated",
-        actorType: "employer",
+        actorType: "poster",
         entityType: "live_post",
         entityId: postId,
         sessionId,
         postId,
-        message: "Live post updated by employer",
+        message: "Live post updated by poster",
         metadata: {
           heading: data.heading,
           subheading: data.subheading,
@@ -137,12 +137,12 @@ export async function unpublishUserPost(
     await insertAuditEvents([
       {
         eventType: "post.unpublished",
-        actorType: "employer",
+        actorType: "poster",
         entityType: "live_post",
         entityId: id,
         sessionId: row.sessionId,
         postId: id,
-        message: "Live post unpublished by employer",
+        message: "Live post unpublished by poster",
       },
     ]);
   } catch (err) {

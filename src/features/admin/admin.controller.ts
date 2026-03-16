@@ -12,12 +12,11 @@ import {
   getDataForLogs,
 } from "./admin.services.js";
 
-export async function showPendingPosts(req: Request, res: Response) {
+export async function showPendingPosts(_req: Request, res: Response) {
   const result = await fetchPendingSessions();
 
   if (!result.success) {
-    req.log.error("Failed to load pending sessions");
-    return res.status(500).render("admin/queue", { serverError: true });
+    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/queue", { sessions: result.data });
@@ -28,10 +27,6 @@ export async function showSessionPosts(req: Request, res: Response) {
   const result = await fetchSessionPosts(id);
 
   if (!result.success) {
-    req.log.error(
-      { reason: result.error.reason },
-      "Failed to load session posts",
-    );
     return res.status(500).render("admin/queue", {
       serverError: "Something went wrong. Please try again.",
     });
@@ -48,11 +43,9 @@ export async function approveSession(req: Request, res: Response) {
   const result = await approveSessionByAdmin(id);
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to approve session");
-    return res.status(500).redirect("/admin/queue");
+    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
   }
 
-  req.log.info("Session approved and jobs added to live_posts");
   return res.redirect("/admin/queue");
 }
 
@@ -61,20 +54,17 @@ export async function rejectSession(req: Request, res: Response) {
   const result = await rejectSessionByAdmin(id);
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to reject session");
-    return res.status(500).render("admin/queue");
+    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
   }
 
-  req.log.info("Session rejected");
   return res.redirect("/admin/queue");
 }
 
-export async function showLivePosts(req: Request, res: Response) {
+export async function showLivePosts(_req: Request, res: Response) {
   const result = await fetchLivePosts();
 
   if (!result.success) {
-    req.log.error("Failed to load live posts");
-    return res.status(500).render("admin/liveposts", { serverError: true });
+    return res.status(500).render("admin/liveposts", { serverError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/liveposts", { posts: result.data });
@@ -85,19 +75,17 @@ export async function showLivePostDetail(req: Request, res: Response) {
   const result = await fetchLivePostById(id);
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to load live post");
-    return res.status(500).render("admin/liveposts", { serverError: true });
+    return res.status(500).render("admin/liveposts", { serverError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/livepost", { post: result.data });
 }
 
-export async function showPendingRelayMessages(req: Request, res: Response) {
+export async function showPendingRelayMessages(_req: Request, res: Response) {
   const result = await getPendingRelayMessages();
 
   if (!result.success) {
-    req.log.error("Failed to load relay messages");
-    return res.status(500).render("error");
+    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/relay", { messages: result.data });
@@ -108,11 +96,7 @@ export async function rejectRelayMessage(req: Request, res: Response) {
   const result = await rejectRelayMessageByAdmin(id);
 
   if (!result.success) {
-    req.log.error(
-      { reason: result.error.reason },
-      "Failed to reject relay message",
-    );
-    return res.status(500).redirect("/admin/relay");
+    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
   }
 
   req.log.info({ id }, "Relay message rejected");
@@ -124,23 +108,18 @@ export async function approveRelayMessage(req: Request, res: Response) {
   const result = await approveRelayMessageByAdmin(id);
 
   if (!result.success) {
-    req.log.error(
-      { reason: result.error.reason },
-      "Failed to approve relay message",
-    );
-    return res.status(500).redirect("/admin/relay");
+    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
   }
 
   req.log.info({ id }, "Relay message approved and sent");
   return res.redirect("/admin/relay");
 }
 
-export async function showLog(req: Request, res: Response) {
+export async function showLog(_req: Request, res: Response) {
   const result = await getDataForLogs();
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to get logs");
-    return res.status(500).render("admin/dashboard", { serverError: true });
+    return res.status(500).render("admin/dashboard", { serverError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/dashboard", { logs: result.data });

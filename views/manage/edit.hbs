@@ -1,5 +1,7 @@
 <form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8">
 
+  <a href="/manage?token={{token}}" class="mb-4 inline-block underline text-slate-700">Back to current posts</a>
+
 {{#if serverError}}
   <p>{{serverError}}</p>
 {{/if}}
@@ -19,7 +21,7 @@
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
             </span>
           </label>
@@ -71,7 +73,7 @@
               {{#if (eq ../values.category this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{this}}
             </span>
           </label>
@@ -92,7 +94,7 @@
             {{#if (eq ../values.specialization this)}}checked{{/if}}
             class="sr-only peer"
           />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
             {{this}}
           </span>
         </label>
@@ -115,7 +117,7 @@
               {{#if (eq ../values.province this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{this}}
             </span>
           </label>
@@ -136,7 +138,7 @@
             {{#if (eq ../values.city this)}}checked{{/if}}
             class="sr-only peer"
           />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
             {{this}}
           </span>
         </label>
@@ -159,7 +161,7 @@
               {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{label}}
             </span>
           </label>
@@ -179,7 +181,7 @@
               {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{label}}
             </span>
           </label>
@@ -217,7 +219,7 @@
               {{#if (eq ../values.contractType this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{this}}
             </span>
           </label>
@@ -237,7 +239,7 @@
               {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{this}}
             </span>
           </label>
@@ -261,7 +263,7 @@
               {{#if (eq ../values.startDate this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">
+            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
               {{this}}
             </span>
           </label>

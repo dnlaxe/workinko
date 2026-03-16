@@ -1,25 +1,25 @@
-<div class="md:flex md:border border-slate-200 md:rounded">
+<div class="md:flex">
 
   <div class="md:w-60 md:shrink-0">
-    <div class="text-slate-700 bg-blue-300 px-8 py-2 md:p-4 md:rounded-tl-sm">A job board for opportunities in Korea</div>
-    <div class="md:border-b text-white bg-slate-700 px-8 py-2 md:p-4">Last updated: Jan 26</div>
-    <div class="flex justify-end p-4 md:hidden">
+    {{!-- <div class="text-slate-700 bg-blue-300 px-8 py-2 md:p-4 md:rounded-tl-sm">A job board for opportunities in Korea</div> --}}
+    <div class="text-white bg-slate-500 px-8 py-2 md:p-4 md:rounded-t">Last updated: Jan 26</div>
+    <div class="flex justify-end p-4 md:hidden bg-gray-50">
       <button class="filterBtn px-4 py-1 rounded-full border border-slate-200">Filter</button>
     </div>
-    <form method="GET" action="/jobs/board" class="filter max-h-0 overflow-hidden md:max-h-none md:flex md:flex-col">
-      <div class="px-2 py-0 flex flex-wrap gap-2 md:flex-col md:border-b border-slate-200 md:py-2 md:px-0">
+    <form method="GET" action="/jobs/board" class="filter max-h-0 overflow-hidden md:max-h-none md:flex md:flex-col bg-gray-50 md:bg-white md:border border-slate-200 rounded-b">
+      <div class="px-2 py-0 flex flex-wrap md:flex-col md:border-b border-slate-200 md:py-2 md:px-0">
         {{#each categories}}
           <label class="block cursor-pointer group">
             <input type="checkbox" name="category" value="{{this}}" class="sr-only peer" {{#if (contains ../activeCategory this)}}checked{{/if}}>
-            <span class="flex px-4 py-1 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+            <span class="flex px-4 py-2 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
           </label>
         {{/each}}
       </div>
-      <div class="px-2 py-2 flex flex-wrap md:flex-col gap-2 md:border-b border-slate-200 md:py-2 md:px-0">
+      <div class="px-2 py-2 flex flex-wrap md:flex-col md:border-b border-slate-200 md:py-2 md:px-0">
         {{#each provinces}}
           <label class="block cursor-pointer group">
             <input type="checkbox" name="province" value="{{this}}" class="sr-only peer" {{#if (contains ../activeProvince this)}}checked{{/if}}>
-            <span class="flex px-4 py-1 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
+            <span class="flex px-4 py-2 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-300">{{this}}</span>
           </label>
         {{/each}}
       </div>
@@ -30,13 +30,14 @@
     </form>
   </div>
 
-  <div class="flex-1 flex flex-col gap-4 p-4 border-t md:border-t-0 md:border-l border-slate-200">
+  <div class="flex-1 flex flex-col gap-2 p-2">
     {{#if boardError}}
       <p class="text-slate-500 text-sm p-4">Something went wrong loading posts.</p>
     {{else if posts}}
       {{#each posts}}
         {{> public-job-card this}}
       {{/each}}
+      <a href="/jobs/board" class="px-4 py-1 rounded-full text-slate-900 bg-white underline decoration-slate-900">Reset</a>
     {{else}}
       <p class="text-slate-500 p-4 pb-0">No live posts yet.</p><a href="/jobs/board" class="px-4 rounded-full text-slate-900 bg-white underline decoration-slate-900">Reset</a>
     {{/if}}

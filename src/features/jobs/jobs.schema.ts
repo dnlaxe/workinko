@@ -54,7 +54,7 @@ export const jobFormSchema = z
     },
     {
       message: "URL is required when contact method is link",
-      path: ["contactUrl"], //
+      path: ["contactUrl"],
     },
   );
 
@@ -74,3 +74,8 @@ export const contactSchema = z.object({
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
+
+export const draftsFormSchema = z.record(
+  z.string(),
+  z.enum(["standard", "pinned"], { error: "Please select standard or pinned" }),
+);

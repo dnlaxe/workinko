@@ -1,7 +1,9 @@
 {{> admin-navbar}}
 
 <div class="flex flex-col gap-4 p-4">
-  {{#if messages}}
+  {{#if serverError}}
+    <p class="text-slate-500 text-sm p-4">{{serverError}}</p>
+  {{else if messages}}
     {{#each messages}}
       <div class="border border-slate-200 rounded">
         <div class="flex flex-row">

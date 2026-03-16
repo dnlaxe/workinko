@@ -1,4 +1,4 @@
-import { and, eq, gt } from "drizzle-orm";
+import { and, desc, eq, gt } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { currentSession } from "../db/schema.js";
 
@@ -50,7 +50,8 @@ export async function getPendingSessionsPendingReview() {
   return db
     .select()
     .from(currentSession)
-    .where(eq(currentSession.status, "pending_review"));
+    .where(eq(currentSession.status, "pending_review"))
+    .orderBy(desc(currentSession.createdAt));
 }
 
 export async function approveSession(sessionId: number) {

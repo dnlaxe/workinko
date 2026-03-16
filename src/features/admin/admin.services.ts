@@ -17,6 +17,7 @@ import {
   SessionRow,
   RelayMessageRow,
   AuditEventRow,
+  AuditEventInsert,
 } from "../../types/types.js";
 import { createMagicToken } from "../../repo/magic-token.repo.js";
 import { sendReceipt, sendRelayMessage } from "../../shared/email.js";
@@ -60,8 +61,6 @@ export async function fetchSessionPosts(
 export async function approveSessionByAdmin(
   sessionId: number,
 ): Promise<Result<void>> {
-  //   1. Get session → validate email + paymentId exist
-
   const livePostExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
   let email;
@@ -76,9 +75,6 @@ export async function approveSessionByAdmin(
     }
 
     email = session.email;
-
-    // 2. Capture payment  ← needs paymentId from session
-    // 3. If capture fails → return error (nothing published yet)
 
     await approveSession(sessionId);
 
@@ -105,9 +101,7 @@ export async function approveSessionByAdmin(
     return { success: false, error: { reason: "DB_ERROR" } };
   }
 
-  // 4. Approve session status
-  // 5. Insert live posts
-  // 6. Create magic token
+  // tier should no longer be hardcoded here, its in db in pending post, add to flow!!!
 
   const tier = "standard";
 
@@ -374,5 +368,16 @@ export async function getDataForLogs(): Promise<Result<AuditEventRow[]>> {
   } catch (err) {
     appLogger.error({ err }, "getDataForLogs DB error");
     return { success: false, error: { reason: "DB_ERROR" } };
+  }
+}
+
+export async function recordEvent(event: AuditEventInsert) {
+  try {
+    await insertAuditEvents([event]);
+  } catch (err) {
+    appLogger.warn(
+      { err, eventType: event.eventType },
+      "Analytics insert failed",
+    );
   }
 }

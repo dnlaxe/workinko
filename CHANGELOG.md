@@ -94,3 +94,36 @@
 
 - Improved posting flow and session routing
 - Refined public and admin UI
+
+## [Payment] - 2026-03-13
+
+### Added
+
+- Dummy payment route with unique `paymentRef` per payment
+- Page view tracking in audit log
+
+### Changed
+
+- Tier updates now run concurrently instead of sequentially
+
+## [Cleanup] - 2026-03-14
+
+### Changed
+
+- Removed duplicate logging
+- Moved drafts count to navbar via `res.locals`
+- Cleaned up `ServerError`
+
+## [Error Handling] - 2026-03-15
+
+### Added
+
+- 404 handler
+- Global error handler
+
+## [Reliability] - 2026-03-16
+
+### Added
+
+- DB readiness check on startup
+- Graceful shutdown

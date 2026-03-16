@@ -148,8 +148,55 @@ done
 - No need for CSRF worries
 - Audit table
 
-Later:
+## 2026-03-13
 
-idea: make expiry and audit insert happen in one DB transaction
+- Removed all tokens from logs
+- Count page views for audit
 
-idempotent?
+- Instead of running one by one:
+
+```ts
+for (const [postId, tier] of Object.entries(tierChoices)) {
+  await updatePendingPostTierByPostId(Number(postId), sessionId, tier);
+}
+```
+
+do concurrently:
+
+```ts
+await Promise.all(
+  Object.entries(tierChoices).map(([postId, tier]) =>
+    updatePendingPostTierByPostId(Number(postId), sessionId, tier),
+  ),
+);you do this:
+```
+
+Use `Promise.all(...)` when the operations are independent, order does not matter, for faster completion
+
+Use a loop with `await` when each step depends on the previous one, you want to stop after the first failure before starting later work
+
+- created simple dummy payment route
+- added paymentRef as unique reference for dummy payments
+
+## 2026-03-14
+
+- cleaned up duplicate logging
+- moved drafts to navbar via res.locals
+- cleaned up use of ServerError
+
+## 2026-03-15
+
+- Set up error handler for unknown paths
+- Set global error handler. Checks for any attached error status codes (status for express, statusCode for node). Use internal message and public message to ensure error stacks aren't shown to user.
+
+## 2026-03-16
+
+- simple start up readiness check for db
+- simple shutdown:
+  set shuttingDown true (needed for health check from load balancer later)
+  set timer to force close if shutdown is hanging
+  stop accepting requests
+  close idle connections
+  close db
+  flush logs
+  override timer to finish shutdown

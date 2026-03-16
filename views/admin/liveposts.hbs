@@ -2,7 +2,7 @@
 
 <div class="flex flex-col gap-4 p-4">
   {{#if serverError}}
-    <p class="text-slate-500 text-sm p-4">Errors are happening</p>
+    <p class="text-slate-500 text-sm p-4">{{serverError}}</p>
   {{else}}
     {{#each posts}}
       <div class="border border-slate-200 rounded">

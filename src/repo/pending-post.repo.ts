@@ -21,3 +21,16 @@ export async function deletePendingPostBySessionId(
     .delete(pendingPost)
     .where(and(eq(pendingPost.id, id), eq(pendingPost.sessionId, sessionId)));
 }
+
+export async function updatePendingPostTierByPostId(
+  postId: number,
+  sessionId: number,
+  tier: "standard" | "pinned",
+) {
+  await db
+    .update(pendingPost)
+    .set({ tier })
+    .where(
+      and(eq(pendingPost.id, postId), eq(pendingPost.sessionId, sessionId)),
+    );
+}

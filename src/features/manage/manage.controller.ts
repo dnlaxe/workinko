@@ -19,7 +19,6 @@ export async function showUserDashboard(req: Request, res: Response) {
     ) {
       return res.status(403).render("manage/invalid-token");
     }
-    req.log.error({ reason: result.error.reason }, "Failed to get posts");
     return res.status(500).render("error");
   }
 
@@ -32,7 +31,6 @@ export async function showEditform(req: Request, res: Response) {
   const result = await getPostToEdit(postId, token);
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to get post");
     return res.redirect(`/manage?token=${token}&error=post_not_found`);
   }
 
@@ -50,7 +48,6 @@ export async function submitEditform(req: Request, res: Response) {
 
   const result = await updatePost(postId, token, req.body);
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to update post");
     return res.redirect(`/manage?token=${token}&error=update_failed`);
   }
 
@@ -63,7 +60,6 @@ export async function unpublishPost(req: Request, res: Response) {
   const result = await unpublishUserPost(id, token);
 
   if (!result.success) {
-    req.log.error({ reason: result.error.reason }, "Failed to update post");
     return res.redirect(`/manage?token=${token}&error=deletion_failed`);
   }
 

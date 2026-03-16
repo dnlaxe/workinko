@@ -1,5 +1,5 @@
 import express from "express";
-import { isProduction } from "./config/config.js";
+import { isBasicAuthEnabled, isProduction } from "./config/config.js";
 import { logger } from "./middleware/logger.js";
 import helmet from "helmet";
 import compression from "compression";
@@ -15,6 +15,10 @@ import { db } from "./db/db.js";
 import cookieParser from "cookie-parser";
 import rateLimiterMiddleware from "./middleware/rateLimiter.js";
 import { requireBasicAuth } from "./middleware/basicAuth.js";
+import {
+  globalErrorHandler,
+  notFoundHandler,
+} from "./middleware/errorHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,14 +34,22 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(logger);
 app.use(compression());
 app.disable("x-powered-by");
+app.use(rateLimiterMiddleware);
+
+if (isBasicAuthEnabled) {
+  app.use(requireBasicAuth);
+}
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use(rateLimiterMiddleware);
-
 app.use(jobsRouter);
-app.use("/admin", requireBasicAuth);
+
+if (!isBasicAuthEnabled) {
+  app.use("/admin", requireBasicAuth);
+}
+
 app.use(adminRouter);
 app.use(manageRouter);
 
@@ -80,5 +92,8 @@ app.get("/db-check", async (_req, res) => {
 app.get("/", (req: Request, res: Response) => {
   res.render("pages/board");
 });
+
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
 
 export default app;
