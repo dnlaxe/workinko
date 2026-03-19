@@ -1,60 +1,56 @@
-<div class="p-4 max-w-3xl w-full mx-auto">
-  <a href="/jobs/board" class="underline text-slate-700">Back to listings</a>
-  <div class="border border-slate-200 rounded mt-4">
+<div class="p-4 max-w-4xl w-full mx-auto">
+  <a href="/jobs/board" class="underline">Back to listings</a>
+  <div class="mt-4">
     <div class="flex flex-row">
-      <div class="w-8 border-r border-slate-200 bg-slate-100"></div>
 
       <div class="flex-1">
 
-        <div class="border-b border-slate-200 px-4 py-2">
-          <div class="text-xl">{{heading}}</div>
+        <div class="px-4 py-6">
+          <div
+            class="text-2xl font-display mb-2 underline decoration-[#41C3DD] decoration-2"
+          >{{heading}}</div>
           <div>{{subheading}}</div>
-          <div>{{specialization}}</div>
         </div>
 
-        <div class="md:flex border-b border-slate-200">
-          <div class="px-4 py-2 md:flex-1">
-            <div class="flex flex-col text-slate-700">
-              <span>{{startDate}}</span>
-              <span>{{province}}, {{city}}</span>
-              <span>{{contractType}}</span>
+        <div class="md:flex gap-4 px-4">
+          <div class="p-4 md:flex-1 bg-[#E5E7E9] rounded">
+            <div class="flex flex-col gap-2">
+              <div><i
+                  class="ph ph-read-cv-logo mr-2"
+                ></i>{{specialization}}</div>
+              <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
+              <span><i class="ph ph-map-pin-area mr-2"></i>{{province}},
+                {{city}}</span>
+              <span><i
+                  class="ph ph-hourglass-high mr-2"
+                ></i>{{contractType}}</span>
             </div>
           </div>
 
-          <div
-            class="px-4 py-2 md:flex-1 border-t border-slate-200 md:border-t-0 md:border-l"
-          >
-            <div class="flex flex-col text-slate-700">
-              <span>Korean: {{proficiencyLabel koreanProficiency}}</span>
-              <span>English: {{proficiencyLabel englishProficiency}}</span>
+          <div class="p-4 md:flex-1 mt-4 md:mt-0 bg-[#E5E7E9] rounded">
+            <div class="flex flex-col gap-2">
+              <span><i class="ph ph-translate mr-2"></i>Korean:
+                {{proficiencyLabel koreanProficiency}}</span>
+              <span><i class="ph ph-translate mr-2"></i>English:
+                {{proficiencyLabel englishProficiency}}</span>
               {{#if otherLanguages}}
-                <span>Other: {{otherLanguages}}</span>
+                <span><i class="ph ph-translate mr-2"></i>Other:
+                  {{otherLanguages}}</span>
               {{/if}}
-              <span>Visa: {{visaSponsorship}}</span>
+              <span><i class="ph ph-file-text mr-2"></i>Visa:
+                {{visaSponsorship}}</span>
             </div>
           </div>
         </div>
 
         <div class="flex px-4 py-2">
-          {{#if isRelay}}
-            <a
-              href="/jobs/{{slug}}/contact"
-              class="text-blue-500 underline ml-auto"
-            >Apply</a>
-          {{else}}
-            <a
-              href="{{contactUrl}}"
-              class="text-blue-500 underline ml-auto"
-            >Apply</a>
-          {{/if}}
+          <a href="/" class="text-red-500 underline ml-auto">Report</a>
         </div>
 
       </div>
     </div>
 
-    <div
-      class="flex flex-col gap-4 border-t border-slate-200 p-4 text-slate-700"
-    >
+    <div class="flex flex-col gap-4 px-4 py-6">
       <div class="flex flex-col gap-2">
         <p style="white-space: pre-line;">{{fullDescription}}</p>
       </div>
@@ -63,12 +59,12 @@
         {{#if isRelay}}
           <a
             href="/jobs/{{slug}}/contact"
-            class="w-full p-2 text-center text-white bg-blue-500 rounded"
+            class="shadow-sm w-full p-2 text-center text-white bg-[#41C3DD] uppercase tracking-widest rounded font-semibold"
           >Contact poster</a>
         {{else}}
           <a
             href="{{contactUrl}}"
-            class="w-full p-2 text-center text-white bg-blue-500 rounded"
+            class="w-full p-2 text-center text-white bg-[#41C3DD] uppercase tracking-widest rounded font-semibold"
           >Apply here</a>
         {{/if}}
       </div>

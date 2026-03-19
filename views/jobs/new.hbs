@@ -1,6 +1,6 @@
 
 
-<div class="max-w-2xl mx-auto w-full border border-slate-200 md:mt-4 md:rounded flex flex-col flex-1">
+<div class="max-w-2xl mx-auto w-full md:mt-4 md:rounded flex flex-col">
 
 <form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8 flex flex-col flex-1">
 
@@ -8,42 +8,36 @@
   <p>{{serverError}}</p>
 {{/if}}
 
-  <div class="mb-6" aria-label="Form progress">
+  <div class="mb-2" aria-label="Form progress">
+    <p class="step-counter text-xs mb-2">Step 1 of 7</p>
     <div class="flex gap-1">
       <span
         data-progress-index="0"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="1"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="2"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="3"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="4"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="5"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
       <span
         data-progress-index="6"
-        class="flex-1 bg-slate-200"
-        style="height: 6px;"
+        class="flex-1 h-2 rounded-full bg-slate-200 transition-colors duration-300"
       ></span>
     </div>
   </div>
@@ -51,7 +45,7 @@
   <div class="step flex-1">
     <div class="step__content">
       <fieldset>
-        <h1 class="text-lg underline mb-2">Contact details</h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Contact details</h1>
         <p class="mb-2">How do you want to be contacted?</p>
 
         {{#each jobFormOptions.contactMethod}}
@@ -64,7 +58,7 @@
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]  transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
               {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
 
             </span>
@@ -80,13 +74,14 @@
           class="mt-4"
           {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
         >
-          <label class="block" for="contactUrl">Url</label>
+          <label class="block" for="contactUrl">Please give your link.</label>
+          <p>Link advice</p>
           <input
             id="contactUrl"
             name="contactUrl"
             type="url"
             value="{{values.contactUrl}}"
-            class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+            class="block w-full px-3 py-2 rounded border border-[#CBCCCE]   "
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -99,6 +94,7 @@
           {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
         >
           <p>We'll use your email: <strong>{{sessionEmail}}</strong></p>
+          <p>This will not be publicly visible.</p>
         </div>
       </fieldset>
     </div>
@@ -107,52 +103,56 @@
   <div class="step flex-1" hidden>
     <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
       <fieldset>
-        <h1 class="text-lg underline mb-2">Job details</h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Job details</h1>
         <p class="mb-2">Is this a teaching or non-teaching job?</p>
 
-        {{#each jobFormOptions.category}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="category"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.category this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
+        <div class="grid grid-cols-2 gap-1">
+          {{#each jobFormOptions.category}}
+            <label class="block mb-1.5 cursor-pointer group">
+              <input
+                type="radio"
+                name="category"
+                value="{{this}}"
+                required
+                {{#if (eq ../values.category this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
       </fieldset>
 
       <div class="select-tag-hint hidden">
         <p class="mt-4 mb-2">Select a tag</p>
       </div>
 
-      {{#each jobFormOptions.specialization}}
-        <label class="block mb-1.5 cursor-pointer group">
-          <input
-            type="radio"
-            name="specialization"
-            value="{{this}}"
-            required
-            {{#if (eq ../values.specialization this)}}checked{{/if}}
-            class="sr-only peer"
-          />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-            {{this}}
-          </span>
-        </label>
-      {{/each}}
+      <div class="grid grid-cols-2 gap-1">
+        {{#each jobFormOptions.specialization}}
+          <label class="block mb-1.5 cursor-pointer group">
+            <input
+              type="radio"
+              name="specialization"
+              value="{{this}}"
+              required
+              {{#if (eq ../values.specialization this)}}checked{{/if}}
+              class="sr-only peer"
+            />
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
+              {{this}}
+            </span>
+          </label>
+        {{/each}}
+      </div>
     </div>
   </div>
 
 <div class="step flex-1" hidden>
   <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
     <fieldset>
-      <h1 class="text-lg underline mb-2">Location</h1>
+      <h1 class="text-xs uppercase tracking-widest mb-8">Location</h1>
       <p class="mb-2">Province</p>
 
       <div class="grid grid-cols-2 gap-1">
@@ -166,7 +166,7 @@
               {{#if (eq ../values.province this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
               {{this}}
             </span>
           </label>
@@ -189,7 +189,7 @@
             {{#if (eq ../values.city this)}}checked{{/if}}
             class="sr-only peer"
           />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+          <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
             {{this}}
           </span>
         </label>
@@ -201,44 +201,48 @@
   <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
-        <h1 class="text-lg underline mb-2">Language proficiency</h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Language proficiency</h1>
         <p class="mb-2">Korean proficiency</p>
 
-        {{#each jobFormOptions.koreanProficiency}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="koreanProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-              {{label}}
-            </span>
-          </label>
-        {{/each}}
+        <div class="grid grid-cols-2 gap-1">
+          {{#each jobFormOptions.koreanProficiency}}
+            <label class="block mb-1.5 cursor-pointer group">
+              <input
+                type="radio"
+                name="koreanProficiency"
+                value="{{value}}"
+                required
+                {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
+                {{label}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
       </fieldset>
 
       <fieldset>
         <p class="mb-2 mt-4">English proficiency</p>
 
-        {{#each jobFormOptions.englishProficiency}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="englishProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-              {{label}}
-            </span>
-          </label>
-        {{/each}}
+        <div class="grid grid-cols-2 gap-1">
+          {{#each jobFormOptions.englishProficiency}}
+            <label class="block mb-1.5 cursor-pointer group">
+              <input
+                type="radio"
+                name="englishProficiency"
+                value="{{value}}"
+                required
+                {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
+                {{label}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
       </fieldset>
 
       <div class="mt-4">
@@ -247,7 +251,7 @@
           id="otherLanguages"
           name="otherLanguages"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mt-2"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE]    mt-2"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -260,7 +264,7 @@
   <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
-        <h1 class="text-lg underline mb-2">Contract </h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Contract </h1>
         <p class="mb-2">Type</p>
 
         {{#each jobFormOptions.contractType}}
@@ -273,7 +277,7 @@
               {{#if (eq ../values.contractType this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
               {{this}}
             </span>
           </label>
@@ -293,7 +297,7 @@
               {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
               {{this}}
             </span>
           </label>
@@ -305,24 +309,26 @@
   <div class="step flex-1" hidden>
     <div class="step__content">
       <fieldset>
-        <h1 class="text-lg underline mb-2">Start date</h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Start date</h1>
         <p class="mb-2">When does this position begin?</p>
 
-        {{#each jobFormOptions.startDate}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="startDate"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.startDate this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
+        <div class="grid grid-cols-2 gap-1">
+          {{#each jobFormOptions.startDate}}
+            <label class="block mb-1.5 cursor-pointer group">
+              <input
+                type="radio"
+                name="startDate"
+                value="{{this}}"
+                required
+                {{#if (eq ../values.startDate this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE]    transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black group-hover:">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
       </fieldset>
     </div>
   </div>
@@ -330,13 +336,13 @@
   <div class="step flex-1" hidden>
     <div class="step__content">
       <div>
-        <h1 class="text-lg underline mb-2">Job description</h1>
+        <h1 class="text-xs uppercase tracking-widest mb-8">Job description</h1>
         <label class="block" for="heading">Heading</label>
         <input
           id="heading"
           name="heading"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mb-2"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE]    mb-2"
           required
           value="{{values.heading}}"
         />
@@ -351,7 +357,7 @@
           id="subheading"
           name="subheading"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 mb-2"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE]    mb-2"
           required
           value="{{values.subheading}}"
         />
@@ -363,7 +369,7 @@
       <div>
         <label class="block" for="fullDescription">Full description</label>
         <textarea
-          class="block w-full h-[40%] px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 resize-none"
+          class="block w-full h-[40%] px-3 py-2 rounded border border-[#CBCCCE]    resize-none"
           id="fullDescription"
           name="fullDescription"
           required
@@ -375,17 +381,17 @@
     </div>
   </div>
 
-  <nav class="step__nav flex flex-rows mt-8">
-    <button type="button" class="btn-back disabled:opacity-50 underline">Back</button>
-    <button type="button" class="btn-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-blue-200 text-slate-700 border border-blue-300">Next</button>
-    <button type="button" class="btn-last-next disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-blue-200 text-slate-700 border border-blue-300">Next</button>
-    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 rounded-full bg-slate-200 text-slate-700 border border-slate-200" hidden>Back to review</button>
+  <nav class="step__nav flex flex-rows mt-8 justify-between gap-4">
+    <button type="button" class="btn-back disabled:opacity-0 underline">Back</button>
+    <button type="button" class="btn-next disabled:opacity-0 px-4 py-1 rounded border border-[#CBCCCE] w-full transition-opacity duration-200 uppercase tracking-wide">Next</button>
+    <button type="button" class="btn-last-next disabled:opacity-50 px-4 py-1 rounded border border-[#CBCCCE] w-full transition-opacity duration-200 uppercase tracking-wide">Next</button>
+    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 w-full rounded border border-[#CBCCCE] uppercase tracking-wide" hidden>Back to review</button>
   </nav>
 
 
   <div class="review" hidden>
     <div class="flex flex-rows justify-end px-2 mt-4">
-      <button type="submit" class="btn-confirm px-4 py-1 rounded-full bg-green-200 text-slate-700 border border-green-300">Confirm</button>
+      <button type="submit" class="btn-confirm px-4 py-1 rounded w-full border border-[#CBCCCE]">Confirm</button>
     </div>
   </div>
 

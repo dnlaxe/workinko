@@ -1,96 +1,105 @@
-<div class="max-w-3xl mx-auto w-full">
+<div class="max-w-4xl mx-auto w-full">
   <div class="p-4">
     <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4">
 
       {{#if serverError}}
-        <p class="text-slate-500 text-sm p-4">
+        <p class="text-[#0D0D0D] text-sm p-4">
           {{serverError}}
         </p>
       {{/if}}
 
       {{#if draftsError}}
-        <p class="text-slate-500 text-sm p-4">Could not load drafts.</p>
+        <p class="text-[#0D0D0D] text-sm p-4">Could not load drafts.</p>
       {{else}}
+      <p class="uppercase tracking-wide">Your posts</p>
         {{#each drafts}}
-          <div class="border border-slate-200 rounded">
-            <div class="flex flex-row">
-              <div class="w-8 border-r border-slate-200 bg-slate-100"></div>
+          <div>
+            <div class="flex flex-row border border-[#CBCCCE] rounded">
               <div class="flex-1">
-                <div class="flex flex-rows justify-between border-b border-slate-200 px-4 py-2">
-                  <div>
-                  <div>{{this.heading}}</div>
-                  <div>{{this.subheading}}</div>
-                  </div>
-                    <button
-                      type="submit"
-                      class="text-red-500 underline"
-                      formaction="/jobs/drafts/{{this.id}}/delete"
-                      formmethod="POST"
-                    >Delete</button>
-                </div>
-                <div class="px-4 pb-4">
-                  <fieldset>
-                    <p class="text-slate-500 my-2">Post type</p>
-                    <div class="grid grid-cols-2 gap-4">
-                      <label class="cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="{{this.id}}"
-                          value="standard"
-                          class="sr-only peer"
-                          {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
-                        />
-                        <span class="flex flex-col items-start px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-                          <span class="text-lg">Standard</span>
-                          <ul class="text-sm text-slate-600">
-                            <li>Listed for thirty days</li>
-                            <li>Management link</li>
-                          </ul>
-                          <span>Free</span>
-                        </span>
-                        
-                      </label>
-                      <label class="cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="{{this.id}}"
-                          value="pinned"
-                          class="sr-only peer"
-                          {{#if (eq this.tier "pinned")}}checked{{/if}}
-                        />
-                        <span class="flex flex-col items-start px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
-                          <span class="text-lg">Pinned</span>
-                          <ul class="text-sm text-slate-600">
-                            <li>Pinned to the top of all listings</li>
-                            <li>Pinned for thirty days</li>
-                            <li>Link management</li>
-                          </ul>
-                          <span>$10</span>
-                        </span>
-                      </label>
+                <div>
+
+                  <div class="md:flex-1 p-4 flex flex-col justify-between">
+                    <div>
+                      <div class="font-display text-lg mb-2">{{this.heading}}</div>
+                      <div>{{this.subheading}}</div>
+                      <div class="flex flex-row flex-wrap gap-x-4 gap-y-1 mt-2">
+                        <span><i class="ph ph-read-cv-logo mr-2"></i>{{this.specialization}}</span>
+                        <span><i class="ph ph-calendar-dot mr-2"></i>{{this.startDate}}</span>
+                        <span><i class="ph ph-map-pin-area mr-2"></i>{{this.city}}, {{this.province}}</span>
+                        <span><i class="ph ph-hourglass-high mr-2"></i>{{this.contractType}}</span>
+                      </div>
                     </div>
-                  </fieldset>
+                  </div>
+
+                  <div class="flex flex-col gap-1 bg-[#E5E7E9] rounded-b">
+                    <fieldset>
+                      <div class="grid grid-cols-2">
+                        <label class="cursor-pointer group h-full">
+                          <input
+                            type="radio"
+                            name="{{this.id}}"
+                            value="standard"
+                            class="sr-only peer"
+                            {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
+                          />
+                          <span class="flex flex-col items-start h-full px-3 py-2 rounded-bl bg-[#E5E7E9] text-[#0D0D0D] transition-all peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                            <span class="text-lg mb-2 underline">Standard</span>
+                            <ul class="text-sm text-[#0D0D0D]">
+                              <li>Listed for thirty days</li>
+                              <li>Management link</li>
+                            </ul>
+                            <span class="mt-auto ml-auto">Free</span>
+                          </span>
+                        </label>
+                        <label class="cursor-pointer group h-full">
+                          <input
+                            type="radio"
+                            name="{{this.id}}"
+                            value="pinned"
+                            class="sr-only peer"
+                            {{#if (eq this.tier "pinned")}}checked{{/if}}
+                          />
+                          <span class="flex flex-col items-start h-full px-3 py-2 rounded-br bg-[#E5E7E9] text-[#0D0D0D] transition-all peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                            <span class="text-lg mb-2 underline">Pinned</span>
+                            <ul class="text-sm text-[#0D0D0D]">
+                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned to the top of all listings</li>
+                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned for thirty days</li>
+                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Link management</li>
+                            </ul>
+                            <span class="mt-auto ml-auto">$10</span>
+                          </span>
+                        </label>
+                      </div>
+                    </fieldset>
+                  </div>
+
                 </div>
               </div>
             </div>
+            <button
+              type="submit"
+              class="text-red-500 underline text-sm mt-1"
+              formaction="/jobs/drafts/{{this.id}}/delete"
+              formmethod="POST"
+            >Delete</button>
           </div>
         {{else}}
-          <p class="text-slate-500 p-4">No drafts yet.</p>
+          <p class="text-[#0D0D0D] p-4">No drafts yet.</p>
         {{/each}}
       {{/if}}
 
-    <div class="bill border border-slate-200 rounded p-4">
+    <div class="bill border border-[#CBCCCE] rounded p-4 mt-6">
       <p>Bill</p>
     </div>
 
-    <div class="flex flex-row justify-between">
-      <a href="/jobs/new" class="text-blue-500 underline">{{#unless drafts}}Add
+    <div class="flex flex-row gap-4">
+      <a href="/jobs/new" class="flex-1 px-4 py-1 border border-[#CBCCCE] rounded text-center uppercase tracking-wide">{{#unless drafts}}Add
           a job{{else}}Add another job{{/unless}}</a>
 
         <button
           type="submit"
-          class="px-4 py-1 rounded-full bg-slate-500 text-white"
-        >Submit posts</button>
+          class="shadow-sm flex-1 px-4 py-1 rounded uppercase tracking-wide text-white bg-[#41C3DD] font-semibold"
+        >Pay and submit</button>
       </form>
     </div>
   </div>

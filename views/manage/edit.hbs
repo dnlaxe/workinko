@@ -21,7 +21,7 @@
               {{#if (eq ../values.contactMethod this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
             </span>
           </label>
@@ -41,7 +41,7 @@
             name="contactUrl"
             type="url"
             value="{{values.contactUrl}}"
-            class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
           />
           {{#if fieldErrors.contactUrl}}
             <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
@@ -73,7 +73,7 @@
               {{#if (eq ../values.category this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{this}}
             </span>
           </label>
@@ -94,7 +94,7 @@
             {{#if (eq ../values.specialization this)}}checked{{/if}}
             class="sr-only peer"
           />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+          <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
             {{this}}
           </span>
         </label>
@@ -117,7 +117,7 @@
               {{#if (eq ../values.province this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{this}}
             </span>
           </label>
@@ -138,7 +138,7 @@
             {{#if (eq ../values.city this)}}checked{{/if}}
             class="sr-only peer"
           />
-          <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+          <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
             {{this}}
           </span>
         </label>
@@ -161,7 +161,7 @@
               {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{label}}
             </span>
           </label>
@@ -181,7 +181,7 @@
               {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{label}}
             </span>
           </label>
@@ -194,7 +194,7 @@
           id="otherLanguages"
           name="otherLanguages"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
           value="{{values.otherLanguages}}"
         />
         {{#if fieldErrors.otherLanguages}}
@@ -219,7 +219,7 @@
               {{#if (eq ../values.contractType this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{this}}
             </span>
           </label>
@@ -239,7 +239,7 @@
               {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{this}}
             </span>
           </label>
@@ -263,7 +263,7 @@
               {{#if (eq ../values.startDate this)}}checked{{/if}}
               class="sr-only peer"
             />
-            <span class="flex items-center px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-slate-200">
+            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
               {{this}}
             </span>
           </label>
@@ -280,7 +280,7 @@
           id="heading"
           name="heading"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
           required
           value="{{values.heading}}"
         />
@@ -295,7 +295,7 @@
           id="subheading"
           name="subheading"
           type="text"
-          class="block w-full px-3 py-2 rounded border border-slate-200 bg-white text-slate-600"
+          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
           required
           value="{{values.subheading}}"
         />
@@ -307,7 +307,7 @@
       <div>
         <label class="block" for="fullDescription">Full description</label>
         <textarea
-          class="block w-full h-[40%] px-3 py-2 rounded border border-slate-200 bg-white text-slate-600 resize-none"
+          class="block w-full h-[40%] px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 resize-none"
           id="fullDescription"
           name="fullDescription"
           required

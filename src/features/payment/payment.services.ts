@@ -64,8 +64,8 @@ export async function startSessionPayment(
       email: session.email,
       status: "initiated",
       paymentRef,
-      paymentId: `awaiting_${sessionId}`,
-      paymentIntentId: `awaiting_${sessionId}`,
+      paymentId: `awaiting_${paymentRef}`,
+      paymentIntentId: `awaiting_${paymentRef}`,
       amount: amountDue,
     });
   } catch (err) {
@@ -99,13 +99,13 @@ export async function startSessionPayment(
   //     return { success: false, error: { reason: "DB_ERROR" } };
   //     }
 
-  // example
+  // example while above isn't wired up
   return {
     success: true,
     data: {
       kind: "checkout",
       amount: amountDue,
-      checkoutUrl: "http://localhost:3001/dummy-payment",
+      checkoutUrl: "http://localhost:3002/dummy-payment",
     },
   };
 }

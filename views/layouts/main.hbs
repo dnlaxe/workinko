@@ -5,16 +5,25 @@
     <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" />
+        <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body class="max-w-6xl mx-auto w-full flex flex-col min-h-screen">
+  <body class="flex flex-col min-h-screen text-[#0D0D0D]">
     {{> public-navbar}}
-    <div class="flex-1 flex flex-col md:pb-8">
-      {{{body}}}
+    <div class="flex-1">
+      <div class="max-w-4xl mx-auto flex flex-col md:pb-8">
+        {{{body}}}
+      </div>
     </div>
     {{> public-footer}}
   </body>

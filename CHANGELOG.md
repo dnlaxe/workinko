@@ -127,3 +127,9 @@
 
 - DB readiness check on startup
 - Graceful shutdown
+
+## [UI] - 2026-03-19
+
+### Changed
+
+- New style

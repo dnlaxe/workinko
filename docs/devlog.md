@@ -200,3 +200,7 @@ Use a loop with `await` when each step depends on the previous one, you want to 
   close db
   flush logs
   override timer to finish shutdown
+
+## 2026-03-19
+
+- completely revamped style

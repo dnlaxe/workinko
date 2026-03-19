@@ -31,16 +31,28 @@ function validate(step) {
 
 function updateProgress(index) {
   progressParts.forEach((part, i) => {
-    part.classList.remove("bg-slate-200", "bg-blue-300", "bg-emerald-300");
+    part.classList.remove(
+      "bg-slate-200",
+      "bg-blue-300",
+      "bg-green-300",
+      "bg-[#41C3DD]",
+      "bg-[#41C3DD]/60",
+    );
 
     if (i < index) {
-      part.classList.add("bg-emerald-300");
+      part.classList.add("bg-[#41C3DD]/60");
     } else if (i === index) {
-      part.classList.add("bg-blue-300");
+      part.classList.add("bg-[#41C3DD]");
     } else {
       part.classList.add("bg-slate-200");
     }
   });
+
+  const counter = document.querySelector(".step-counter");
+  if (counter) {
+    const step = Math.min(index + 1, progressParts.length);
+    counter.textContent = `Step ${step} of ${progressParts.length}`;
+  }
 }
 
 // reveal url or relay
@@ -69,7 +81,7 @@ function syncContactFields() {
 
 // review builder
 const fieldGroups = [
-  ["contactMethod", "contactUrl"],
+  ["contactUrl"],
   ["category", "specialization"],
   ["province", "city"],
   ["koreanProficiency", "englishProficiency", "otherLanguages"],
@@ -78,57 +90,41 @@ const fieldGroups = [
   ["heading", "subheading", "fullDescription"],
 ];
 
-const labelMap = {
-  contactMethod: "Contact method",
-  contactUrl: "Contact URL",
-  category: "Category",
-  specialization: "Specialization",
-  province: "Province",
-  city: "City",
-  koreanProficiency: "Korean proficiency",
-  englishProficiency: "English proficiency",
-  otherLanguages: "Other languages",
-  contractType: "Contract type",
-  visaSponsorship: "Visa sponsorship",
-  startDate: "Start date",
-  heading: "Heading",
-  subheading: "Subheading",
-  fullDescription: "Full description",
-};
-
 const valueMap = {
   koreanProficiency: {
     0: "Not Required",
-    1: "Beginner",
-    2: "Intermediate",
+    1: "Beginner Korean",
+    2: "Intermediate Korean",
   },
   englishProficiency: {
     0: "Not Required",
-    1: "Beginner",
-    2: "Intermediate",
+    1: "Beginner English",
+    2: "Intermediate English",
   },
 };
 
 function buildReviewItem(entries, stepIndex) {
   const wrapper = document.createElement("div");
-  wrapper.className = "border-b border-x border-slate-200 p-4 first:border-t";
+  wrapper.className = "border-b border-x p-4 first:border-t border-[#CBCCCE]";
+
+  const stepLabel = steps[stepIndex]?.querySelector("h1");
+  if (stepLabel) {
+    const label = document.createElement("p");
+    label.textContent = stepLabel.textContent;
+    label.className = "text-xs uppercase tracking-widest mb-2";
+    wrapper.append(label);
+  }
 
   const header = document.createElement("div");
   header.className = "flex w-full flex-col items-start gap-2";
 
   const fields = document.createElement("div");
   for (const [name, value] of entries) {
-    const dt = document.createElement("dt");
-    dt.textContent = labelMap[name] ?? name;
-    dt.className = "underline";
-
     const dd = document.createElement("dd");
     const displayValue = valueMap[name]?.[value] ?? value ?? "";
-    dt.hidden = displayValue.trim() === "";
     dd.textContent = displayValue;
-    dd.className = "text-slate-600";
 
-    fields.append(dt, dd);
+    fields.append(dd);
   }
 
   const change = document.createElement("button");
@@ -158,10 +154,17 @@ function buildReview() {
 
   const heading = document.createElement("p");
   heading.textContent = "Please check your information";
-  heading.className = "review-heading mb-2";
+  heading.className = "review-heading mb-2 mt-6";
 
   const dl = document.createElement("dl");
   dl.className = "flex flex-col";
+
+  if (dataMap.contactMethod === "relay") {
+    const email =
+      steps[0].querySelector('[data-contact-field="relay"] strong')
+        ?.textContent ?? "";
+    dl.append(buildReviewItem([["sessionEmail", email]], 0));
+  }
 
   for (const group of fieldGroups) {
     const entries = group
