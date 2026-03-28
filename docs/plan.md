@@ -14,10 +14,19 @@ Express, PostgreSQL, Drizzle ORM, express-handlebars, Pino, Tailwind, TypeScript
 
 ## V1
 
-- [ ] Foundation — Express, HBS, DB, env validation
-- [ ] Submission form — multi-step, basket, saves to DB on checkout
-- [ ] Email — magic links, contact relay
-- [ ] Admin — approve/reject listings and contacts
-- [ ] Listings — browse, detail, contact form, stats
-- [ ] Magic link management — edit, delete, renew, expiry
+- [x] Foundation — Express, HBS, DB, env validation
+- [x] Submission form — multi-step, basket, saves to DB on checkout
+- [x] Email — magic links, contact relay
+- [x] Admin — approve/reject listings and contacts
+- [x] Listings — browse, detail, contact form, stats
+- [x] Magic link management — edit, delete, renew, expiry
 - [ ] Deploy
+
+### Added during development
+
+- Rate limiter (Postgres-backed)
+- Audit event logging + admin dashboard
+- Page view tracking
+- Dummy payment route with tiers
+- DB readiness check on startup
+- Graceful shutdown

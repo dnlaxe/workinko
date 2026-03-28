@@ -66,8 +66,7 @@ export const currentSession = pgTable("pending_session", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   token: text("token").notNull().unique(),
   email: text("email"),
-  status: currentSessionStatus("status").notNull().default("pending_review"),
-
+  status: currentSessionStatus("status").notNull().default("draft"),
   approvedAt: timestamp("approved_at", { withTimezone: true, mode: "date" }),
   rejectedAt: timestamp("rejected_at", { withTimezone: true, mode: "date" }),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" })
@@ -136,6 +135,8 @@ export const livePost = pgTable("live_posts", {
     withTimezone: true,
     mode: "date",
   }),
+
+  viewCount: integer("view_count").notNull().default(0),
 });
 
 export const relayMessage = pgTable("relay_messages", {

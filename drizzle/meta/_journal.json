@@ -36,6 +36,20 @@
       "when": 1773478881645,
       "tag": "0004_vengeful_vertigo",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1774592484491,
+      "tag": "0005_mature_lord_hawal",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1774595134542,
+      "tag": "0006_harsh_shinobi_shaw",
+      "breakpoints": true
     }
   ]
 }

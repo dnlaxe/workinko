@@ -1,0 +1,1 @@
+ALTER TABLE "live_posts" ADD COLUMN "view_count" integer DEFAULT 0 NOT NULL;

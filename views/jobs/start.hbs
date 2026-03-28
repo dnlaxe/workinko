@@ -1,19 +1,23 @@
 {{! views/jobs/start.hbs }}
-<div class="max-w-2xl mx-auto w-full flex-1 md:mt-4 md:rounded bg-white">
+<div class="max-w-2xl mx-auto w-full flex flex-col justify-center h-full pb-48">
 
-  {{#if serverError}}
-    <p>{{serverError}}</p>
+  {{#if actionError}}
+    <p
+      class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block"
+    >{{actionError}}</p>
   {{/if}}
 
   <form action="/jobs/start" method="POST" class="p-8">
     <div>
-      <h1 class="text-2xl mb-6">Let's create your job post</h1>
+      <h1
+        class="font-['Literata'] text-2xl mb-6 underline decoration-[#41C3DD] decoration-2"
+      >Let's create your job post</h1>
     </div>
     <div>
       <label class="block mb-2" for="email">First, we need you email address</label>
       <p class="mb-2">We'll only use this to send you a receipt</p>
       <input
-        class="block w-full px-3 py-2 rounded border border-[#CBCCCE]"
+        class="block w-full px-3 py-2 rounded border bg-white"
         id="email"
         name="email"
         type="email"
@@ -21,13 +25,16 @@
         value="{{values.email}}"
       />
       {{#if fieldErrors.email}}
-        <div data-error="email">{{fieldErrors.email.[0]}}</div>
+        <div
+          class="text-sm text-red-500 mt-1 px-2"
+          data-error="email"
+        >{{fieldErrors.email.[0]}}</div>
       {{/if}}
     </div>
     <div class="flex mt-8">
       <button
         type="submit"
-        class="px-4 py-1 rounded bg-blue-300 ml-auto w-full"
+        class="px-4 py-1 rounded border border-[#CBCCCE] w-full hover:border-[#0D0D0D]"
       >Continue</button>
     </div>
   </form>

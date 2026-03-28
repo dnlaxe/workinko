@@ -8,10 +8,12 @@ export default async function isSavedDrafts(
 ) {
   let drafts = [];
 
-  try {
-    drafts = await getPendingPostsBySessionId(req.sessionId);
-  } catch {
-    req.log.error("Unable to get drafts");
+  if (req.sessionId) {
+    try {
+      drafts = await getPendingPostsBySessionId(req.sessionId);
+    } catch (err) {
+      req.log.error({ err }, "Unable to get drafts");
+    }
   }
 
   res.locals.draftsCount = drafts.length;

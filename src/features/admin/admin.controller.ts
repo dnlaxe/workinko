@@ -16,7 +16,7 @@ export async function showPendingPosts(_req: Request, res: Response) {
   const result = await fetchPendingSessions();
 
   if (!result.success) {
-    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/queue", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/queue", { sessions: result.data });
@@ -28,7 +28,7 @@ export async function showSessionPosts(req: Request, res: Response) {
 
   if (!result.success) {
     return res.status(500).render("admin/queue", {
-      serverError: "Something went wrong. Please try again.",
+      actionError: "Something went wrong. Please try again.",
     });
   }
 
@@ -43,7 +43,7 @@ export async function approveSession(req: Request, res: Response) {
   const result = await approveSessionByAdmin(id);
 
   if (!result.success) {
-    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/queue", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.redirect("/admin/queue");
@@ -54,7 +54,7 @@ export async function rejectSession(req: Request, res: Response) {
   const result = await rejectSessionByAdmin(id);
 
   if (!result.success) {
-    return res.status(500).render("admin/queue", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/queue", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.redirect("/admin/queue");
@@ -64,7 +64,7 @@ export async function showLivePosts(_req: Request, res: Response) {
   const result = await fetchLivePosts();
 
   if (!result.success) {
-    return res.status(500).render("admin/liveposts", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/liveposts", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/liveposts", { posts: result.data });
@@ -75,7 +75,7 @@ export async function showLivePostDetail(req: Request, res: Response) {
   const result = await fetchLivePostById(id);
 
   if (!result.success) {
-    return res.status(500).render("admin/liveposts", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/liveposts", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/livepost", { post: result.data });
@@ -85,7 +85,7 @@ export async function showPendingRelayMessages(_req: Request, res: Response) {
   const result = await getPendingRelayMessages();
 
   if (!result.success) {
-    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/relay", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/relay", { messages: result.data });
@@ -96,7 +96,7 @@ export async function rejectRelayMessage(req: Request, res: Response) {
   const result = await rejectRelayMessageByAdmin(id);
 
   if (!result.success) {
-    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/relay", { actionError: "Something went wrong. Please try again." });
   }
 
   req.log.info({ id }, "Relay message rejected");
@@ -108,7 +108,7 @@ export async function approveRelayMessage(req: Request, res: Response) {
   const result = await approveRelayMessageByAdmin(id);
 
   if (!result.success) {
-    return res.status(500).render("admin/relay", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/relay", { actionError: "Something went wrong. Please try again." });
   }
 
   req.log.info({ id }, "Relay message approved and sent");
@@ -119,7 +119,7 @@ export async function showLog(_req: Request, res: Response) {
   const result = await getDataForLogs();
 
   if (!result.success) {
-    return res.status(500).render("admin/dashboard", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("admin/dashboard", { actionError: "Something went wrong. Please try again." });
   }
 
   return res.render("admin/dashboard", { logs: result.data });

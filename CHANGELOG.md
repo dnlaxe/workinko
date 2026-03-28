@@ -133,3 +133,26 @@
 ### Changed
 
 - New style
+- Upgraded rate limiter from in-memory (`RateLimiterMemory`) to Postgres-backed (`RateLimiterPostgres`)
+
+## [Error Handling] - 2026-03-23
+
+### Changed
+
+- Formalized three error types: `loadError` (data fetch fails on render), `actionError` (user action fails, passed via redirect query param), `fieldErrors` (form validation failure on same page)
+
+## [Refactor] - 2026-03-25
+
+### Changed
+
+- Refactored client-side JS to use a single data source passed in at init (one source of truth)
+
+## [Board + Form] - 2026-03-27
+
+### Added
+
+- Separated pinned and standard posts on the board
+
+### Changed
+
+- Session is now only created after the user passes the start step

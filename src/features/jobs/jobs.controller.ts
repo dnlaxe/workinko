@@ -12,7 +12,11 @@ import {
   addEmailToSession,
   getSession,
 } from "./jobs.services.js";
-import { jobFormOptions } from "./jobs.constants.js";
+import {
+  citiesByProvince,
+  jobFormOptions,
+  specializationsByCategory,
+} from "./jobs.constants.js";
 import { getSessionBySessionId } from "../../repo/session.repo.js";
 import { startSessionPayment } from "../payment/payment.services.js";
 
@@ -21,7 +25,7 @@ export async function storeGatewayEmail(req: Request, res: Response) {
   const result = await addEmailToSession(req.sessionId, email);
   if (!result.success) {
     return res.status(500).render("jobs/start", {
-      serverError: "Something went wrong. Please try again.",
+      actionError: "Something went wrong. Please try again.",
     });
   }
   res.redirect("/jobs/new");
@@ -71,8 +75,10 @@ export async function storePendingJob(req: Request, res: Response) {
     return res.status(500).render("jobs/new", {
       jobFormOptions,
       values: req.body,
-      serverError: "Something went wrong. Please try again.",
+      actionError: "Something went wrong. Please try again.",
       sessionEmail: session?.email,
+      specializationsByCategory: JSON.stringify(specializationsByCategory),
+      citiesByProvince: JSON.stringify(citiesByProvince),
     });
   }
 
@@ -83,7 +89,7 @@ export async function showSessionDrafts(req: Request, res: Response) {
   const result = await getSessionDrafts(req.sessionId);
 
   if (!result.success) {
-    res.status(500).render("jobs/drafts", { draftsError: true });
+    res.status(500).render("jobs/drafts", { loadError: true });
     return;
   }
 
@@ -91,21 +97,27 @@ export async function showSessionDrafts(req: Request, res: Response) {
   res.render("jobs/drafts", { drafts });
 }
 
-export async function submitSessionDrafts(req: Request, res: Response) {
-  const result = await submitDrafts(req.sessionId);
-  if (!result.success) {
-    return res.status(500).render("jobs/drafts", { serverError: "Something went wrong. Please try again." });
-  }
-  res.render("success", {
-    message: "Your posts are under review. We'll be in touch soon.",
-  });
-}
+// export async function submitSessionDrafts(req: Request, res: Response) {
+//   const result = await submitDrafts(req.sessionId);
+//   if (!result.success) {
+//     return res.status(500).render("jobs/drafts", {
+//       actionError: "Something went wrong. Please try again.",
+//     });
+//   }
+//   res.render("success", {
+//     title: "Submitted",
+//     message: "Your posts are under review. We'll be in touch soon.",
+//     link: { href: "/jobs/board", label: "View the board" },
+//   });
+// }
 
 export async function deleteDraft(req: Request, res: Response) {
   const id = Number(req.params.id);
   const result = await removeDraft(id, req.sessionId);
   if (!result.success) {
-    return res.status(500).render("jobs/drafts", { serverError: "Something went wrong. Please try again." });
+    return res.status(500).render("jobs/drafts", {
+      actionError: "Something went wrong. Please try again.",
+    });
   }
   res.redirect("/jobs/drafts");
 }
@@ -116,10 +128,13 @@ export async function showBoard(req: Request, res: Response) {
   const result = await getLivePosts(category, province);
   const categories = jobFormOptions.category;
   const provinces = jobFormOptions.province;
+  const filterCount =
+    (Array.isArray(category) ? category.length : category ? 1 : 0) +
+    (Array.isArray(province) ? province.length : province ? 1 : 0);
 
   if (!result.success) {
     return res.status(500).render("jobs/board", {
-      boardError: true,
+      loadError: true,
       categories,
       provinces,
       activeCategory: category,
@@ -127,13 +142,19 @@ export async function showBoard(req: Request, res: Response) {
     });
   }
 
-  const posts = result.data.length ? result.data : null;
+  const allPosts = result.data.length ? result.data : null;
+  const pinnedPosts =
+    allPosts?.filter((p) => p.tier === "pinned" || p.tier === "featured") ??
+    null;
+  const posts = allPosts?.filter((p) => p.tier === "standard") ?? null;
   res.render("jobs/board", {
-    posts,
+    posts: posts?.length ? posts : null,
+    pinnedPosts: pinnedPosts?.length ? pinnedPosts : null,
     categories,
     provinces,
     activeCategory: category,
     activeProvince: province,
+    filterCount,
   });
 }
 
@@ -143,13 +164,17 @@ export async function getForm(req: Request, res: Response) {
   if (!result.success) {
     return res.status(500).render("jobs/new", {
       jobFormOptions,
-      serverError: "Something went wrong. Please try again.",
+      specializationsByCategory: JSON.stringify(specializationsByCategory),
+      citiesByProvince: JSON.stringify(citiesByProvince),
+      actionError: "Something went wrong. Please try again.",
     });
   }
 
   res.render("jobs/new", {
     jobFormOptions,
     sessionEmail: result.data.email,
+    specializationsByCategory: JSON.stringify(specializationsByCategory),
+    citiesByProvince: JSON.stringify(citiesByProvince),
   });
 }
 
@@ -159,7 +184,7 @@ export async function showJobDetails(req: Request, res: Response) {
   const post = await getLivePost(slug);
 
   if (!post.success) {
-    return res.status(500).render("error");
+    return res.status(404).render("error");
   }
 
   res.render("jobs/details", {
@@ -185,7 +210,7 @@ export async function submitContactForm(req: Request, res: Response) {
 
   if (!result.success) {
     return res.render("jobs/contact", {
-      serverError: "Something went wrong.",
+      actionError: "Something went wrong.",
       values: {
         email: applicationData.email,
         message: applicationData.message,
@@ -195,7 +220,11 @@ export async function submitContactForm(req: Request, res: Response) {
     });
   }
 
-  res.render("success", { message: "Your application has been forwarded." });
+  res.render("success", {
+    title: "Application sent",
+    message: "Your application has been forwarded.",
+    link: { href: "/jobs/board", label: "Back to the board" },
+  });
 }
 
 export async function startCheckout(req: Request, res: Response) {
@@ -203,23 +232,27 @@ export async function startCheckout(req: Request, res: Response) {
 
   if (!updateTiers.success) {
     return res.render("jobs/drafts", {
-      serverError: "Something went wrong",
+      actionError: "Something went wrong",
     });
   }
 
   const checkoutResult = await startSessionPayment(req.sessionId);
 
   if (!checkoutResult.success) {
-    return res.render("jobs/drafts", { serverError: "Something went wrong." });
+    return res.render("jobs/drafts", { actionError: "Something went wrong." });
   }
 
   if (checkoutResult.data.kind === "free") {
     const result = await submitDrafts(req.sessionId);
     if (!result.success) {
-      return res.status(500).render("jobs/drafts", { serverError: "Something went wrong. Please try again." });
+      return res.status(500).render("jobs/drafts", {
+        actionError: "Something went wrong. Please try again.",
+      });
     }
     return res.render("success", {
+      title: "Submitted",
       message: "Your posts are under review. We'll be in touch soon.",
+      link: { href: "/jobs/board", label: "View the board" },
     });
   }
 
@@ -234,7 +267,7 @@ export async function loadDraftsForView(
   const result = await getSessionDrafts(req.sessionId);
 
   if (!result.success) {
-    return res.status(500).render("jobs/drafts", { draftsError: true });
+    return res.status(500).render("jobs/drafts", { loadError: true });
   }
 
   res.locals.drafts = result.data.length ? result.data : null;

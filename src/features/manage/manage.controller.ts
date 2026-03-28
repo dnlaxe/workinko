@@ -5,10 +5,10 @@ import {
   unpublishUserPost,
   updatePost,
 } from "./manage.services.js";
-import { jobFormOptions } from "../jobs/jobs.constants.js";
+import { jobFormOptions, specializationsByCategory, citiesByProvince } from "../jobs/jobs.constants.js";
 
 export async function showUserDashboard(req: Request, res: Response) {
-  const serverError = req.query.error as string | undefined;
+  const actionError = req.query.error as string | undefined;
   const token = req.query.token as string;
   const result = await getUsersPosts(token);
 
@@ -22,7 +22,7 @@ export async function showUserDashboard(req: Request, res: Response) {
     return res.status(500).render("error");
   }
 
-  res.render("manage/dashboard", { posts: result.data, serverError, token });
+  res.render("manage/dashboard", { posts: result.data, actionError, token });
 }
 
 export async function showEditform(req: Request, res: Response) {
@@ -39,6 +39,8 @@ export async function showEditform(req: Request, res: Response) {
     values: result.data,
     id: postId,
     token,
+    specializationsByCategory: JSON.stringify(specializationsByCategory),
+    citiesByProvince: JSON.stringify(citiesByProvince),
   });
 }
 

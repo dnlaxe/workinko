@@ -21,6 +21,7 @@ import {
 import { jobFormOptions } from "./jobs.constants.js";
 import {
   hasCurrentSession,
+  loadSession,
   requireGatewayEmail,
   resolveSession,
 } from "../../middleware/session.js";
@@ -30,7 +31,7 @@ import isSavedDrafts from "../../middleware/drafts.js";
 
 const router = Router();
 
-router.use(resolveSession, isSavedDrafts);
+router.use(loadSession, isSavedDrafts);
 
 router.get("/jobs/board", showBoard);
 
@@ -45,19 +46,21 @@ router.get(
 
 router.post(
   "/jobs/start",
-  hideFooter,
   validate(startSchema, "jobs/start"),
+  resolveSession,
+  hideFooter,
   storeGatewayEmail,
 );
 
 router.get("/jobs/new", requireGatewayEmail, hideFooter, getForm);
 
-router.get("/jobs/drafts", hideFooter, showSessionDrafts);
+router.get("/jobs/drafts", requireGatewayEmail, hideFooter, showSessionDrafts);
 
-router.post("/jobs/drafts/:id/delete", deleteDraft);
+router.post("/jobs/drafts/:id/delete", requireGatewayEmail, deleteDraft);
 
 router.post(
   "/jobs/drafts/checkout",
+  requireGatewayEmail,
   hideFooter,
   loadDraftsForView,
   validate(draftsFormSchema, "jobs/drafts"),

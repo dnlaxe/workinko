@@ -8,6 +8,7 @@ import {
   expireOverduePosts,
   getAllLivePosts,
   getLivePostBySlug,
+  incrementLivePostViewCount,
 } from "../../repo/live-post.repo.js";
 import { ContactInput, JobFormInput } from "./jobs.schema.js";
 import { appLogger } from "../../middleware/logger.js";
@@ -20,7 +21,6 @@ import {
 } from "../../repo/session.repo.js";
 import { insertRelayMessage } from "../../repo/relay-message.repo.js";
 import { insertAuditEvents } from "../../repo/audit.repo.js";
-import { recordEvent } from "../admin/admin.services.js";
 
 export async function storeDraftPost(
   data: JobFormInput & { sessionId: number; contactEmail?: string | null },
@@ -127,18 +127,7 @@ export async function getLivePost(slug: string): Promise<Result<LivePostRow>> {
       return { success: false, error: { reason: "SLUG_NOT_FOUND" } };
     }
 
-    void recordEvent({
-      eventType: "post.viewed",
-      actorType: "visitor",
-      entityType: "live_post",
-      entityId: post.id,
-      postId: post.id,
-      sessionId: post.sessionId ?? undefined,
-      message: "Job detail page opened",
-      metadata: {
-        slug: post.slug,
-      },
-    });
+    void incrementLivePostViewCount(post.id);
 
     return { success: true, data: post };
   } catch (err) {
@@ -152,6 +141,9 @@ export async function getSession(
 ): Promise<Result<SessionRow>> {
   try {
     const session = await getSessionBySessionId(sessionId);
+    if (!session) {
+      return { success: false, error: { reason: "SESSION_NOT_FOUND" } };
+    }
     return { success: true, data: session };
   } catch (err) {
     appLogger.error({ err, sessionId }, "getSession failed fetching session");

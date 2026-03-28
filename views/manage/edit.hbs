@@ -1,334 +1,367 @@
-<form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if serverError}}data-has-errors{{/if}} class="p-8">
+<div class="h-full md:relative px-0">
 
-  <a href="/manage?token={{token}}" class="mb-4 inline-block underline text-slate-700">Back to current posts</a>
+  <form action="/manage/edit/{{id}}?token={{token}}" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if actionError}}data-has-errors{{/if}} data-specializations='{{{specializationsByCategory}}}' data-cities='{{{citiesByProvince}}}'>
 
-{{#if serverError}}
-  <p>{{serverError}}</p>
-{{/if}}
+    {{#if actionError}}
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
+    {{/if}}
 
-  <div class="step">
-    <div class="step__content">
-      <fieldset>
-        <legend>How do you want to be contacted?</legend>
+    <div class="step flex-1 pb-24">
+      <div class="step__content">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Contact details</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">How do you want to be contacted?</p>
+            {{#each jobFormOptions.contactMethod}}
+              <label class="block cursor-pointer group mb-2">
+                <input
+                  type="radio"
+                  name="contactMethod"
+                  value="{{this}}"
+                  required
+                  {{#if (eq ../values.contactMethod this)}}checked{{/if}}
+                  class="sr-only peer"
+                />
+                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                  {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
+                </span>
+              </label>
+            {{/each}}
 
-        {{#each jobFormOptions.contactMethod}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="contactMethod"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.contactMethod this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
-            </span>
-          </label>
-        {{/each}}
+            {{#if fieldErrors.contactMethod}}
+              <div class="text-sm text-red-500 mt-1 px-2" data-error="contactMethod">{{fieldErrors.contactMethod.[0]}}</div>
+            {{/if}}
 
-        {{#if fieldErrors.contactMethod}}
-          <div data-error="contactMethod">{{fieldErrors.contactMethod.[0]}}</div>
-        {{/if}}
+            <div
+              data-contact-field="link"
+              class="mt-2 p-8 rounded bg-[#CBCCCE]/20 border border-[#CBCCCE]"
+              {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
+            >
+              <label class="block" for="contactUrl">Please give your link.</label>
+              <input
+                id="contactUrl"
+                name="contactUrl"
+                type="url"
+                value="{{values.contactUrl}}"
+                class="block w-full px-3 py-2 rounded bg-white"
+              />
+              {{#if fieldErrors.contactUrl}}
+                <div class="text-sm text-red-500 mt-1 px-2" data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
+              {{/if}}
+            </div>
 
-        <div
-          data-contact-field="link"
-          {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
-        >
-          <label class="block" for="contactUrl">URL</label>
+            <div
+              data-contact-field="relay"
+              class="mt-2 bg-[#41C3DD]/60 p-8 rounded"
+              {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
+            >
+              <p>We'll use your email: <strong>{{values.contactEmail}}</strong></p>
+              <p>This will not be publicly visible.</p>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Job details</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Is this a teaching or non-teaching job?</p>
+            <div class="grid grid-cols-2 gap-2">
+              {{#each jobFormOptions.category}}
+                <label class="block cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="category"
+                    value="{{this}}"
+                    required
+                    {{#if (eq ../values.category this)}}checked{{/if}}
+                    class="sr-only peer"
+                  />
+                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                    {{this}}
+                  </span>
+                </label>
+              {{/each}}
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="select-tag-hint hidden px-8">
+          <p class="mt-4 mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Select a tag</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 px-8">
+          {{#each jobFormOptions.specialization}}
+            <label class="block cursor-pointer group">
+              <input
+                type="radio"
+                name="specialization"
+                value="{{this}}"
+                required
+                {{#if (eq ../values.specialization this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Location</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Province</p>
+            <div class="grid grid-cols-2 gap-2">
+              {{#each jobFormOptions.province}}
+                <label class="block cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="province"
+                    value="{{this}}"
+                    required
+                    {{#if (eq ../values.province this)}}checked{{/if}}
+                    class="sr-only peer"
+                  />
+                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                    {{this}}
+                  </span>
+                </label>
+              {{/each}}
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="select-tag-hint hidden px-8">
+          <p class="mt-4 mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Select the nearest city</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 px-8">
+          {{#each jobFormOptions.city}}
+            <label class="block cursor-pointer group">
+              <input
+                type="radio"
+                name="city"
+                value="{{this}}"
+                required
+                {{#if (eq ../values.city this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Language proficiency</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Korean proficiency</p>
+            <div class="grid grid-cols-2 gap-2">
+              {{#each jobFormOptions.koreanProficiency}}
+                <label class="block cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="koreanProficiency"
+                    value="{{value}}"
+                    required
+                    {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
+                    class="sr-only peer"
+                  />
+                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                    {{label}}
+                  </span>
+                </label>
+              {{/each}}
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <p class="mb-2 mt-4 mx-8 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">English proficiency</p>
+          <div class="grid grid-cols-2 gap-2 px-8">
+            {{#each jobFormOptions.englishProficiency}}
+              <label class="block cursor-pointer group">
+                <input
+                  type="radio"
+                  name="englishProficiency"
+                  value="{{value}}"
+                  required
+                  {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
+                  class="sr-only peer"
+                />
+                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                  {{label}}
+                </span>
+              </label>
+            {{/each}}
+          </div>
+        </fieldset>
+
+        <div class="mt-4 px-8">
+          <label class="block uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded" for="otherLanguages">Other languages</label>
           <input
-            id="contactUrl"
-            name="contactUrl"
-            type="url"
-            value="{{values.contactUrl}}"
-            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
+            id="otherLanguages"
+            name="otherLanguages"
+            type="text"
+            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mt-2"
+            value="{{values.otherLanguages}}"
           />
-          {{#if fieldErrors.contactUrl}}
-            <div data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
+          {{#if fieldErrors.otherLanguages}}
+            <div class="text-sm text-red-500 mt-1 px-2" data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Contract</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Type</p>
+            {{#each jobFormOptions.contractType}}
+              <label class="block mb-2 cursor-pointer group">
+                <input
+                  type="radio"
+                  name="contractType"
+                  value="{{this}}"
+                  required
+                  {{#if (eq ../values.contractType this)}}checked{{/if}}
+                  class="sr-only peer"
+                />
+                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                  {{this}}
+                </span>
+              </label>
+            {{/each}}
+          </div>
+        </fieldset>
+
+        <fieldset class="px-8">
+          <p class="mb-2 mt-4 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Visa sponsorship</p>
+          {{#each jobFormOptions.visaSponsorship}}
+            <label class="block mb-2 cursor-pointer group">
+              <input
+                type="radio"
+                name="visaSponsorship"
+                value="{{this}}"
+                required
+                {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content">
+        <fieldset>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Start date</h1>
+          <div class="px-8">
+            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">When does this position begin?</p>
+            <div class="grid grid-cols-2 gap-2">
+              {{#each jobFormOptions.startDate}}
+                <label class="block cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="startDate"
+                    value="{{this}}"
+                    required
+                    {{#if (eq ../values.startDate this)}}checked{{/if}}
+                    class="sr-only peer"
+                  />
+                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                    {{this}}
+                  </span>
+                </label>
+              {{/each}}
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="step flex-1 pb-24" hidden>
+      <div class="step__content">
+        <div>
+          <h1 class="text-xs uppercase tracking-wider py-4 px-8">Job description</h1>
+          <div class="px-8">
+            <label class="block uppercase tracking-wide" for="heading">Heading</label>
+            <input
+              id="heading"
+              name="heading"
+              type="text"
+              class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mb-2"
+              required
+              value="{{values.heading}}"
+            />
+            {{#if fieldErrors.heading}}
+              <div class="text-sm text-red-500 mt-1 px-2" data-error="heading">{{fieldErrors.heading.[0]}}</div>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="px-8">
+          <label class="block uppercase tracking-wide" for="subheading">Subheading</label>
+          <input
+            id="subheading"
+            name="subheading"
+            type="text"
+            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mb-2"
+            required
+            value="{{values.subheading}}"
+          />
+          {{#if fieldErrors.subheading}}
+            <div class="text-sm text-red-500 mt-1 px-2" data-error="subheading">{{fieldErrors.subheading.[0]}}</div>
           {{/if}}
         </div>
 
-        <div
-          data-contact-field="relay"
-          {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
-        >
-          <p>We'll use your email: <strong>{{values.contactEmail}}</strong></p>
+        <div class="px-8">
+          <label class="block uppercase tracking-wide" for="fullDescription">Full description</label>
+          <textarea
+            class="block w-full h-[40%] px-3 py-2 rounded border border-[#CBCCCE] resize-none"
+            id="fullDescription"
+            name="fullDescription"
+            required
+          >{{values.fullDescription}}</textarea>
+          {{#if fieldErrors.fullDescription}}
+            <div class="text-sm text-red-500 mt-1 px-2" data-error="fullDescription">{{fieldErrors.fullDescription.[0]}}</div>
+          {{/if}}
         </div>
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
-      <fieldset>
-        <legend>Category</legend>
-
-        {{#each jobFormOptions.category}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="category"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.category this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <div class="select-tag-hint hidden">
-        <p>Select a specialization</p>
-      </div>
-
-      {{#each jobFormOptions.specialization}}
-        <label class="block mb-1.5 cursor-pointer group">
-          <input
-            type="radio"
-            name="specialization"
-            value="{{this}}"
-            required
-            {{#if (eq ../values.specialization this)}}checked{{/if}}
-            class="sr-only peer"
-          />
-          <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-            {{this}}
-          </span>
-        </label>
-      {{/each}}
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
-      <fieldset>
-        <legend>Province</legend>
-
-        {{#each jobFormOptions.province}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="province"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.province this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <div class="select-tag-hint hidden">
-        <p>Select the nearest city</p>
-      </div>
-
-      {{#each jobFormOptions.city}}
-        <label class="block mb-1.5 cursor-pointer group">
-          <input
-            type="radio"
-            name="city"
-            value="{{this}}"
-            required
-            {{#if (eq ../values.city this)}}checked{{/if}}
-            class="sr-only peer"
-          />
-          <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-            {{this}}
-          </span>
-        </label>
-      {{/each}}
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Korean proficiency</legend>
-
-        {{#each jobFormOptions.koreanProficiency}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="koreanProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{label}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>English proficiency</legend>
-
-        {{#each jobFormOptions.englishProficiency}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="englishProficiency"
-              value="{{value}}"
-              required
-              {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{label}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <div>
-        <label class="block" for="otherLanguages">Other languages</label>
-        <input
-          id="otherLanguages"
-          name="otherLanguages"
-          type="text"
-          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
-          value="{{values.otherLanguages}}"
-        />
-        {{#if fieldErrors.otherLanguages}}
-          <div data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
-        {{/if}}
       </div>
     </div>
-  </div>
 
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Contract type</legend>
+    <nav class="step__nav flex flex-rows justify-between gap-8 fixed bottom-0 left-0 right-0 bg-white z-10 px-8 py-4 md:absolute">
+      <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 w-full rounded border border-[#CBCCCE] uppercase tracking-wide enabled:hover:border-[#0D0D0D]" hidden>Apply changes</button>
+    </nav>
 
-        {{#each jobFormOptions.contractType}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="contractType"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.contractType this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-
-      <fieldset>
-        <legend>Visa sponsorship</legend>
-
-        {{#each jobFormOptions.visaSponsorship}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="visaSponsorship"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <fieldset>
-        <legend>Start date</legend>
-
-        {{#each jobFormOptions.startDate}}
-          <label class="block mb-1.5 cursor-pointer group">
-            <input
-              type="radio"
-              name="startDate"
-              value="{{this}}"
-              required
-              {{#if (eq ../values.startDate this)}}checked{{/if}}
-              class="sr-only peer"
-            />
-            <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 transition-all peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-900 group-hover:border-[#CBCCCE]">
-              {{this}}
-            </span>
-          </label>
-        {{/each}}
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="step" hidden>
-    <div class="step__content">
-      <div>
-        <label class="block" for="heading">Heading</label>
-        <input
-          id="heading"
-          name="heading"
-          type="text"
-          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
-          required
-          value="{{values.heading}}"
-        />
-        {{#if fieldErrors.heading}}
-          <div data-error="heading">{{fieldErrors.heading.[0]}}</div>
-        {{/if}}
-      </div>
-
-      <div>
-        <label class="block" for="subheading">Subheading</label>
-        <input
-          id="subheading"
-          name="subheading"
-          type="text"
-          class="block w-full px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600"
-          required
-          value="{{values.subheading}}"
-        />
-        {{#if fieldErrors.subheading}}
-          <div data-error="subheading">{{fieldErrors.subheading.[0]}}</div>
-        {{/if}}
-      </div>
-
-      <div>
-        <label class="block" for="fullDescription">Full description</label>
-        <textarea
-          class="block w-full h-[40%] px-3 py-2 rounded border border-[#CBCCCE] bg-white text-slate-600 resize-none"
-          id="fullDescription"
-          name="fullDescription"
-          required
-        >{{values.fullDescription}}</textarea>
-        {{#if fieldErrors.fullDescription}}
-          <div data-error="fullDescription">{{fieldErrors.fullDescription.[0]}}</div>
-        {{/if}}
+    <div class="review px-8" hidden>
+      <div class="flex flex-rows justify-end items-center py-4 gap-4">
+        <a href="/manage?token={{token}}" class="underline text-sm">Back</a>
+        <button type="submit" class="btn-confirm px-4 py-1 rounded w-full border border-[#CBCCCE] uppercase tracking-wide enabled:hover:border-[#0D0D0D]">Save changes</button>
       </div>
     </div>
-  </div>
 
-  <nav class="step__nav flex flex-rows mt-8">
-    <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto rounded-full bg-slate-500 text-white px-4 py-1" hidden>Apply changes</button>
-  </nav>
+  </form>
 
-  <div class="review" hidden>
-    <div class="flex flex-rows justify-end space-x-8 px-4">
-      <button type="submit" class="btn-confirm rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Save Changes</button>
-    </div>
-  </div>
+</div>
 
-</form>
-
-<script src="/edit.js" defer></script>
+<script type="module" src="/js/manage/edit.js"></script>

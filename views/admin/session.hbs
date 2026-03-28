@@ -1,88 +1,57 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col gap-4 p-4">
-  <a href="/admin/queue" class="underline text-slate-700">Back to queue</a>
+<div class="flex flex-col md:border-x border-[#CBCCCE]">
 
-  <div class="border border-[#CBCCCE]">
-    <div class="flex flex-row">
-      <div class="w-8 border-r border-[#CBCCCE] bg-slate-100"></div>
-      <div class="flex-1">
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="underline">{{session.email}}</div>
-        </div>
-        <div class="px-4 py-2">
-          <div class="flex flex-col text-slate-700">
-            <span>ID: {{session.id}}</span>
-            <span>Status: {{session.status}}</span>
-            <span>Created: {{session.createdAt}}</span>
-            <span>Updated: {{session.updatedAt}}</span>
-            <span>Expires: {{session.expiresAt}}</span>
-          </div>
-        </div>
-      </div>
+  <div class="p-4 border-b border-[#CBCCCE]">
+    <a href="/admin/queue" class="underline">Back to queue</a>
+  </div>
+
+  <div class="border-t border-[#CBCCCE] px-4 py-3 flex flex-col gap-1">
+    <div class="font-sans">{{session.email}}</div>
+    <div class="flex gap-4 text-sm">
+      <span>{{session.status}}</span>
+      <span>created {{session.createdAt}}</span>
+      <span>updated {{session.updatedAt}}</span>
+      <span>expires {{session.expiresAt}}</span>
     </div>
+    <div class="text-sm text-slate-500">ID: {{session.id}}</div>
   </div>
 
   {{#each jobs}}
-    <div class="border border-[#CBCCCE] rounded">
-      <div class="flex flex-row">
-        <div class="w-8 border-r border-[#CBCCCE] bg-slate-100"></div>
-        <div class="flex-1">
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <div class="underline">{{this.heading}}</div>
-            <div>{{this.subheading}}</div>
-            <div>{{this.specialization}}</div>
-          </div>
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <div class="flex flex-col text-slate-700">
-              <span>{{this.startDate}}</span>
-              <span>{{this.province}}, {{this.city}}</span>
-              <span>{{this.contractType}}</span>
-            </div>
-          </div>
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <div class="flex flex-col text-slate-700">
-              <span>Korean: {{proficiencyLabel this.koreanProficiency}}</span>
-              <span>English: {{proficiencyLabel this.englishProficiency}}</span>
-              {{#if this.otherLanguages}}<span>Other: {{this.otherLanguages}}</span>{{/if}}
-              <span>Visa: {{this.visaSponsorship}}</span>
-            </div>
-          </div>
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <div class="flex flex-col text-slate-700">
-              <span>Contact: {{this.contactMethod}}</span>
-              {{#if this.contactUrl}}<span>URL: {{this.contactUrl}}</span>{{/if}}
-              {{#if this.contactEmail}}<span>Email: {{this.contactEmail}}</span>{{/if}}
-            </div>
-          </div>
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <div class="flex flex-col gap-1 text-slate-700">
-              <div class="underline">{{this.heading}}</div>
-              <div>{{this.subheading}}</div>
-            </div>
-          </div>
-          <div class="border-b border-[#CBCCCE] px-4 py-2">
-            <p style="white-space: pre-line;">{{this.fullDescription}}</p>
-          </div>
-          <div class="px-4 py-2">
-            <div class="flex flex-col text-slate-700">
-              <span>ID: {{this.id}} · Tier: {{this.tier}}</span>
-              <span>Created: {{this.createdAt}}</span>
-            </div>
-          </div>
-        </div>
+    <div class="border-t border-[#CBCCCE] px-4 py-3 flex flex-col gap-1">
+      <div class="font-sans">{{this.heading}}</div>
+      <div>{{this.subheading}}</div>
+      <div class="flex gap-4 text-sm">
+        <span>{{this.specialization}}</span>
+        <span>{{this.startDate}}</span>
+        <span>{{this.province}}, {{this.city}}</span>
+        <span>{{this.contractType}}</span>
       </div>
+      <div class="flex gap-4 text-sm">
+        <span>Korean: {{proficiencyLabel this.koreanProficiency}}</span>
+        <span>English: {{proficiencyLabel this.englishProficiency}}</span>
+        {{#if this.otherLanguages}}<span>Other: {{this.otherLanguages}}</span>{{/if}}
+        <span>Visa: {{this.visaSponsorship}}</span>
+      </div>
+      <div class="flex gap-4 text-sm">
+        <span>Contact: {{this.contactMethod}}</span>
+        {{#if this.contactUrl}}<span>URL: {{this.contactUrl}}</span>{{/if}}
+        {{#if this.contactEmail}}<span>Email: {{this.contactEmail}}</span>{{/if}}
+      </div>
+      <p class="text-sm" style="white-space: pre-line;">{{this.fullDescription}}</p>
+      <div class="text-sm text-slate-500">ID: {{this.id}} · Tier: {{this.tier}} · Created: {{this.createdAt}}</div>
     </div>
   {{else}}
     <p class="text-slate-500 text-sm p-4">No jobs in this session.</p>
   {{/each}}
 
-  <div class="flex gap-4">
+  <div class="flex gap-2 p-4 border-t border-[#CBCCCE]">
     <form method="POST" action="/admin/queue/{{session.id}}/approve">
-      <button type="submit" class="rounded-full bg-green-500 text-white hover:bg-green-600 px-4 py-1">Approve</button>
+      <button type="submit" class="hover:cursor-pointer bg-[#41C3DD] text-white uppercase tracking-widest rounded px-4 py-2">Approve</button>
     </form>
     <form method="POST" action="/admin/queue/{{session.id}}/reject">
-      <button type="submit" class="rounded-full bg-slate-500 text-white px-4 py-1">Reject</button>
+      <button type="submit" class="hover:cursor-pointer bg-[#E5E7E9] rounded px-2 py-1.5">Reject</button>
     </form>
   </div>
+
 </div>

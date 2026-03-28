@@ -1,0 +1,31 @@
+<form method="GET" action="/jobs/board" class="filter-form">
+  <details class="group">
+    <summary class="hover:cursor-pointer border border-[#CBCCCE] rounded px-2 py-1.5 list-none inline-block leading-none m-4 md:mx-0 tracking-wide group-open:bg-[#0D0D0D] group-open:text-white group-open:border-[#0D0D0D]">Filters{{#if filterCount}} ({{filterCount}}){{/if}}</summary>
+    <div class="flex flex-col gap-2 p-4 md:px-0 border-t border-[#CBCCCE]">
+                <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4">Category<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+      <div class="flex flex-wrap gap-2">
+        {{#each categories}}
+          <label class="cursor-pointer">
+            <input type="checkbox" name="category" value="{{this}}" class="sr-only peer" {{#if (contains activeCategory this)}}checked{{/if}}>
+            <span class="border border-[#CBCCCE] hover:border-[#0D0D0D] rounded px-2 py-1.5 peer-checked:bg-[#0D0D0D] peer-checked:text-white peer-checked:border-[#0D0D0D]">{{this}}</span>
+          </label>
+        {{/each}}
+      </div>
+    </div>
+    <div class="flex flex-col gap-2 px-4 md:px-0 pb-4">
+                <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4">Province<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+      <div class="flex flex-wrap gap-x-2 gap-y-4">
+        {{#each provinces}}
+          <label class="cursor-pointer">
+            <input type="checkbox" name="province" value="{{this}}" class="sr-only peer" {{#if (contains activeProvince this)}}checked{{/if}}>
+            <span class="border border-[#CBCCCE] hover:border-[#0D0D0D] rounded px-2 py-1.5 peer-checked:bg-[#0D0D0D] peer-checked:text-white peer-checked:border-[#0D0D0D]">{{this}}</span>
+          </label>
+        {{/each}}
+      </div>
+    </div>
+    <div class="flex justify-between mb-4">
+      <button class="bg-[#E5E7E9]/60 rounded px-2 md:mx-0 py-1.5 m-4 hover:bg-[#E5E7E9]">Apply filters</button>
+      <a href="/jobs/board" class="text-sm mx-4 md:mx-0 mt-6">Reset filters</a>
+    </div>
+  </details>
+</form>

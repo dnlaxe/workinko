@@ -204,3 +204,37 @@ Use a loop with `await` when each step depends on the previous one, you want to 
 ## 2026-03-19
 
 - completely revamped style
+- change RateLimiterMemory (Node.js process RAM) to RateLimiterPostgres
+
+## 2026-03-23
+
+- tried to divide error types for the user:
+
+loadError: page renders but data couldn't be fetched. Passed directly to res.render, e.g. drafts fail to load, board posts fail to load.
+
+actionError: user submitted something and it failed. Passed back via redirect query param then forwarded to the view, e.g. delete failed, update failed, checkout failed.
+
+fieldErrors: form validation failed. Passed directly to res.render on the same page, e.g. invalid email, missing heading.
+
+## 2026-03-25
+
+- refactored js for form. I'd like to completely rewrite this, maybe in version 2.
+- I know pass in data instead of keeping in js.
+
+## 2026-03-27
+
+- seperated pinned and standard cards in board
+- session is only created after user has passed start as every visit was needlessly creating a session.
+
+## 2026-03-28
+
+- things to left to do:
+  delete confirmation windows (manage, drafts)
+  finish pinned jobs payment (dummy flow) and submit flow (still hardcoded to standard)
+  delete submitSessionDrafts
+  add email checks at jobs/start
+  update admin ui
+  connect emails to domain
+  manage extend buttons function
+  faq, contact pages
+  refactor edit.js (shares code with form js)

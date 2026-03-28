@@ -1,32 +1,25 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col gap-4 p-4">
-  {{#if serverError}}
-    <p class="text-slate-500 text-sm p-4">{{serverError}}</p>
+<div class="flex flex-col md:border-x border-[#CBCCCE]">
+
+  <p class="text-sm uppercase tracking-widest p-4">Queue</p>
+
+  {{#if actionError}}
+    <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
   {{else}}
     {{#each sessions}}
-      <div class="border border-[#CBCCCE] rounded">
-        <div class="flex flex-row">
-          <div class="w-8 border-r border-[#CBCCCE] bg-slate-100"></div>
-          <div class="flex-1">
-            <div class="border-b border-[#CBCCCE] px-4 py-2">
-              <div class="underline">{{this.email}}</div>
-            </div>
-            <div class="border-b border-[#CBCCCE] px-4 py-2">
-              <div class="flex flex-col text-slate-700">
-                <span>{{this.status}}</span>
-                <span>{{this.createdAt}}</span>
-                <span>expires {{this.expiresAt}}</span>
-              </div>
-            </div>
-            <div class="flex px-4 py-2">
-              <a href="/admin/queue/{{this.id}}" class="text-blue-500 underline ml-auto">See posts</a>
-            </div>
-          </div>
+      <div class="border-t border-[#CBCCCE] px-4 py-3 flex flex-col gap-1">
+        <div class="font-sans">{{this.email}}</div>
+        <div class="flex gap-4 text-sm">
+          <span>{{this.status}}</span>
+          <span>{{this.createdAt}}</span>
+          <span>expires {{this.expiresAt}}</span>
         </div>
+        <a href="/admin/queue/{{this.id}}" class="underline text-sm">See posts</a>
       </div>
     {{else}}
       <p class="text-slate-500 text-sm p-4">No sessions pending review.</p>
     {{/each}}
   {{/if}}
+
 </div>

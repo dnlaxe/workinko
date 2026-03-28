@@ -1,73 +1,68 @@
-<div class="p-4 max-w-4xl w-full mx-auto">
+<div class="py-4 px-4 md:px-0">
   <a href="/jobs/board" class="underline">Back to listings</a>
-  <div class="mt-4">
-    <div class="flex flex-row">
 
-      <div class="flex-1">
-
-        <div class="px-4 py-6">
-          <div
-            class="text-2xl font-display mb-2 underline decoration-[#41C3DD] decoration-2"
-          >{{heading}}</div>
-          <div>{{subheading}}</div>
-        </div>
-
-        <div class="md:flex gap-4 px-4">
-          <div class="p-4 md:flex-1 bg-[#E5E7E9] rounded">
-            <div class="flex flex-col gap-2">
-              <div><i
-                  class="ph ph-read-cv-logo mr-2"
-                ></i>{{specialization}}</div>
-              <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
-              <span><i class="ph ph-map-pin-area mr-2"></i>{{province}},
-                {{city}}</span>
-              <span><i
-                  class="ph ph-hourglass-high mr-2"
-                ></i>{{contractType}}</span>
-            </div>
-          </div>
-
-          <div class="p-4 md:flex-1 mt-4 md:mt-0 bg-[#E5E7E9] rounded">
-            <div class="flex flex-col gap-2">
-              <span><i class="ph ph-translate mr-2"></i>Korean:
-                {{proficiencyLabel koreanProficiency}}</span>
-              <span><i class="ph ph-translate mr-2"></i>English:
-                {{proficiencyLabel englishProficiency}}</span>
-              {{#if otherLanguages}}
-                <span><i class="ph ph-translate mr-2"></i>Other:
-                  {{otherLanguages}}</span>
-              {{/if}}
-              <span><i class="ph ph-file-text mr-2"></i>Visa:
-                {{visaSponsorship}}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex px-4 py-2">
-          <a href="/" class="text-red-500 underline ml-auto">Report</a>
-        </div>
-
-      </div>
+  <div class="bg-[#CBCCCE]/20 rounded my-4 border border-[#CBCCCE]">
+    <div class="px-6 py-6 border-b border-[#CBCCCE]">
+      <div
+        class="font-['Literata'] text-3xl/11 mb-4 underline decoration-[#41C3DD] decoration-3"
+      >{{heading}}</div>
+      <div class="text-lg">{{subheading}}</div>
     </div>
 
-    <div class="flex flex-col gap-4 px-4 py-6">
-      <div class="flex flex-col gap-2">
-        <p style="white-space: pre-line;">{{fullDescription}}</p>
+    <div class="md:flex gap-4">
+      <div
+        class="md:flex-1 border-b md:border-b-0 md:border-r border-[#CBCCCE] p-4"
+      >
+        <div class="flex flex-col gap-2">
+          <span><i class="ph ph-read-cv-logo mr-2"></i>{{specialization}}</span>
+          <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
+          <span><i class="ph ph-map-pin-area mr-2"></i>{{province}},
+            {{city}}</span>
+          <span><i class="ph ph-hourglass-high mr-2"></i>{{contractType}}</span>
+        </div>
       </div>
 
-      <div class="flex flex-col gap-2">
-        {{#if isRelay}}
-          <a
-            href="/jobs/{{slug}}/contact"
-            class="shadow-sm w-full p-2 text-center text-white bg-[#41C3DD] uppercase tracking-widest rounded font-semibold"
-          >Contact poster</a>
-        {{else}}
-          <a
-            href="{{contactUrl}}"
-            class="w-full p-2 text-center text-white bg-[#41C3DD] uppercase tracking-widest rounded font-semibold"
-          >Apply here</a>
-        {{/if}}
+      <div class="md:flex-1 p-4">
+        <div class="flex flex-col gap-2">
+          <span><i class="ph ph-translate mr-2"></i>Korean:
+            {{proficiencyLabel koreanProficiency}}</span>
+          <span><i class="ph ph-translate mr-2"></i>English:
+            {{proficiencyLabel englishProficiency}}</span>
+          {{#if otherLanguages}}
+            <span><i class="ph ph-translate mr-2"></i>Other:
+              {{otherLanguages}}</span>
+          {{/if}}
+          <span><i class="ph ph-file-text mr-2"></i>Visa:
+            {{visaSponsorship}}</span>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="flex py-2">
+    <a href="/" class="text-red-500 underline ml-auto text-sm">Report</a>
+  </div>
+
+  <div class="flex flex-col gap-4 py-6">
+
+    <p
+      style="white-space: pre-line;"
+      class="text-lg text-[#0D0D0D]"
+    >{{fullDescription}}</p>
+
+  </div>
+
+  <div class="flex flex-col gap-2 mt-4">
+    {{#if isRelay}}
+      <a
+        href="/jobs/{{slug}}/contact"
+        class="shadow-sm py-3 px-7 text-center text-[#0D0D0D] bg-[#41C3DD] tracking-wider rounded uppercase"
+      >Contact poster</a>
+    {{else}}
+      <a
+        href="{{contactUrl}}"
+        class="p-2 text-center text-white bg-[#41C3DD] uppercase tracking-widest rounded font-semibold"
+      >Apply here</a>
+    {{/if}}
   </div>
 </div>

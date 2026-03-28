@@ -29,6 +29,8 @@ if (isProduction) {
   app.set("trust proxy", 1);
 }
 
+app.use(express.static("public"));
+
 app.use(helmet());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(logger);
@@ -42,7 +44,6 @@ if (isBasicAuthEnabled) {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
 
 app.use(jobsRouter);
 

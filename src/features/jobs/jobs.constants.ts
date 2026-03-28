@@ -3,10 +3,13 @@ export const jobFormOptions = {
   specialization: [
     "Kindergarten",
     "Elementary",
+    "Kindergarten + Elementary",
     "Middle School",
     "High School",
     "University",
-    "Corporate English",
+    "Adults",
+    "English Cafe",
+    "Business English",
     "Private Tutoring",
     "Frontend",
     "Backend",
@@ -18,7 +21,7 @@ export const jobFormOptions = {
     "Finance",
     "Customer Support",
   ],
-  contractType: ["Full-time", "Part-time"],
+  contractType: ["Full-time", "Part-time", "Contract", "Temporary"],
   province: [
     "Seoul",
     "Busan",
@@ -191,17 +194,16 @@ export const jobFormOptions = {
 
   koreanProficiency: [
     { value: 0, label: "Not Required" },
-    { value: 1, label: "Beginner" },
-    { value: 2, label: "Intermediate" },
+    { value: 1, label: "Beginner Korean" },
+    { value: 2, label: "Intermediate Korean" },
   ],
   englishProficiency: [
     { value: 0, label: "Not Required" },
-    { value: 1, label: "Beginner" },
-    { value: 2, label: "Intermediate" },
+    { value: 1, label: "Beginner English" },
+    { value: 2, label: "Intermediate English" },
   ],
   visaSponsorship: ["Not Provided", "Provided"],
   startDate: [
-    "ASAP",
     "January",
     "February",
     "March",
@@ -214,6 +216,7 @@ export const jobFormOptions = {
     "October",
     "November",
     "December",
+    "ASAP",
   ],
   contactMethod: ["link", "relay"],
 } as const;

@@ -1,4 +1,4 @@
-import { and, desc, eq, gt } from "drizzle-orm";
+import { and, desc, eq, gt, inArray } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { currentSession } from "../db/schema.js";
 
@@ -17,7 +17,7 @@ export async function getSessionByToken(token: string) {
     .where(
       and(
         eq(currentSession.token, token),
-        eq(currentSession.status, "pending_review"),
+        inArray(currentSession.status, ["draft", "pending_review"]),
         gt(currentSession.expiresAt, new Date()),
       ),
     );

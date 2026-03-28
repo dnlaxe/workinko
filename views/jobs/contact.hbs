@@ -1,17 +1,19 @@
-<div class="p-4">
-  <a href="/jobs/{{slug}}" class="underline text-slate-700s">Back to listing</a>
-  <p class="mt-6 px-4">Comment about privacy</p>
+<div class="p-4 md:px-0">
+  <a href="/jobs/{{slug}}" class="underline">Back to listing</a>
+  <p class="mt-6">Comment about privacy</p>
   <form method="POST" action="/jobs/{{slug}}/contact" class="mt-4">
-    {{#if serverError}}
+    {{#if actionError}}
       <div class="px-4 py-2">
-        <p class="text-slate-500 text-sm">{{serverError}}</p>
+        <p
+          class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block"
+        >{{actionError}}</p>
       </div>
     {{/if}}
 
     <input type="hidden" name="slug" value="{{slug}}" />
     <input type="hidden" name="heading" value="{{heading}}" />
 
-    <div class="px-4 py-2">
+    <div class="py-2">
       <label class="block uppercase tracking-wide text-sm" for="email">Your
         email</label>
       <input
@@ -23,11 +25,11 @@
         required
       />
       {{#if fieldErrors.email}}<p
-          class="text-slate-500 text-sm"
+          class="text-sm text-red-500 mt-1 px-2"
         >{{fieldErrors.email}}</p>{{/if}}
     </div>
 
-    <div class="px-4 py-2">
+    <div class="py-2">
       <label
         class="block uppercase tracking-wide text-sm"
         for="message"
@@ -39,11 +41,11 @@
         required
       >{{values.message}}</textarea>
       {{#if fieldErrors.message}}<p
-          class="text-slate-500 text-sm"
+          class="text-sm text-red-500 mt-1 px-2"
         >{{fieldErrors.message}}</p>{{/if}}
     </div>
 
-    <div class="flex px-4 py-2">
+    <div class="flex py-2">
       <button
         type="submit"
         class="rounded border px-4 py-1 ml-auto"

@@ -1,108 +1,98 @@
-<div class="max-w-4xl mx-auto w-full">
-  <div class="p-4">
-    <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4">
+<div class="p-4 md:px-0">
+  <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4">
 
-      {{#if serverError}}
-        <p class="text-[#0D0D0D] text-sm p-4">
-          {{serverError}}
-        </p>
-      {{/if}}
+    {{#if actionError}}
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
+    {{/if}}
 
-      {{#if draftsError}}
-        <p class="text-[#0D0D0D] text-sm p-4">Could not load drafts.</p>
-      {{else}}
-      <p class="uppercase tracking-wide">Your posts</p>
-        {{#each drafts}}
-          <div>
-            <div class="flex flex-row border border-[#CBCCCE] rounded">
-              <div class="flex-1">
+    {{#if loadError}}
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">Could not load drafts.</p>
+    {{else}}
+      <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4">Your saved drafts <span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+
+        <div class="flex flex-col gap-8">
+          {{#each drafts}}
+            <div class="border border-[#CBCCCE] rounded">
+              <div class="px-4 py-2 flex flex-col md:flex-row justify-between border-b border-[#CBCCCE]">
                 <div>
-
-                  <div class="md:flex-1 p-4 flex flex-col justify-between">
-                    <div>
-                      <div class="font-display text-lg mb-2">{{this.heading}}</div>
-                      <div>{{this.subheading}}</div>
-                      <div class="flex flex-row flex-wrap gap-x-4 gap-y-1 mt-2">
-                        <span><i class="ph ph-read-cv-logo mr-2"></i>{{this.specialization}}</span>
-                        <span><i class="ph ph-calendar-dot mr-2"></i>{{this.startDate}}</span>
-                        <span><i class="ph ph-map-pin-area mr-2"></i>{{this.city}}, {{this.province}}</span>
-                        <span><i class="ph ph-hourglass-high mr-2"></i>{{this.contractType}}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="flex flex-col gap-1 bg-[#E5E7E9] rounded-b">
-                    <fieldset>
-                      <div class="grid grid-cols-2">
-                        <label class="cursor-pointer group h-full">
-                          <input
-                            type="radio"
-                            name="{{this.id}}"
-                            value="standard"
-                            class="sr-only peer"
-                            {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
-                          />
-                          <span class="flex flex-col items-start h-full px-3 py-2 rounded-bl bg-[#E5E7E9] text-[#0D0D0D] transition-all peer-checked:bg-white peer-checked:text-[#0D0D0D]">
-                            <span class="text-lg mb-2 underline">Standard</span>
-                            <ul class="text-sm text-[#0D0D0D]">
-                              <li>Listed for thirty days</li>
-                              <li>Management link</li>
-                            </ul>
-                            <span class="mt-auto ml-auto">Free</span>
-                          </span>
-                        </label>
-                        <label class="cursor-pointer group h-full">
-                          <input
-                            type="radio"
-                            name="{{this.id}}"
-                            value="pinned"
-                            class="sr-only peer"
-                            {{#if (eq this.tier "pinned")}}checked{{/if}}
-                          />
-                          <span class="flex flex-col items-start h-full px-3 py-2 rounded-br bg-[#E5E7E9] text-[#0D0D0D] transition-all peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
-                            <span class="text-lg mb-2 underline">Pinned</span>
-                            <ul class="text-sm text-[#0D0D0D]">
-                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned to the top of all listings</li>
-                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned for thirty days</li>
-                              <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Link management</li>
-                            </ul>
-                            <span class="mt-auto ml-auto">$10</span>
-                          </span>
-                        </label>
-                      </div>
-                    </fieldset>
-                  </div>
-
+                  <div class="font-sans text-lg mb-2 underline decoration-[#41C3DD] decoration-2">{{heading}}</div>
+                  <div>{{subheading}}</div>
+                </div>
+                <div class="flex flex-col gap-1 my-4 md:my-0 md:w-60">
+                  <span><i class="ph ph-read-cv-logo mr-2"></i>{{specialization}}</span>
+                  <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
+                  <span><i class="ph ph-map-pin-area mr-2"></i>{{city}}</span>
+                  <span><i class="ph ph-hourglass-high mr-2"></i>{{contractType}}</span>
                 </div>
               </div>
-            </div>
-            <button
-              type="submit"
-              class="text-red-500 underline text-sm mt-1"
-              formaction="/jobs/drafts/{{this.id}}/delete"
-              formmethod="POST"
-            >Delete</button>
-          </div>
+
+                  <fieldset class="p-4 rounded-b bg-[#CBCCCE]/20">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <label class="cursor-pointer h-full">
+                        <input
+                          type="radio"
+                          name="{{this.id}}"
+                          value="standard"
+                          class="sr-only peer"
+                          {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
+                        />
+                        <span class="flex flex-col items-start h-full px-3 py-2 rounded bg-[#CBCCCE]/60 border border-[#CBCCCE] text-[#0D0D0D] transition-all peer-checked:bg-white peer-checked:border-[#41C3DD] peer-checked:text-[#0D0D0D]">
+                          <span class="text-lg mb-2 uppercase tracking-wide">Standard</span>
+                          <ul class="text-sm text-[#0D0D0D]">
+                            <li>Listed for thirty days</li>
+                            <li>Management link</li>
+                          </ul>
+                          <span class="mt-auto ml-auto text-lg">Free</span>
+                        </span>
+                      </label>
+                      <label class="cursor-pointer h-full">
+                        <input
+                          type="radio"
+                          name="{{this.id}}"
+                          value="pinned"
+                          class="sr-only peer"
+                          {{#if (eq this.tier "pinned")}}checked{{/if}}
+                        />
+                        <span class="flex flex-col items-start h-full px-3 py-2 rounded border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] transition-all peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                          <span class="text-lg mb-2 uppercase tracking-wide">Pinned</span>
+                          <ul class="text-sm text-[#0D0D0D]">
+                            <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned to the top of all listings</li>
+                            <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned for thirty days</li>
+                            <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Link management</li>
+                          </ul>
+                          <span class="mt-auto ml-auto text-lg">$10</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+                  <div class="flex px-4 py-2 gap-4 border-t border-[#CBCCCE]">
+                    <button
+                      type="submit"
+                      class="text-red-500 underline text-sm"
+                      formaction="/jobs/drafts/{{this.id}}/delete"
+                      formmethod="POST"
+                    >Delete</button>
+                  </div>
+              </div>
+
         {{else}}
           <p class="text-[#0D0D0D] p-4">No drafts yet.</p>
         {{/each}}
-      {{/if}}
+      </div>
+    {{/if}}
 
-    <div class="bill border border-[#CBCCCE] rounded p-4 mt-6">
+    <div class="bill border border-[#CBCCCE] rounded p-4">
       <p>Bill</p>
     </div>
 
     <div class="flex flex-row gap-4">
-      <a href="/jobs/new" class="flex-1 px-4 py-1 border border-[#CBCCCE] rounded text-center uppercase tracking-wide">{{#unless drafts}}Add
-          a job{{else}}Add another job{{/unless}}</a>
-
-        <button
-          type="submit"
-          class="shadow-sm flex-1 px-4 py-1 rounded uppercase tracking-wide text-white bg-[#41C3DD] font-semibold"
-        >Pay and submit</button>
-      </form>
+      <a href="/jobs/new" class="flex-1 px-4 py-1 border border-[#CBCCCE] rounded text-center uppercase tracking-wide hover:border-[#0D0D0D]">{{#unless drafts}}Add a job{{else}}Add another job{{/unless}}</a>
+      <button
+        type="submit"
+        class="shadow-sm py-3 px-7 text-center text-[#0D0D0D] bg-[#41C3DD]/60 border-b-2 border-[#41C3DD] tracking-wider rounded uppercase"
+      >Pay and submit</button>
     </div>
-  </div>
+  </form>
 </div>
 
-<script src="/calculate.js" defer></script>
+<script src="/js/payment/calculate.js" defer></script>

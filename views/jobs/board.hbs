@@ -1,51 +1,27 @@
-<div class="flex flex-col md:border-x border-[#CBCCCE]">
+<div class>
 
-  <form method="GET" action="/jobs/board" class="filter-form">
-    <details close>
-      <summary class="hover:cursor-pointer border border-[#CBCCCE] rounded px-2 py-1.5 list-none inline-block leading-none m-4">Filters</summary>
-      <div>
-    <div class="flex flex-col gap-2 p-4 border-t border-[#CBCCCE]">
-      <p class="text-sm uppercase tracking-widest my-4">Category</p>
-      <div class="flex flex-wrap gap-2">
-      {{#each categories}}
-        <label class="cursor-pointer group">
-          <input type="checkbox" name="category" value="{{this}}" class="sr-only peer" {{#if (contains ../activeCategory this)}}checked{{/if}}>
-          <span class="hover:cursor-pointer border border-[#CBCCCE] rounded px-2 py-1.5 peer-checked:bg-[#0D0D0D] peer-checked:text-white peer-checked:border-[#0D0D0D]">{{this}}</span>
-        </label>
-      {{/each}}
-      </div>
-    </div>
-    <div class="flex flex-col gap-2 px-4 pb-4">
-      <p class="text-sm uppercase tracking-widest my-4">Province</p>
-      <div class="flex flex-wrap gap-x-2 gap-y-4">
-      {{#each provinces}}
-        <label class="cursor-pointer group">
-          <input type="checkbox" name="province" value="{{this}}" class="sr-only peer" {{#if (contains ../activeProvince this)}}checked{{/if}}>
-          <span class="hover:cursor-pointer border border-[#CBCCCE] rounded px-2 py-1.5 peer-checked:bg-[#0D0D0D] peer-checked:text-white peer-checked:border-[#0D0D0D]">{{this}}</span>
-        </label>
-      {{/each}}
-      </div>
-    </div>
-    <div class="flex justify-between">
-      <button class="hover:cursor-pointer bg-[#E5E7E9] rounded px-2 py-1.5 m-4">Apply filters</button>
-      <a href="/jobs/board" class="text-sm mx-4 mt-6 mb-4 flex">Reset filters</a>
-      </div>
-      </div>
-      </details>
-  </form>
+  {{> board-filters}}
 
-  <div class="flex flex-col gap-2">
-    {{#if boardError}}
-      <p class="text-slate-500 text-sm p-4">Something went wrong loading posts.</p>
+  <div class="flex flex-col md:gap-2">
+    {{#if loadError}}
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">Something went wrong loading posts.</p>
     {{else if posts}}
-      {{#each posts}}
-        {{> public-job-card this}}
-      {{/each}}
-      <a href="/jobs/board" class="text-sm p-4 mt-2 flex border-y border-[#CBCCCE]">Reset Filters</a>
+      {{#if pinnedPosts}}
+        <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4 mx-4 md:mx-0">Pinned Posts<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+        {{#each pinnedPosts}}
+          {{> public-job-card this}}
+        {{/each}}
+      {{/if}}
+      {{#if posts}}
+        <p class="flex items-center gap-4 text-sm uppercase tracking-widest mt-8 mb-4 mx-4 md:mx-0">Latest Posts<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+        {{#each posts}}
+          {{> public-job-card this}}
+        {{/each}}
+      {{/if}}
+      <a href="/jobs/board" class="text-sm uppercase tracking-widest p-4 mb-2 flex border-y md:border-x border-[#CBCCCE] hover:border-[#0D0D0D]">Reset Filters</a>
     {{else}}
       <p class="uppercase tracking-wide p-4 pb-0">No live posts yet.</p>
-      <a href="/jobs/board" class="text-sm p-4 mt-2 flex border-y border-[#CBCCCE]">Reset filters</a>
-      </div>
+      <a href="/jobs/board" class="text-sm uppercase tracking-widest p-4 mb-2 flex border-y md:border-x border-[#CBCCCE] hover:border-[#0D0D0D]">Reset filters</a>
     {{/if}}
   </div>
 
