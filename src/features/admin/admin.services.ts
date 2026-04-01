@@ -167,8 +167,6 @@ export async function approveSessionByAdmin(
 
   const receipt = await sendReceipt(manageUrl.toString());
 
-  // 7. Send email
-
   if (!receipt.success) {
     return { success: false, error: { reason: "EMAIL_API_ERROR" } };
   }

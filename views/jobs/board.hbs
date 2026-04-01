@@ -1,4 +1,4 @@
-<div class>
+<div>
 
   {{> board-filters}}
 
@@ -7,18 +7,21 @@
       <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">Something went wrong loading posts.</p>
     {{else if posts}}
       {{#if pinnedPosts}}
-        <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4 mx-4 md:mx-0">Pinned Posts<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+        <p class="flex items-center gap-4 text-2xl font-bold mt-4 mb-1 mx-4">Pinned Posts</p>
         {{#each pinnedPosts}}
           {{> public-job-card this}}
         {{/each}}
       {{/if}}
       {{#if posts}}
-        <p class="flex items-center gap-4 text-sm uppercase tracking-widest mt-8 mb-4 mx-4 md:mx-0">Latest Posts<span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+        <p class="flex items-center gap-4 text-2xl font-bold mt-16 mb-1 mx-4">Latest Posts</p>
         {{#each posts}}
           {{> public-job-card this}}
         {{/each}}
       {{/if}}
-      <a href="/jobs/board" class="text-sm uppercase tracking-widest p-4 mb-2 flex border-y md:border-x border-[#CBCCCE] hover:border-[#0D0D0D]">Reset Filters</a>
+      <div class="flex justify-between px-4 md:px-0">
+      <a href="/jobs/board" class="border py-1 px-3 font-mono uppercase text-sm">Reset Filters</a>
+      <a href="#" class="border py-1 px-3 font-mono uppercase text-sm">Back to top</a>
+      </div>
     {{else}}
       <p class="uppercase tracking-wide p-4 pb-0">No live posts yet.</p>
       <a href="/jobs/board" class="text-sm uppercase tracking-widest p-4 mb-2 flex border-y md:border-x border-[#CBCCCE] hover:border-[#0D0D0D]">Reset filters</a>

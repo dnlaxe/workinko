@@ -1,32 +1,37 @@
-<div class="p-4 md:px-0">
+<div class="p-4">
   <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4">
 
     {{#if actionError}}
-      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2  inline-block">{{actionError}}</p>
     {{/if}}
 
     {{#if loadError}}
-      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">Could not load drafts.</p>
+      <p class="text-red-500 text-sm border border-red-500 py-1 px-2  inline-block">Could not load drafts.</p>
     {{else}}
-      <p class="flex items-center gap-4 text-sm uppercase tracking-widest my-4">Your saved drafts <span class="flex-1 h-px bg-[#CBCCCE]"></span></p>
+
+
+      <p class="pb-4 font-mono uppercase text-sm inline-flex items-center gap-2">
+        <span class="block size-2 rounded-full bg-red-500"></span>Your Drafts
+      </p>
+
 
         <div class="flex flex-col gap-8">
           {{#each drafts}}
-            <div class="border border-[#CBCCCE] rounded">
-              <div class="px-4 py-2 flex flex-col md:flex-row justify-between border-b border-[#CBCCCE]">
-                <div>
-                  <div class="font-sans text-lg mb-2 underline decoration-[#41C3DD] decoration-2">{{heading}}</div>
+            <div class="border border-slate-300">
+              <div class="md:flex md:flex-row">
+                <div class="md:flex-1 md:flex md:flex-col p-4 pb-0 md:pb-4">
+                  <div class="text-xl mb-2">{{heading}}</div>
                   <div>{{subheading}}</div>
                 </div>
-                <div class="flex flex-col gap-1 my-4 md:my-0 md:w-60">
+                <div class="flex flex-col gap-1 md:w-60 p-4 font-mono uppercase text-sm">
                   <span><i class="ph ph-read-cv-logo mr-2"></i>{{specialization}}</span>
                   <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
-                  <span><i class="ph ph-map-pin-area mr-2"></i>{{city}}</span>
+                  <span><i class="ph ph-map-pin-area mr-2"></i>{{city}}, {{province}}</span>
                   <span><i class="ph ph-hourglass-high mr-2"></i>{{contractType}}</span>
                 </div>
               </div>
 
-                  <fieldset class="p-4 rounded-b bg-[#CBCCCE]/20">
+                  <fieldset class="p-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <label class="cursor-pointer h-full">
                         <input
@@ -36,8 +41,8 @@
                           class="sr-only peer"
                           {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
                         />
-                        <span class="flex flex-col items-start h-full px-3 py-2 rounded bg-[#CBCCCE]/60 border border-[#CBCCCE] text-[#0D0D0D] transition-all peer-checked:bg-white peer-checked:border-[#41C3DD] peer-checked:text-[#0D0D0D]">
-                          <span class="text-lg mb-2 uppercase tracking-wide">Standard</span>
+                        <span class="flex flex-col items-start h-full px-3 py-2  bg-[#CBCCCE]/60 border border-[#CBCCCE] text-[#0D0D0D] peer-checked:bg-white peer-checked:border-[#41C3DD] peer-checked:text-[#0D0D0D]">
+                          <span class="text-lg mb-2 uppercase">Standard</span>
                           <ul class="text-sm text-[#0D0D0D]">
                             <li>Listed for thirty days</li>
                             <li>Management link</li>
@@ -53,8 +58,8 @@
                           class="sr-only peer"
                           {{#if (eq this.tier "pinned")}}checked{{/if}}
                         />
-                        <span class="flex flex-col items-start h-full px-3 py-2 rounded border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] transition-all peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
-                          <span class="text-lg mb-2 uppercase tracking-wide">Pinned</span>
+                        <span class="flex flex-col items-start h-full px-3 py-2  border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                          <span class="text-lg mb-2 uppercase">Pinned</span>
                           <ul class="text-sm text-[#0D0D0D]">
                             <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned to the top of all listings</li>
                             <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned for thirty days</li>
@@ -65,10 +70,10 @@
                       </label>
                     </div>
                   </fieldset>
-                  <div class="flex px-4 py-2 gap-4 border-t border-[#CBCCCE]">
+                  <div class="flex px-4 pb-2 gap-4">
                     <button
                       type="submit"
-                      class="text-red-500 underline text-sm"
+                      class="font-mono uppercase text-sm text-red-500"
                       formaction="/jobs/drafts/{{this.id}}/delete"
                       formmethod="POST"
                     >Delete</button>
@@ -81,15 +86,12 @@
       </div>
     {{/if}}
 
-    <div class="bill border border-[#CBCCCE] rounded p-4">
-      <p>Bill</p>
-    </div>
-
     <div class="flex flex-row gap-4">
-      <a href="/jobs/new" class="flex-1 px-4 py-1 border border-[#CBCCCE] rounded text-center uppercase tracking-wide hover:border-[#0D0D0D]">{{#unless drafts}}Add a job{{else}}Add another job{{/unless}}</a>
+      <a href="/jobs/new" class="flex items-center justify-center border py-1 px-3 font-mono uppercase text-center">{{#unless drafts}}Add a job{{else}}Add another job{{/unless}}</a>
       <button
         type="submit"
-        class="shadow-sm py-3 px-7 text-center text-[#0D0D0D] bg-[#41C3DD]/60 border-b-2 border-[#41C3DD] tracking-wider rounded uppercase"
+        data-checkout-submit
+        class="py-3 px-7 text-center uppercase border flex-1"
       >Pay and submit</button>
     </div>
   </form>

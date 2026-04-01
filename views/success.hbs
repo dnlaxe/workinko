@@ -1,10 +1,10 @@
-<div class="flex flex-col items-center justify-center min-h-screen pb-24">
+<div class="flex flex-col items-center justify-center min-h-screen pb-48">
   <h1 class="text-2xl uppercase tracking-wide mb-4">{{title}}</h1>
   <p class="text-center mb-8">{{message}}</p>
   {{#if link}}
     <a
       href="{{link.href}}"
-      class="px-4 py-1 rounded border border-[#CBCCCE] uppercase tracking-wide hover:border-[#0D0D0D]"
+      class="border border-[#CBCCCE] py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]"
     >{{link.label}}</a>
   {{/if}}
 </div>

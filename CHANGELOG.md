@@ -1,158 +1,54 @@
 # CHANGELOG
 
-## [Setup] - 2026-03-02
-
-### Added
-
-- TypeScript + Express scaffold (ESM, Node 24).
-- Core dependencies: Express, Drizzle ORM, pg, Zod, pino-http, Tailwind.
-- ESLint (TS strict) + Prettier.
-- Request logging middleware with request IDs and formatted output.
-- Environment variable validation with Zod schema (PORT, NODE_ENV) — fails fast on startup if invalid.
-- dotenv integration for loading `.env` at startup.
-- Config module exposing `isDevelopment` / `isProduction` boolean helpers.
-- Handlebars (`.hbs`) templating engine with layouts, partials, and `eq` helper.
-- Security middleware: helmet, compression, `x-powered-by` disabled.
-- JSON and URL-encoded body parsing middleware.
-- Static file serving from `public/`.
-- Trust proxy enabled in production.
-- Extended Express `Request` type to include `id` (string | number) and `log` (Pino logger).
-- Root route rendering `pages/board` view.
-- Postgres database
-
-## [Setup] - 2026-03-03
-
-### Added
-
-- Database schema
-- Drizzle config
-- Basic job form with zod validation
-
-## [Form] - 2026-03-05
+## [Redesign & JS Refactor] - 2026-04-01
 
 ### Changed
 
-- Added session and draft tables to database schema
-- Extended DB schema and generated migrations
+- Complete visual redesign across all views
+- Began JS refactor
 
-### Added
-
-- Multi-step form with step navigation
-- Drafts section on `/jobs/new` showing session drafts and drafts page at `/jobs/drafts`
-- Admin moderation flow
-- Improved job form validation + UX
-
-## [Error handling] - 2026-03-06
+## [Design & Polish] - 2026-03-27
 
 ### Changed
 
-- Refactored error handling for business logic and database queries
+- Changed design across all public and admin pages
+- Pinned posts are now separated from standard listings on the board
+- Postgres-backed rate limiting replacing in-memory store
 
-## [Magic Links] - 2026-03-08
+## [Payments] - 2026-03-13
 
 ### Added
 
-- Resend for receipt emails
-- Magic token links sent in receipt emails
+- Payment flow with unique reference per transaction
+- Page view tracking in the audit log
+
+## [Trust & Safety] - 2026-03-12
+
+### Added
+
+- Rate limiting on public routes
+- Password-protected admin area
+- Audit log with admin dashboard for reviewing activity
+
+## [Filters & Discovery] - 2026-03-11
+
+### Added
+
+- Category and province filters on the public job board
+- Dynamic specialization and city fields in the posting form
+- Pinned posts sort above standard listings, all sorted newest-first
 
 ## [Post Management] - 2026-03-09
 
-- Edit and post flow for post management
-- Comprehensive logging
+### Added
 
-## [UI] - 2026-03-10
+- Magic link emails so employers can edit and manage their posts without an account
+- Edit, publish, and unpublish flow for job posts
 
-- Layout and basic styling
-
-## [Board + Form UX] - 2026-03-11
+## [Job Board MVP] - 2026-03-05
 
 ### Added
 
-- Multistep form styling
-- Category and province filters on the public job board
-- Dynamic specialization and city options in the job form
-
-### Changed
-
-- Live posts now sort by newest published first
-- Refined the UI across public, admin, and manage pages
-- Proficiency values now display as human-readable labels
-
-### Removed
-
-- 'Add another job' button from review
-
-## [Security + Audit] - 2026-03-12
-
-### Added
-
-- Basic rate limiter
-- Basic auth protection for `/admin`
-- Audit event logging and admin audit dashboard
-
-### Changed
-
-- Improved posting flow and session routing
-- Refined public and admin UI
-
-## [Payment] - 2026-03-13
-
-### Added
-
-- Dummy payment route with unique `paymentRef` per payment
-- Page view tracking in audit log
-
-### Changed
-
-- Tier updates now run concurrently instead of sequentially
-
-## [Cleanup] - 2026-03-14
-
-### Changed
-
-- Removed duplicate logging
-- Moved drafts count to navbar via `res.locals`
-- Cleaned up `ServerError`
-
-## [Error Handling] - 2026-03-15
-
-### Added
-
-- 404 handler
-- Global error handler
-
-## [Reliability] - 2026-03-16
-
-### Added
-
-- DB readiness check on startup
-- Graceful shutdown
-
-## [UI] - 2026-03-19
-
-### Changed
-
-- New style
-- Upgraded rate limiter from in-memory (`RateLimiterMemory`) to Postgres-backed (`RateLimiterPostgres`)
-
-## [Error Handling] - 2026-03-23
-
-### Changed
-
-- Formalized three error types: `loadError` (data fetch fails on render), `actionError` (user action fails, passed via redirect query param), `fieldErrors` (form validation failure on same page)
-
-## [Refactor] - 2026-03-25
-
-### Changed
-
-- Refactored client-side JS to use a single data source passed in at init (one source of truth)
-
-## [Board + Form] - 2026-03-27
-
-### Added
-
-- Separated pinned and standard posts on the board
-
-### Changed
-
-- Session is now only created after the user passes the start step
+- Multi-step job posting form with draft saving across sessions
+- Public job board showing live listings
+- Admin moderation queue for reviewing and approving posts

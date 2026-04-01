@@ -1,383 +1,218 @@
-<div class="h-full md:relative px-0">
+<form action="/jobs/new" method="POST" data-specializations='{{{specializationsByCategory}}}' data-cities='{{{citiesByProvince}}}'>
 
-  <form action="/jobs/new" method="POST" {{#if fieldErrors}}data-has-errors{{/if}} {{#if actionError}}data-has-errors{{/if}} data-specializations='{{{specializationsByCategory}}}' data-cities='{{{citiesByProvince}}}'>
-
-    {{#if actionError}}
-      <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
-    {{/if}}
-
-    <div class="mb-2 pt-8 px-8" aria-label="Form progress">
-      <p class="step-counter text-xs mb-2">Step 1 of 7</p>
-      <div class="flex gap-2">
-        <span data-progress-index="0" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="1" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="2" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="3" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="4" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="5" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-        <span data-progress-index="6" class="flex-1 h-2 rounded bg-slate-200 transition-colors duration-200"></span>
-      </div>
+  <div class="mb-8 mt-4" aria-label="Form progress">
+    <div class="flex">
+      <span data-progress-index="0" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="1" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="2" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="3" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="4" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="5" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="6" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="7" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="8" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="9" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="10" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="11" class="flex-1 h-2 bg-slate-200"></span>
     </div>
+  </div>
 
-    <div class="step flex-1 pb-24">
-      <div class="step__content">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Contact details</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">How do you want to be contacted?</p>
-            {{#each jobFormOptions.contactMethod}}
-              <label class="block cursor-pointer group mb-2">
-                <input
-                  type="radio"
-                  name="contactMethod"[#CBCCCE]/20
-                  value="{{this}}"
-                  required
-                  {{#if (eq ../values.contactMethod this)}}checked{{/if}}
-                  class="sr-only peer"
-                />
-                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                  {{#if (eq this "link")}}Via a link{{else}}Via email{{/if}}
-                </span>
-              </label>
-            {{/each}}
+  <div class="step flex-1">
+    <fieldset>
+      <div>
+        <h2 class="text-2xl mb-8">How do you want to be contacted?</h2>
 
-            {{#if fieldErrors.contactMethod}}
-              <div class="text-sm text-red-500 mt-1 px-2" data-error="contactMethod">{{fieldErrors.contactMethod.[0]}}</div>
-            {{/if}}
-
-            <div
-              data-contact-field="link"
-              class="mt-2 p-8 rounded bg-[#CBCCCE]/20 border border-[#CBCCCE]"
-              {{#unless (eq values.contactMethod "link")}}hidden{{/unless}}
-            >
-              <label class="block" for="contactUrl">Please give your link.</label>
-              <p>Link advice</p>
-              <input
-                id="contactUrl"
-                name="contactUrl"
-                type="url"
-                value="{{values.contactUrl}}"
-                class="block w-full px-3 py-2 rounded bg-white border border-[#CBCCCE]"
-              />
-              {{#if fieldErrors.contactUrl}}
-                <div class="text-sm text-red-500 mt-1 px-2" data-error="contactUrl">{{fieldErrors.contactUrl.[0]}}</div>
-              {{/if}}
-            </div>
-
-            <div
-              data-contact-field="relay"
-              class="mt-2 bg-[#41C3DD]/60 p-8 rounded"
-              {{#unless (eq values.contactMethod "relay")}}hidden{{/unless}}
-            >
-              <p>We'll use your email: <strong>{{sessionEmail}}</strong></p>
-              <p>This will not be publicly visible.</p>
-            </div>
+        <label class="block cursor-pointer mb-2">
+          <input
+            type="radio"
+            name="contactMethod"
+            value="relay"
+            {{#if (eq values.contactMethod "relay")}}checked{{/if}}
+            class="sr-only peer"
+          />
+          <div class="p-4 border border-slate-200 peer-checked:border-black hover:border-black">
+            <p>Via email</p>
+            <p>We'll use your email: <strong>{{sessionEmail}}</strong></p>
+            <p>This will not be publicly visible.</p>
           </div>
-        </fieldset>
+        </label>
+
+        <label class="block cursor-pointer mb-2">
+          <input
+            type="radio"
+            name="contactMethod"
+            value="link"
+            {{#if (eq values.contactMethod "link")}}checked{{/if}}
+            class="sr-only peer"
+          />
+          <div class="p-4 border border-slate-200 peer-checked:border-black hover:border-black">
+            <p>Via a link</p>
+            <label for="contactUrl">Your link</label>
+            <input
+              id="contactUrl"
+              name="contactUrl"
+              type="url"
+              value="{{values.contactUrl}}"
+              class="block w-full px-3 py-2 bg-white border border-slate-200 mt-1"
+            />
+            <button type="button" data-step-inline-next>Next</button>
+          </div>
+        </label>
+
       </div>
-    </div>
+    </fieldset>
+</div>
 
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content [&:has(input[name='category']:checked)_.select-tag-hint]:block">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Job details</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Is this a teaching or non-teaching job?</p>
-            <div class="flex flex-col gap-2">
-              {{#each jobFormOptions.category}}
-                <label class="block cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="category"
-                    value="{{this}}"
-                    required
-                    {{#if (eq ../values.category this)}}checked{{/if}}
-                    class="sr-only peer"
-                  />
-                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                    {{this}}
-                  </span>
-                </label>
-              {{/each}}
-            </div>
-          </div>
-        </fieldset>
+{{> job-form-radio-step
+  title="Is this a teaching or non-teaching job?"
+  name="category"
+  options=jobFormOptions.category
+  selectedValue=values.category
+}}
 
-        <div class="select-tag-hint hidden px-8">
-          <p class="mt-4 mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Select a tag</p>
-        </div>
+{{> job-form-radio-step
+  title="Select a tag"
+  name="specialization"
+  options=jobFormOptions.specialization
+  selectedValue=values.specialization
+}}
 
-        <div class="flex flex-col gap-2 px-8">
-          {{#each jobFormOptions.specialization}}
-            <label class="block cursor-pointer group">
-              <input
-                type="radio"
-                name="specialization"
-                value="{{this}}"
-                required
-                {{#if (eq ../values.specialization this)}}checked{{/if}}
-                class="sr-only peer"
-              />
-              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                {{this}}
-              </span>
-            </label>
-          {{/each}}
-        </div>
+{{> job-form-radio-step
+  title="Province"
+  name="province"
+  options=jobFormOptions.province
+  selectedValue=values.province
+}}
+
+{{> job-form-radio-step
+  title="Select the nearest city"
+  name="city"
+  options=jobFormOptions.city
+  selectedValue=values.city
+}}
+
+{{> job-form-radio-step
+  title="Korean proficiency"
+  name="koreanProficiency"
+  options=jobFormOptions.koreanProficiency
+  selectedValue=values.koreanProficiency
+}}
+
+
+{{> job-form-radio-step
+  title="English proficiency"
+  name="englishProficiency"
+  options=jobFormOptions.englishProficiency
+  selectedValue=values.englishProficiency
+}}
+
+<div class="step flex-1" hidden>
+    <div>
+      <div class="flex items-center gap-3 mb-8">
+        <button type="button" class="btn-back ..."><i class="ph ph-arrow-left"></i></button>
+        <label class="text-2xl" for="otherLanguages">Other languages</label>
       </div>
-    </div>
 
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content [&:has(input[name='province']:checked)_.select-tag-hint]:block">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Location</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Province</p>
-            <div class="flex flex-col gap-2">
-              {{#each jobFormOptions.province}}
-                <label class="block cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="province"
-                    value="{{this}}"
-                    required
-                    {{#if (eq ../values.province this)}}checked{{/if}}
-                    class="sr-only peer"
-                  />
-                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                    {{this}}
-                  </span>
-                </label>
-              {{/each}}
-            </div>
-          </div>
-        </fieldset>
+      <label class="block cursor-pointer mb-2">
+        <input type="radio" name="otherLanguagesMode" value="notRequired" class="sr-only peer" />
+        <span class="flex items-center px-3 py-2 border border-slate-200 peer-checked:border-black hover:border-[#0D0D0D]">
+          Not required
+        </span>
+      </label>
 
-        <div class="select-tag-hint hidden px-8">
-          <p class="mt-4 mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Select the nearest city</p>
-        </div>
-
-        <div class="flex flex-col gap-2 px-8">
-          {{#each jobFormOptions.city}}
-            <label class="block cursor-pointer group">
-              <input
-                type="radio"
-                name="city"
-                value="{{this}}"
-                required
-                {{#if (eq ../values.city this)}}checked{{/if}}
-                class="sr-only peer"
-              />
-              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                {{this}}
-              </span>
-            </label>
-          {{/each}}
-        </div>
-      </div>
-    </div>
-
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Language proficiency</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Korean proficiency</p>
-            <div class="flex flex-col gap-2">
-              {{#each jobFormOptions.koreanProficiency}}
-                <label class="block cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="koreanProficiency"
-                    value="{{value}}"
-                    required
-                    {{#if (eq (toString ../values.koreanProficiency) (toString value))}}checked{{/if}}
-                    class="sr-only peer"
-                  />
-                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                    {{label}}
-                  </span>
-                </label>
-              {{/each}}
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <p class="mb-2 mt-4 mx-8 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">English proficiency</p>
-          <div class="flex flex-col gap-2 px-8">
-            {{#each jobFormOptions.englishProficiency}}
-              <label class="block cursor-pointer group">
-                <input
-                  type="radio"
-                  name="englishProficiency"
-                  value="{{value}}"
-                  required
-                  {{#if (eq (toString ../values.englishProficiency) (toString value))}}checked{{/if}}
-                  class="sr-only peer"
-                />
-                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                  {{label}}
-                </span>
-              </label>
-            {{/each}}
-          </div>
-        </fieldset>
-
-        <div class="mt-4 px-8">
-          <label class="block uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded" for="otherLanguages">Other languages</label>
+      <label class="block cursor-pointer">
+        <input
+          type="radio"
+          name="otherLanguagesMode"
+          value="provided"
+          {{#if values.otherLanguages}}checked{{/if}}
+          class="sr-only peer"
+        />
+        <div class="p-4 border border-slate-200 peer-checked:border-black hover:border-black">
+          <span class="block">Other languages</span>
           <input
             id="otherLanguages"
             name="otherLanguages"
             type="text"
-            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mt-2"
             value="{{values.otherLanguages}}"
+            class="block w-full px-3 py-2 border border-slate-200 mt-1"
           />
-          {{#if fieldErrors.otherLanguages}}
-            <div class="text-sm text-red-500 mt-1 px-2" data-error="otherLanguages">{{fieldErrors.otherLanguages.[0]}}</div>
-          {{/if}}
+          <button type="button" data-step-inline-next>Next</button>
         </div>
-      </div>
-    </div>
+      </label>
 
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Contract</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Type</p>
-            {{#each jobFormOptions.contractType}}
-              <label class="block mb-2 cursor-pointer group">
-                <input
-                  type="radio"
-                  name="contractType"
-                  value="{{this}}"
-                  required
-                  {{#if (eq ../values.contractType this)}}checked{{/if}}
-                  class="sr-only peer"
-                />
-                <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                  {{this}}
-                </span>
-              </label>
-            {{/each}}
-          </div>
-        </fieldset>
+  </div>
+</div>
 
-        <fieldset class="px-8">
-          <p class="mb-2 mt-4 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">Visa sponsorship</p>
-          {{#each jobFormOptions.visaSponsorship}}
-            <label class="block mb-2 cursor-pointer group">
-              <input
-                type="radio"
-                name="visaSponsorship"
-                value="{{this}}"
-                required
-                {{#if (eq ../values.visaSponsorship this)}}checked{{/if}}
-                class="sr-only peer"
-              />
-              <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                {{this}}
-              </span>
-            </label>
-          {{/each}}
-        </fieldset>
-      </div>
-    </div>
+{{> job-form-radio-step
+  title="Type"
+  name="contractType"
+  options=jobFormOptions.contractType
+  selectedValue=values.contractType
+}}
 
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content">
-        <fieldset>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Start date</h1>
-          <div class="px-8">
-            <p class="mb-2 uppercase tracking-wide p-8 bg-[#CBCCCE]/20 border border-[#CBCCCE] rounded">When does this position begin?</p>
-            <div class="flex flex-col gap-2">
-              {{#each jobFormOptions.startDate}}
-                <label class="block cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="startDate"
-                    value="{{this}}"
-                    required
-                    {{#if (eq ../values.startDate this)}}checked{{/if}}
-                    class="sr-only peer"
-                  />
-                  <span class="flex items-center px-3 py-2 rounded border border-[#CBCCCE] transition-all peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
-                    {{this}}
-                  </span>
-                </label>
-              {{/each}}
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </div>
+{{> job-form-radio-step
+  title="Visa sponsorship"
+  name="visaSponsorship"
+  options=jobFormOptions.visaSponsorship
+  selectedValue=values.visaSponsorship
+}}
 
-    <div class="step flex-1 pb-24" hidden>
-      <div class="step__content">
+{{> job-form-radio-step
+  title="When does this position begin?"
+  name="startDate"
+  options=jobFormOptions.startDate
+  selectedValue=values.startDate
+}}
+
+    <div class="step flex-1" hidden>
         <div>
-          <h1 class="text-xs uppercase tracking-wider pb-8 px-8">Job description</h1>
-          <div class="px-8">
-            <label class="block uppercase tracking-wide" for="heading">Heading</label>
-            <input
-              id="heading"
-              name="heading"
-              type="text"
-              class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mb-2"
-              required
-              value="{{values.heading}}"
-            />
-            {{#if fieldErrors.heading}}
-              <div class="text-sm text-red-500 mt-1 px-2" data-error="heading">{{fieldErrors.heading.[0]}}</div>
-            {{/if}}
+          <div class="flex items-center gap-3 mb-2">
+            <button type="button" class="btn-back text-xl inline-flex items-center justify-center leading-none shrink-0"><i class="ph ph-arrow-left"></i></button>
+            <label class="text-2xl" for="heading">Heading</label>
           </div>
-        </div>
+          <input
+            id="heading"
+            name="heading"
+            type="text"
+            class="block w-full px-3 py-2  border border-[#CBCCCE] mb-2"
+            value="{{values.heading}}"
+          />
+          {{#if fieldErrors.heading}}
+            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.heading.[0]}}</div>
+          {{/if}}
 
-        <div class="px-8">
-          <label class="block uppercase tracking-wide" for="subheading">Subheading</label>
+          <label class="block text-2xl" for="subheading">Subheading</label>
           <input
             id="subheading"
             name="subheading"
             type="text"
-            class="block w-full px-3 py-2 rounded border border-[#CBCCCE] mb-2"
-            required
+            class="block w-full px-3 py-2  border border-[#CBCCCE] mb-2"
             value="{{values.subheading}}"
           />
           {{#if fieldErrors.subheading}}
-            <div class="text-sm text-red-500 mt-1 px-2" data-error="subheading">{{fieldErrors.subheading.[0]}}</div>
+            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.subheading.[0]}}</div>
           {{/if}}
-        </div>
 
-        <div class="px-8">
-          <label class="block uppercase tracking-wide" for="fullDescription">Full description</label>
+          <label class="block mb-2 text-2xl" for="fullDescription">Full description</label>
           <textarea
-            class="block w-full h-[40%] px-3 py-2 rounded border border-[#CBCCCE] resize-none"
+            class="block w-full h-[40%] px-3 py-2  border border-[#CBCCCE] resize-none"
             id="fullDescription"
             name="fullDescription"
-            required
           >{{values.fullDescription}}</textarea>
           {{#if fieldErrors.fullDescription}}
-            <div class="text-sm text-red-500 mt-1 px-2" data-error="fullDescription">{{fieldErrors.fullDescription.[0]}}</div>
+            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.fullDescription.[0]}}</div>
           {{/if}}
+          <button type="button" class="btn-last-next disabled:opacity-50 px-4 py-1 border bg-blue-200 border-[#CBCCCE] w-full uppercase tracking-wide enabled:hover:border-[#0D0D0D] mt-8">Next</button>
         </div>
-      </div>
     </div>
 
-    <nav class="step__nav flex flex-rows justify-between gap-8 fixed bottom-0 left-0 right-0 bg-white z-10 px-8 py-4 md:absolute">
-      <button type="button" class="btn-back disabled:opacity-50 underline text-sm">Back</button>
-      <button type="button" class="btn-next disabled:opacity-50 px-4 py-1 rounded border border-[#CBCCCE] w-full transition-opacity duration-100 uppercase tracking-wide enabled:hover:border-[#0D0D0D]">Next</button>
-      <button type="button" class="btn-last-next disabled:opacity-50 px-4 py-1 rounded border border-[#CBCCCE] w-full transition-opacity duration-100 uppercase tracking-wide enabled:hover:border-[#0D0D0D]">Next</button>
-      <button type="button" class="btn-back-to-review disabled:opacity-50 ml-auto px-4 py-1 w-full rounded border border-[#CBCCCE] uppercase tracking-wide enabled:hover:border-[#0D0D0D]" hidden>Back to review</button>
-    </nav>
+  <div class="review" hidden>
+    <button type="submit" class="btn-confirm">Confirm</button>
+  </div>
 
-    <div class="review px-8" hidden>
-      <div class="flex flex-rows justify-end py-4">
-        <button type="submit" class="btn-confirm px-4 py-1 rounded w-full border border-[#CBCCCE] uppercase tracking-wide enabled:hover:border-[#0D0D0D]">Confirm</button>
-      </div>
-    </div>
+  <button type="button" class="btn-back-to-review" hidden>Back to review</button>
 
-  </form>
+</form>
 
-</div>
-
-<script type="module" src="/js/init.js"></script>
+<script type="module" src="/js/form.js"></script>

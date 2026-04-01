@@ -35,20 +35,14 @@ router.use(loadSession, isSavedDrafts);
 
 router.get("/jobs/board", showBoard);
 
-router.get(
-  "/jobs/start",
-  hasCurrentSession,
-  hideFooter,
-  (_req: Request, res: Response) => {
-    res.render("jobs/start");
-  },
-);
+router.get("/jobs/start", hasCurrentSession, (_req: Request, res: Response) => {
+  res.render("jobs/start");
+});
 
 router.post(
   "/jobs/start",
   validate(startSchema, "jobs/start"),
   resolveSession,
-  hideFooter,
   storeGatewayEmail,
 );
 

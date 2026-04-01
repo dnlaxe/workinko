@@ -1,0 +1,29 @@
+<div class="step flex-1" hidden>
+  <div class="step__content">
+    <fieldset>
+        <div class="flex items-center gap-3 mb-8">
+          <button
+            type="button"
+            class="btn-back text-xl inline-flex items-center justify-center leading-none shrink-0"
+          ><i class="ph ph-arrow-left"></i></button>
+          <p class="text-2xl">{{title}}</p>
+        </div>
+        <div class="flex flex-col gap-2">
+          {{#each options}}
+            <label class="block cursor-pointer">
+              <input
+                type="radio"
+                name="{{../name}}"
+                value="{{this}}"
+                {{#if (eq ../selectedValue this)}}checked{{/if}}
+                class="sr-only peer"
+              />
+              <span class="flex items-center px-3 py-2 border border-[#CBCCCE] peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+                {{this}}
+              </span>
+            </label>
+          {{/each}}
+        </div>
+    </fieldset>
+  </div>
+</div>

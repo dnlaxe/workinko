@@ -192,15 +192,11 @@ export const jobFormOptions = {
     "Sojeong-myeon",
   ],
 
-  koreanProficiency: [
-    { value: 0, label: "Not Required" },
-    { value: 1, label: "Beginner Korean" },
-    { value: 2, label: "Intermediate Korean" },
-  ],
+  koreanProficiency: ["Not Required", "Beginner Korean", "Intermediate Korean"],
   englishProficiency: [
-    { value: 0, label: "Not Required" },
-    { value: 1, label: "Beginner English" },
-    { value: 2, label: "Intermediate English" },
+    "Not Required",
+    "Beginner English",
+    "Intermediate English",
   ],
   visaSponsorship: ["Not Provided", "Provided"],
   startDate: [

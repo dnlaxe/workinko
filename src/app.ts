@@ -64,14 +64,6 @@ app.engine(
     helpers: {
       eq: (a: unknown, b: unknown) => a === b,
       toString: (x: number) => String(x),
-      proficiencyLabel: (value: number) => {
-        const labels: Record<number, string> = {
-          0: "Not Required",
-          1: "Beginner",
-          2: "Intermediate",
-        };
-        return labels[value] ?? value;
-      },
       contains: (selected: string | string[] | undefined, value: string) => {
         if (Array.isArray(selected)) {
           return selected.some((x) => x === value);

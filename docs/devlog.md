@@ -232,9 +232,35 @@ fieldErrors: form validation failed. Passed directly to res.render on the same p
   delete confirmation windows (manage, drafts)
   finish pinned jobs payment (dummy flow) and submit flow (still hardcoded to standard)
   delete submitSessionDrafts
-  add email checks at jobs/start
+  add email and link checks at jobs/start
+  sanitise inputted text
   update admin ui
-  connect emails to domain
+  connect emails to domain, email content
   manage extend buttons function
   faq, contact pages
   refactor edit.js (shares code with form js)
+  simple health check for load balancer
+  choices for recruiters? nationwide? variety of jobs?
+  general ui flow
+
+## 2026-03-30
+
+- I often see `signal: "SIGINT"
+1:25:10 PM [tsx] Process didn't exit in 5s. Force killing...`
+
+process.getActiveResourcesInfo()
+server.getConnections
+console.trace
+
+shortened timeout out to 3s so that i can see logs before tsx kills processes after 5s
+
+server.closeAllConnections():
+
+## 2026-03-31
+
+- changed language proficiencies to strings to simplify
+- complete new design
+- deleted and started multistep form and its js again. The previous version was messy.
+- created state in form and created form flow (navigation, option building)
+- created a radio button selection partial
+- tried to make a form that needs less clicks

@@ -25,12 +25,12 @@ export const jobFormSchema = z
     province: z.enum(jobFormOptions.province, { error: "Invalid province" }),
     city: z.enum(jobFormOptions.city, { error: "Invalid city" }),
 
-    koreanProficiency: z.coerce
-      .number({ error: "Korean proficiency is required" })
-      .int(),
-    englishProficiency: z.coerce
-      .number({ error: "English proficiency is required" })
-      .int(),
+    koreanProficiency: z.enum(jobFormOptions.koreanProficiency, {
+      error: "Korean proficiency is required",
+    }),
+    englishProficiency: z.enum(jobFormOptions.englishProficiency, {
+      error: "English proficiency is required",
+    }),
 
     otherLanguages: z.string().trim().optional(),
 

@@ -1,39 +1,25 @@
-<div
-  class="border-t border-[#CBCCCE] md:border md:rounded hover:bg-[#CBCCCE]/20"
->
+<a href="/jobs/{{slug}}" class="block border-t border-slate-200 cursor-pointer">
+  <div class="flex flex-row">
 
-  <div>
-    <div class="flex flex-row">
+    <div class="flex-1">
+      <div class="md:flex md:flex-row">
 
-      <div class="flex-1">
-        <div class="md:flex md:flex-row">
-
-          <div class="md:flex-1 md:flex md:flex-col border-[#CBCCCE] p-4">
-            <div class="font-['Literata'] text-xl mb-2"><a
-                href="/jobs/{{slug}}"
-                class="underline decoration-[#41C3DD] decoration-2"
-              >{{heading}}</a></div>
-            <div>{{subheading}}</div>
-          </div>
-
-          <div
-            class="flex flex-col gap-1 md:mt-0 md:w-60 border-[#CBCCCE] md:pl-4 p-4 rounded-r"
-          >
-            <span><i
-                class="ph ph-read-cv-logo mr-2"
-              ></i>{{specialization}}</span>
-            <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
-            <span><i class="ph ph-map-pin-area mr-2"></i>{{city}},
-              {{province}}</span>
-            <span><i
-                class="ph ph-hourglass-high mr-2"
-              ></i>{{contractType}}</span>
-          </div>
-
+        <div class="md:flex-1 md:flex md:flex-col p-4 pb-0 md:pb-4">
+          <div class="text-2xl mb-2 font-black">{{heading}}</div>
+          <div class="text-xl">{{subheading}}</div>
         </div>
+
+        <div
+          class="flex flex-col gap-1 md:w-75 p-4 font-mono uppercase tracking-wide text-sm"
+        >
+          <span><i class="ph ph-read-cv-logo mr-2"></i>{{specialization}}</span>
+          <span><i class="ph ph-calendar-dot mr-2"></i>{{startDate}}</span>
+          <span><i class="ph ph-map-pin-area mr-2"></i>{{city}},
+            {{province}}</span>
+          <span><i class="ph ph-hourglass-high mr-2"></i>{{contractType}}</span>
+        </div>
+
       </div>
     </div>
-
   </div>
-
-</div>
+</a>

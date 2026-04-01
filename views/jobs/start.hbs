@@ -9,9 +9,7 @@
 
   <form action="/jobs/start" method="POST" class="p-8">
     <div>
-      <h1
-        class="font-['Literata'] text-2xl mb-6 underline decoration-[#41C3DD] decoration-2"
-      >Let's create your job post</h1>
+      <h1 class="text-3xl mb-6 font-semibold">Let's create your job post</h1>
     </div>
     <div>
       <label class="block mb-2" for="email">First, we need you email address</label>
@@ -26,7 +24,7 @@
       />
       {{#if fieldErrors.email}}
         <div
-          class="text-sm text-red-500 mt-1 px-2"
+          class="text-sm text-red-500 mt-1"
           data-error="email"
         >{{fieldErrors.email.[0]}}</div>
       {{/if}}
@@ -34,7 +32,7 @@
     <div class="flex mt-8">
       <button
         type="submit"
-        class="px-4 py-1 rounded border border-[#CBCCCE] w-full hover:border-[#0D0D0D]"
+        class="border border-slate-200 py-1 px-3 font-mono uppercase tracking-wide hover:border-black ml-auto"
       >Continue</button>
     </div>
   </form>
