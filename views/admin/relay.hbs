@@ -1,35 +1,24 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col md:border-x border-[#CBCCCE]">
+<div>
 
-  <p class="text-sm uppercase tracking-widest p-4">Relay Messages</p>
+  <p class="font-bold p-4">Relay Messages</p>
 
   {{#if actionError}}
     <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
   {{else if messages}}
     {{#each messages}}
-      <div class="border-t border-[#CBCCCE]">
-        <div class="flex flex-row">
-          <div class="w-8 border-r border-[#CBCCCE] bg-[#E5E7E9] shrink-0"></div>
-          <div class="flex-1">
-            <div class="border-b border-[#CBCCCE] px-4 py-2">
-              <div class="flex flex-col gap-1 text-sm">
-                <span>From: {{fromEmail}}</span>
-                <span>To: {{toEmail}}</span>
-              </div>
-            </div>
-            <div class="border-b border-[#CBCCCE] px-4 py-2">
-              <span>{{message}}</span>
-            </div>
-            <div class="flex px-4 py-2 gap-2">
-              <form method="POST" action="/admin/relay/{{id}}/approve">
-                <button type="submit" class="hover:cursor-pointer bg-[#41C3DD] text-white uppercase tracking-widest rounded px-4 py-2">Approve</button>
-              </form>
-              <form method="POST" action="/admin/relay/{{id}}/reject">
-                <button type="submit" class="hover:cursor-pointer bg-[#E5E7E9] rounded px-2 py-1.5">Reject</button>
-              </form>
-            </div>
-          </div>
+      <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+        <div>From: {{fromEmail}}</div>
+        <div>To: {{toEmail}}</div>
+        <div>{{message}}</div>
+  <div class="flex gap-2">
+          <form method="POST" action="/admin/relay/{{id}}/approve">
+            <button type="submit" class="hover:cursor-pointer font-mono tracking-wide border border-slate-200 hover:border-black text-sm uppercase py-1 px-3">Approve</button>
+          </form>
+          <form method="POST" action="/admin/relay/{{id}}/reject">
+            <button type="submit" class="hover:cursor-pointer font-mono tracking-wide border border-slate-200 hover:border-black text-sm uppercase py-1 px-3">Reject</button>
+          </form>
         </div>
       </div>
     {{/each}}

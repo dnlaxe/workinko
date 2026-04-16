@@ -70,6 +70,7 @@ app.engine(
         }
         return selected === value;
       },
+      json: (obj: unknown) => JSON.stringify(obj),
     },
   }),
 );

@@ -1,12 +1,12 @@
-<div>
+<div class="border-b border-slate-200">
   <a
     href="/jobs/board"
     class="p-4 font-mono uppercase text-sm hover:cursor-pointer inline-flex items-center gap-2 tracking-wide"
   ><span class="block size-2 rounded-full bg-red-500/80"></span>Back to listings</a>
 
-  <div class="mb-4 border-t border-slate-200">
+  <div class="border-t border-slate-200">
     <div class="p-4">
-      <div class="text-3xl font-black mb-4">{{heading}}</div>
+      <div class="text-3xl font-bold mb-4">{{heading}}</div>
       <div class="text-2xl">{{subheading}}</div>
     </div>
 
@@ -42,9 +42,19 @@
     </div>
   </div>
 
-  {{! <div class="flex py-2">
-    <a href="/" class="text-red-500 underline ml-auto text-sm">Report</a>
-  </div> }}
+  <div class="flex justify-end sticky top-0">
+    {{#if isRelay}}
+      <a
+        href="/jobs/{{slug}}/contact"
+        class="hidden md:inline-block tracking-wider py-2 px-3 bg-red-500/80 text-white font-mono uppercase"
+      >Contact poster</a>
+    {{else}}
+      <a
+        href="{{contactUrl}}"
+        class="hidden md:inline-block tracking-wider py-2 px-3 bg-red-500/80 text-white font-mono uppercase"
+      >Apply here</a>
+    {{/if}}
+  </div>
 
   <div class="flex flex-col gap-4">
 
@@ -55,30 +65,33 @@
 
   </div>
 
-  <div class="flex flex-col gap-2 mt-4">
-    {{#if isRelay}}
-      <a
-        href="/jobs/{{slug}}/contact"
-        class="py-3 px-7 font-mono uppercase border text-center"
-      >Contact poster</a>
-    {{else}}
-      <a
-        href="{{contactUrl}}"
-        class="py-3 px-7 font-mono uppercase border text-center"
-      >Apply here</a>
-    {{/if}}
+  <div class="flex py-2">
+    <a href="/" class="text-red-500 underline px-4 text-sm">Report</a>
   </div>
+
+  {{!-- 
+  {{#if isRelay}}
+    <a
+      href="/jobs/{{slug}}/contact"
+      class="block w-full tracking-wider sticky bottom-0 py-3 px-7 bg-red-500/80 text-xl text-white font-mono uppercase font-semibold flex-col items-center"
+    >Contact poster</a>
+  {{else}}
+    <a
+      href="{{contactUrl}}"
+      class="block w-full tracking-wider sticky bottom-0 py-3 px-7 bg-red-500/80 text-xl text-white font-mono uppercase font-semibold flex-col items-center"
+    >Apply here</a>
+  {{/if}} --}}
 
   {{#if isRelay}}
     <a
       href="/jobs/{{slug}}/contact"
-      class="md:hidden fixed right-0 top-1/2 -translate-y-1/2 p-4 bg-red-500/80 text-white font-mono uppercase text-sm flex font-semibold flex-col items-center"
-    >C<br />O<br />N<br />T<br />A<br />C<br />T</a>
+      class="md:hidden fixed right-0 top-1/2 -translate-y-1/2 px-3 py-2 bg-red-500/80 text-white font-mono uppercase [writing-mode:vertical-rl] [text-orientation:upright]"
+    >Contact</a>
   {{else}}
     <a
       href="{{contactUrl}}"
-      class="md:hidden fixed right-0 top-1/2 -translate-y-1/2 p-4 bg-red-500/80 text-white font-mono uppercase text-sm font-semibold flex flex-col items-center"
-    >A<br />P<br />P<br />L<br />Y</a>
+      class="md:hidden fixed right-0 top-1/2 -translate-y-1/2 px-3 py-2 bg-red-500/80 text-white font-mono uppercase [writing-mode:vertical-rl] [text-orientation:upright]"
+    >Apply</a>
   {{/if}}
 
 </div>

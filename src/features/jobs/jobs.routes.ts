@@ -18,7 +18,11 @@ import {
   startCheckout,
   loadDraftsForView,
 } from "./jobs.controller.js";
-import { jobFormOptions } from "./jobs.constants.js";
+import {
+  citiesByProvince,
+  jobFormOptions,
+  specializationsByCategory,
+} from "./jobs.constants.js";
 import {
   hasCurrentSession,
   loadSession,
@@ -65,7 +69,11 @@ router.post(
   "/jobs/new",
   requireGatewayEmail,
   hideFooter,
-  validate(jobFormSchema, "jobs/new", { jobFormOptions }),
+  validate(jobFormSchema, "jobs/new", {
+    jobFormOptions,
+    specializationsByCategory: JSON.stringify(specializationsByCategory),
+    citiesByProvince: JSON.stringify(citiesByProvince),
+  }),
   storePendingJob,
 );
 

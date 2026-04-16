@@ -168,7 +168,7 @@ await Promise.all(
   Object.entries(tierChoices).map(([postId, tier]) =>
     updatePendingPostTierByPostId(Number(postId), sessionId, tier),
   ),
-);you do this:
+);
 ```
 
 Use `Promise.all(...)` when the operations are independent, order does not matter, for faster completion
@@ -264,3 +264,23 @@ server.closeAllConnections():
 - created state in form and created form flow (navigation, option building)
 - created a radio button selection partial
 - tried to make a form that needs less clicks
+
+## 2026-04-16
+
+- Added a review step to the multistep job form so users can confirm all values before submit and jump back to a specific field to change it.
+
+- Validation rerenders now rebuild client state from `FormData` and pass `fieldErrors` to the browser through a JSON script tag. Added a `json` Handlebars helper in `src/app.ts` for that.
+
+- Refactored form step config so the contact step and other-languages step use explicit completion rules instead of only generic field presence checks.
+
+- Category/specialization and province/city options are now derived from the mapping objects instead of maintaining duplicated option arrays separately.
+
+- Expanded proficiency choices, reordered start dates to put `ASAP` first, and added `Possible` for visa sponsorship.
+
+- Checkout total now updates the submit button label instead of a separate bill element.
+
+- Did another broad UI pass:
+  - details page now has stronger apply/contact CTAs, including a sticky desktop action and vertical mobile action
+  - board, manage, and admin pages were simplified and restyled
+  - several pages now use `h-dvh`
+  - enabled smooth scrolling

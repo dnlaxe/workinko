@@ -1,25 +1,23 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col md:border-x border-[#CBCCCE]">
+<div>
 
-  <p class="text-sm uppercase tracking-widest p-4">Audit Log</p>
+  <p class="font-bold p-4">Audit Log</p>
 
   {{#if actionError}}
     <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
   {{else if logs.length}}
     {{#each logs}}
-      <div class="border-t border-[#CBCCCE] px-4 py-3 flex flex-col gap-1">
-        <div class="text-sm text-slate-500">{{this.createdAt}}</div>
-        <div class="font-sans">{{this.eventType}}</div>
-        <div class="flex gap-4 text-sm">
-          <span>{{this.actorType}}</span>
-          <span>{{this.entityType}}</span>
-        </div>
-        <div class="text-sm">{{this.message}}</div>
+      <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+        <div>{{this.createdAt}}</div>
+        <div>{{this.eventType}}</div>
+        <div>{{this.actorType}}</div>
+        <div>{{this.entityType}}</div>
+        <div>{{this.message}}</div>
       </div>
     {{/each}}
   {{else}}
-    <p class="text-slate-500 text-sm p-4">No logs yet.</p>
+    <p class="p-4">No logs yet.</p>
   {{/if}}
 
 </div>

@@ -1,57 +1,45 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col md:border-x border-[#CBCCCE]">
+<div>
 
-  <div class="p-4 border-b border-[#CBCCCE]">
+  <div class="p-4">
     <a href="/admin/liveposts" class="underline">Back to live posts</a>
   </div>
 
-  <div class="border-t border-[#CBCCCE]">
-    <div class="flex flex-row">
-      <div class="w-8 border-r border-[#CBCCCE] bg-[#E5E7E9] shrink-0"></div>
-      <div class="flex-1">
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="font-sans text-lg underline decoration-[#41C3DD] decoration-2">{{post.heading}}</div>
-          <div>{{post.subheading}}</div>
-          <div class="text-sm text-slate-500">{{post.specialization}}</div>
-        </div>
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="flex flex-col gap-1 text-sm">
-            <span><i class="ph ph-calendar-dot mr-2"></i>{{post.startDate}}</span>
-            <span><i class="ph ph-map-pin-area mr-2"></i>{{post.province}}, {{post.city}}</span>
-            <span><i class="ph ph-hourglass-high mr-2"></i>{{post.contractType}}</span>
-          </div>
-        </div>
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="flex flex-col gap-1 text-sm">
-            <span><i class="ph ph-translate mr-2"></i>Korean: {{proficiencyLabel post.koreanProficiency}}</span>
-            <span><i class="ph ph-translate mr-2"></i>English: {{proficiencyLabel post.englishProficiency}}</span>
-            {{#if post.otherLanguages}}<span><i class="ph ph-translate mr-2"></i>Other: {{post.otherLanguages}}</span>{{/if}}
-            <span><i class="ph ph-file-text mr-2"></i>Visa: {{post.visaSponsorship}}</span>
-          </div>
-        </div>
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="flex flex-col gap-1 text-sm">
-            <span>Contact: {{post.contactMethod}}</span>
-            {{#if post.contactUrl}}<span>URL: {{post.contactUrl}}</span>{{/if}}
-            {{#if post.contactEmail}}<span>Email: {{post.contactEmail}}</span>{{/if}}
-          </div>
-        </div>
-        <div class="border-b border-[#CBCCCE] px-4 py-2">
-          <div class="flex flex-col gap-1 text-sm text-slate-500">
-            <span>ID: {{post.id}}</span>
-            <span>Session: {{post.sessionId}}</span>
-            <span>Tier: {{post.tier}}</span>
-            <span>Slug: {{post.slug}}</span>
-            <span>Published: {{post.publishedAt}}</span>
-            <span>Expires: {{post.expiresAt}}</span>
-          </div>
-        </div>
-        <div class="px-4 py-3">
-          <p style="white-space: pre-line;">{{post.fullDescription}}</p>
-        </div>
-      </div>
-    </div>
+      <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+    <div>{{post.heading}}</div>
+    <div>{{post.subheading}}</div>
+    <div>{{post.specialization}}</div>
+  </div>
+
+      <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+    <span><i class="ph ph-calendar-dot mr-2"></i>{{post.startDate}}</span>
+    <span><i class="ph ph-map-pin-area mr-2"></i>{{post.province}}, {{post.city}}</span>
+    <span><i class="ph ph-hourglass-high mr-2"></i>{{post.contractType}}</span>
+    <span><i class="ph ph-translate mr-2"></i>Korean: {{post.koreanProficiency}}</span>
+    <span><i class="ph ph-translate mr-2"></i>English: {{post.englishProficiency}}</span>
+    {{#if post.otherLanguages}}<span><i class="ph ph-translate mr-2"></i>Other: {{post.otherLanguages}}</span>{{/if}}
+    <span><i class="ph ph-file-text mr-2"></i>Visa: {{post.visaSponsorship}}</span>
+  </div>
+
+  <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+    <span>Contact: {{post.contactMethod}}</span>
+    {{#if post.contactUrl}}<span>URL: {{post.contactUrl}}</span>{{/if}}
+    {{#if post.contactEmail}}<span>Email: {{post.contactEmail}}</span>{{/if}}
+  </div>
+
+  <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+    <span>ID: {{post.id}}</span>
+    <span>Session: {{post.sessionId}}</span>
+    <span>Tier: {{post.tier}}</span>
+    <span>Slug: {{post.slug}}</span>
+    <span>Published: {{post.publishedAt}}</span>
+    <span>Expires: {{post.expiresAt}}</span>
+    <span>Views: {{post.viewCount}}</span>
+  </div>
+
+  <div class="p-4 border-t border-slate-200">
+    <p style="white-space: pre-line;">{{post.fullDescription}}</p>
   </div>
 
 </div>

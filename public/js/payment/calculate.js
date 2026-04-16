@@ -1,4 +1,4 @@
-const bill = document.querySelector(".bill");
+const checkoutSubmit = document.querySelector("[data-checkout-submit]");
 
 function updateBill() {
   const selectedRadios = Array.from(
@@ -8,7 +8,9 @@ function updateBill() {
     (acc, radio) => (radio.value === "pinned" ? acc + 10 : acc),
     0,
   );
-  bill.textContent = `Total: $${total}`;
+  if (checkoutSubmit) {
+    checkoutSubmit.textContent = `Pay and submit ($${total})`;
+  }
 }
 
 const radioInputs = document.querySelectorAll("input[type=radio]");

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [Form Review & UI Refresh] - 2026-04-16
+
+### Added
+
+- Review step for the job posting form
+- JSON Handlebars helper for passing validation errors into the client
+- Dynamic job form option lists
+
+### Changed
+
+- Updated job form flow
+
 ## [Redesign & JS Refactor] - 2026-04-01
 
 ### Changed

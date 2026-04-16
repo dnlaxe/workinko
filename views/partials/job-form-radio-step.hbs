@@ -8,7 +8,7 @@
           ><i class="ph ph-arrow-left"></i></button>
           <p class="text-2xl">{{title}}</p>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {{#each options}}
             <label class="block cursor-pointer">
               <input
@@ -18,7 +18,7 @@
                 {{#if (eq ../selectedValue this)}}checked{{/if}}
                 class="sr-only peer"
               />
-              <span class="flex items-center px-3 py-2 border border-[#CBCCCE] peer-checked:bg-black peer-checked:text-white peer-checked:border-black hover:border-[#0D0D0D]">
+              <span class="flex items-center px-3 py-2 border border-slate-200 peer-checked:border-black hover:border-black">
                 {{this}}
               </span>
             </label>

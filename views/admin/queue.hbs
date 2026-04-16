@@ -1,21 +1,19 @@
 {{> admin-navbar}}
 
-<div class="flex flex-col md:border-x border-[#CBCCCE]">
+<div>
 
-  <p class="text-sm uppercase tracking-widest p-4">Queue</p>
+  <p class="font-bold p-4">Queue</p>
 
   {{#if actionError}}
     <p class="text-red-500 text-sm border border-red-500 py-1 px-2 rounded inline-block">{{actionError}}</p>
   {{else}}
     {{#each sessions}}
-      <div class="border-t border-[#CBCCCE] px-4 py-3 flex flex-col gap-1">
-        <div class="font-sans">{{this.email}}</div>
-        <div class="flex gap-4 text-sm">
-          <span>{{this.status}}</span>
-          <span>{{this.createdAt}}</span>
-          <span>expires {{this.expiresAt}}</span>
-        </div>
-        <a href="/admin/queue/{{this.id}}" class="underline text-sm">See posts</a>
+      <div class="flex flex-col gap-2 p-4 border-t border-slate-200">
+        <div>{{this.email}}</div>
+        <div>{{this.status}}</div>
+        <div>{{this.createdAt}}</div>
+        <div>expires {{this.expiresAt}}</div>
+        <a href="/admin/queue/{{this.id}}" class="underline">See posts</a>
       </div>
     {{else}}
       <p class="text-slate-500 text-sm p-4">No sessions pending review.</p>

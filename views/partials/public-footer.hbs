@@ -1,9 +1,17 @@
 <footer
-  class="{{#if hideFooter}}hidden md:flex{{else}}flex{{/if}} flex-rows justify-between items-center px-4 py-2 border-t border-[#CBCCCE]"
+  class="{{#if hideFooter}}hidden md:flex{{else}}flex{{/if}} sticky bottom-0 bg-gray-100 p-4"
 >
-  <p>WinK</p>
-  <div class="flex gap-2">
-    <a href="/faq" class="border border-[#CBCCCE] py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]">FAQ</a>
-    <a href="/contact" class="border border-[#CBCCCE] py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]">Contact</a>
+  
+  <div class="w-full flex items-center justify-start">
+
+    {{!-- <h1 class="uppercase text-blue-400 text-lg font-semibold text-left">Korea Jobs Board</h1> --}}
+    
+    <div class="flex flex-col gap-2">
+      <button class="border border-slate-200 py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D] text-left whitespace-nowrap">Dark Mode</button>
+      <a href="/blog" class="border border-slate-200 py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]">Blog</a>
+      <a href="/faq" class="border border-slate-200 py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]">FAQ</a>
+      <a href="/contact" class="border border-slate-200 py-1 px-3 font-mono uppercase text-sm hover:border-[#0D0D0D]">Contact</a>
+    </div>
+
   </div>
 </footer>

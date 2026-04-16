@@ -1,12 +1,17 @@
-<form action="/jobs/new" method="POST" data-specializations='{{{specializationsByCategory}}}' data-cities='{{{citiesByProvince}}}'>
+{{#if fieldErrors}}
+<script class="js-has-errors" type="application/json">{{{json fieldErrors}}}</script>
+{{/if}}
+
+<form action="/jobs/new" method="POST" data-specializations='{{{specializationsByCategory}}}' data-cities='{{{citiesByProvince}}}' class="px-4 md:mx-0 pb-4 md:h-dvh">
+<div class="sessionEmail" hidden>{{sessionEmail}}</div>
 
   <div class="mb-8 mt-4" aria-label="Form progress">
     <div class="flex">
-      <span data-progress-index="0" class="flex-1 h-2 bg-slate-200"></span>
-      <span data-progress-index="1" class="flex-1 h-2 bg-slate-200"></span>
-      <span data-progress-index="2" class="flex-1 h-2 bg-slate-200"></span>
-      <span data-progress-index="3" class="flex-1 h-2 bg-slate-200"></span>
-      <span data-progress-index="4" class="flex-1 h-2 bg-slate-200"></span>
+      <span data-progress-index="0" class="flex-1 h-2 bg-slate-200 transition duration-500"></span>
+      <span data-progress-index="1" class="flex-1 h-2 bg-slate-200 transition duration-500"></span>
+      <span data-progress-index="2" class="flex-1 h-2 bg-slate-200 transition duration-500"></span>
+      <span data-progress-index="3" class="flex-1 h-2 bg-slate-200 transition duration-500"></span>
+      <span data-progress-index="4" class="flex-1 h-2 bg-slate-200 transition duration-500"></span>
       <span data-progress-index="5" class="flex-1 h-2 bg-slate-200"></span>
       <span data-progress-index="6" class="flex-1 h-2 bg-slate-200"></span>
       <span data-progress-index="7" class="flex-1 h-2 bg-slate-200"></span>
@@ -20,7 +25,13 @@
   <div class="step flex-1">
     <fieldset>
       <div>
-        <h2 class="text-2xl mb-8">How do you want to be contacted?</h2>
+        <div class="flex items-center gap-3 mb-8">
+          <button
+            type="button"
+            class="btn-back text-xl inline-flex items-center justify-center leading-none shrink-0"
+          ></button>
+          <p class="text-2xl">How do you want to be contacted?</p>
+        </div>
 
         <label class="block cursor-pointer mb-2">
           <input
@@ -71,7 +82,7 @@
 }}
 
 {{> job-form-radio-step
-  title="Select a tag"
+  title="Job position"
   name="specialization"
   options=jobFormOptions.specialization
   selectedValue=values.specialization
@@ -85,7 +96,7 @@
 }}
 
 {{> job-form-radio-step
-  title="Select the nearest city"
+  title="Nearest city"
   name="city"
   options=jobFormOptions.city
   selectedValue=values.city
@@ -108,10 +119,13 @@
 
 <div class="step flex-1" hidden>
     <div>
-      <div class="flex items-center gap-3 mb-8">
-        <button type="button" class="btn-back ..."><i class="ph ph-arrow-left"></i></button>
-        <label class="text-2xl" for="otherLanguages">Other languages</label>
-      </div>
+        <div class="flex items-center gap-3 mb-8">
+          <button
+            type="button"
+            class="btn-back text-xl inline-flex items-center justify-center leading-none shrink-0"
+          ><i class="ph ph-arrow-left"></i></button>
+          <p class="text-2xl">Other languages</p>
+        </div>
 
       <label class="block cursor-pointer mb-2">
         <input type="radio" name="otherLanguagesMode" value="notRequired" class="sr-only peer" />
@@ -129,7 +143,7 @@
           class="sr-only peer"
         />
         <div class="p-4 border border-slate-200 peer-checked:border-black hover:border-black">
-          <span class="block">Other languages</span>
+          <span class="block">Other language:</span>
           <input
             id="otherLanguages"
             name="otherLanguages"
@@ -145,7 +159,7 @@
 </div>
 
 {{> job-form-radio-step
-  title="Type"
+  title="Contract type"
   name="contractType"
   options=jobFormOptions.contractType
   selectedValue=values.contractType
@@ -159,7 +173,7 @@
 }}
 
 {{> job-form-radio-step
-  title="When does this position begin?"
+  title="Start date"
   name="startDate"
   options=jobFormOptions.startDate
   selectedValue=values.startDate
@@ -169,8 +183,9 @@
         <div>
           <div class="flex items-center gap-3 mb-2">
             <button type="button" class="btn-back text-xl inline-flex items-center justify-center leading-none shrink-0"><i class="ph ph-arrow-left"></i></button>
-            <label class="text-2xl" for="heading">Heading</label>
+            <label class="text-2xl">Jod description</label>
           </div>
+          <label for="heading">Title</label>
           <input
             id="heading"
             name="heading"
@@ -178,11 +193,8 @@
             class="block w-full px-3 py-2  border border-[#CBCCCE] mb-2"
             value="{{values.heading}}"
           />
-          {{#if fieldErrors.heading}}
-            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.heading.[0]}}</div>
-          {{/if}}
 
-          <label class="block text-2xl" for="subheading">Subheading</label>
+          <label class="block" for="subheading">Second line</label>
           <input
             id="subheading"
             name="subheading"
@@ -190,28 +202,22 @@
             class="block w-full px-3 py-2  border border-[#CBCCCE] mb-2"
             value="{{values.subheading}}"
           />
-          {{#if fieldErrors.subheading}}
-            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.subheading.[0]}}</div>
-          {{/if}}
 
-          <label class="block mb-2 text-2xl" for="fullDescription">Full description</label>
+          <label for="fullDescription">Detailed description</label>
           <textarea
             class="block w-full h-[40%] px-3 py-2  border border-[#CBCCCE] resize-none"
             id="fullDescription"
             name="fullDescription"
           >{{values.fullDescription}}</textarea>
-          {{#if fieldErrors.fullDescription}}
-            <div class="text-sm text-red-500 mt-1 px-2">{{fieldErrors.fullDescription.[0]}}</div>
-          {{/if}}
-          <button type="button" class="btn-last-next disabled:opacity-50 px-4 py-1 border bg-blue-200 border-[#CBCCCE] w-full uppercase tracking-wide enabled:hover:border-[#0D0D0D] mt-8">Next</button>
+          <button type="button" class="btn-last-next disabled:opacity-50 px-3 py-1 border border-slate-200 uppercase tracking-wide hover:border-black mt-8">Next</button>
         </div>
     </div>
 
-  <div class="review" hidden>
-    <button type="submit" class="btn-confirm">Confirm</button>
+  <div class="review step" hidden>
+    <button type="submit" class="btn-confirm inline-block tracking-wide border border-slate-200 py-1 px-3 font-mono uppercase hover:border-black">Confirm</button>
   </div>
 
-  <button type="button" class="btn-back-to-review" hidden>Back to review</button>
+  <button type="button" class="btn-back-to-review border font-mono tracking-wide uppercase mt-4 py-1 px-4" hidden>Back to review</button>
 
 </form>
 

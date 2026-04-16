@@ -1,5 +1,5 @@
 <div class="p-4">
-  <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4">
+  <form method="POST" action="/jobs/drafts/checkout" class="flex flex-col gap-4 h-dvh">
 
     {{#if actionError}}
       <p class="text-red-500 text-sm border border-red-500 py-1 px-2  inline-block">{{actionError}}</p>
@@ -41,14 +41,16 @@
                           class="sr-only peer"
                           {{#if (eq this.tier "pinned")}}{{else}}checked{{/if}}
                         />
-                        <span class="flex flex-col items-start h-full px-3 py-2  bg-[#CBCCCE]/60 border border-[#CBCCCE] text-[#0D0D0D] peer-checked:bg-white peer-checked:border-[#41C3DD] peer-checked:text-[#0D0D0D]">
-                          <span class="text-lg mb-2 uppercase">Standard</span>
+                        <div class="flex flex-col h-full px-3 py-2  border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                          <div class="flex justify-between text-lg mb-1">
+                            <span class="uppercase">Standard</span>
+                            <span>Free</span>
+                          </div>
                           <ul class="text-sm text-[#0D0D0D]">
                             <li>Listed for thirty days</li>
                             <li>Management link</li>
                           </ul>
-                          <span class="mt-auto ml-auto text-lg">Free</span>
-                        </span>
+                        </div>
                       </label>
                       <label class="cursor-pointer h-full">
                         <input
@@ -58,15 +60,17 @@
                           class="sr-only peer"
                           {{#if (eq this.tier "pinned")}}checked{{/if}}
                         />
-                        <span class="flex flex-col items-start h-full px-3 py-2  border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
-                          <span class="text-lg mb-2 uppercase">Pinned</span>
+                        <div class="flex flex-col h-full px-3 py-2  border border-[#CBCCCE] bg-[#CBCCCE]/60 text-[#0D0D0D] peer-checked:border-[#41C3DD] peer-checked:bg-white peer-checked:text-[#0D0D0D]">
+                          <div class="flex justify-between text-lg mb-1">
+                            <span class="uppercase">Pinned</span>
+                            <span>$10</span>
+                          </div>
                           <ul class="text-sm text-[#0D0D0D]">
                             <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned to the top of all listings</li>
                             <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Pinned for thirty days</li>
                             <li><i class="ph ph-check text-[#41C3DD] mr-2"></i>Link management</li>
                           </ul>
-                          <span class="mt-auto ml-auto text-lg">$10</span>
-                        </span>
+                        </div>
                       </label>
                     </div>
                   </fieldset>
