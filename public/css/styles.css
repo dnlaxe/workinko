@@ -7,6 +7,7 @@
     --font-mono: "Fragment Mono", ui-monospace, monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-300: oklch(80.8% 0.114 19.571);
+    --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-800: oklch(44.4% 0.177 26.899);
     --color-amber-300: oklch(87.9% 0.169 91.605);
@@ -513,6 +514,9 @@
   .bg-red-50 {
     background-color: var(--color-red-50);
   }
+  .bg-red-400 {
+    background-color: var(--color-red-400);
+  }
   .bg-red-500\/80 {
     background-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -736,12 +740,6 @@
   }
   .underline {
     text-decoration-line: underline;
-  }
-  .decoration-2 {
-    text-decoration-thickness: 2px;
-  }
-  .underline-offset-4 {
-    text-underline-offset: 4px;
   }
   .opacity-0 {
     opacity: 0%;

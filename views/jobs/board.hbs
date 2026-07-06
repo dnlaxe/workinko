@@ -8,8 +8,8 @@
 
   <div class="flex flex-1 flex-col">
     {{#if loadError}}
-      <p class="text-red-500 text-sm uppercase border border-red-500 p-4 rounded inline-block m-4">
-        Something went wrong loading posts.
+      <p class="tracking-wide px-3 py-2 font-mono uppercase text-sm bg-red-400 inline-block m-4">
+        Something went wrong loading posts. Please try refreshing the page.
       </p>
     {{else if posts}}
       {{#if pinnedPosts}}
